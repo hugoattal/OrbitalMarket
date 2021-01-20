@@ -1,0 +1,28 @@
+@import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@200;400;700&family=Work+Sans:wght@400;700;900&display=swap');
+
+:root {
+    --font-size-base: 14px;
+    --font-size-small: 13px;
+}
+
+body {
+    font-size: 16px;
+}
+
+input,
+textarea,
+select {
+    font-size: inherit;
+    color: inherit;
+}
+
+body,
+input,
+textarea,
+select {
+    font-family: "Exo 2", Helvetica, Arial, sans-serif;
+}
+
+.las {
+    font-size:24px;
+}
