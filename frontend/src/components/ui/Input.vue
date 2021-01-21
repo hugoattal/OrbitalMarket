@@ -17,8 +17,10 @@
             ></i>
         </span>
             <input
+                ref="input"
                 type="text"
                 :placeholder="placeholder"
+                :autofocus="autofocus"
             />
         </div>
         <div v-if="$slots.append" class="append">
@@ -33,7 +35,8 @@ import { defineComponent } from "vue";
 export default defineComponent({
     props: {
         placeholder: String,
-        prefixIcon: String
+        prefixIcon: String,
+        autofocus: Boolean
     }
 });
 </script>

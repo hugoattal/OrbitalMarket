@@ -1,6 +1,10 @@
 {
     "name": "frontend",
     "version": "1.0.0",
+    "author": "Hugo Attal",
+    "description": "Orbital Market Backend",
+    "license": "none",
+    "repository": "https://github.com/TheHerobrine/OrbitalMarket",
     "scripts": {
         "dev": "vite",
         "build": "vuedx-typecheck . && vite build"
