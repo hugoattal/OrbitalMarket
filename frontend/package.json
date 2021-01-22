@@ -4,7 +4,10 @@
     "author": "Hugo Attal",
     "description": "Orbital Market Backend",
     "license": "none",
-    "repository": "https://github.com/TheHerobrine/OrbitalMarket",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/TheHerobrine/OrbitalMarket.git"
+    },
     "scripts": {
         "dev": "vite",
         "build": "vuedx-typecheck . && vite build"

@@ -39,6 +39,7 @@ export interface IProduct {
         updateDate: Date
     }>;
     tags: Array<Mongo.Types.ObjectId>;
+    cache?: any;
     meta?: any;
 }
 
@@ -48,11 +49,13 @@ interface IProductDocument extends IProduct, Mongo.Document {
 const productSchema: Mongo.Schema = new Mongo.Schema({
     title: {
         type: String,
-        required: true
+        required: true,
+        faker: "commerce.productName"
     },
     slug: {
         type: String,
-        required: true
+        required: true,
+        faker: "internet.domainWord"
     },
     owner: {
         type: Mongo.Schema.Types.ObjectId,
@@ -62,7 +65,8 @@ const productSchema: Mongo.Schema = new Mongo.Schema({
     price: {
         value: {
             type: Number,
-            required: true
+            required: true,
+            faker: "commerce.price"
         },
         history: [
             {
@@ -74,7 +78,8 @@ const productSchema: Mongo.Schema = new Mongo.Schema({
     discount: {
         value: {
             type: Number,
-            required: true
+            required: true,
+            faker: { "random.number": [{ min: 0, max: 50 }] }
         },
         history: [
             {
@@ -87,11 +92,16 @@ const productSchema: Mongo.Schema = new Mongo.Schema({
     releaseDate: {
         type: Date,
         required: true,
-        default: Date.now
+        default: Date.now,
+        faker: { "date.recent": 500 }
     },
     description: {
         short: String,
-        long: String,
+        long: {
+            type: String,
+            required: true,
+            faker: "commerce.productDescription"
+        },
         technical: String
     },
     pictures: [
@@ -104,7 +114,8 @@ const productSchema: Mongo.Schema = new Mongo.Schema({
         main: {
             type: String,
             enum: ["default", "unreal"],
-            default: "default"
+            default: "default",
+            required: true
         },
         path: [String]
     },
@@ -117,6 +128,7 @@ const productSchema: Mongo.Schema = new Mongo.Schema({
         type: Mongo.Schema.Types.ObjectId,
         ref: "tag"
     }],
+    cache: Object,
     meta: Object
 });
 
