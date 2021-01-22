@@ -1,13 +1,16 @@
-import mongo from "@/database";
+import Mongo from "@/database";
 
-export interface IConfig extends mongo.Document {
+export interface IConfig {
     name: string;
-    data: object;
+    data: any;
 }
 
-const configSchema: mongo.Schema = new mongo.Schema({
+interface IConfigDocument extends IConfig, Mongo.Document {
+}
+
+const configSchema: Mongo.Schema = new Mongo.Schema({
     name: { type: String, required: true },
     data: { type: Object }
 });
 
-export default mongo.model<IConfig>("config", configSchema);
+export default Mongo.model<IConfigDocument>("config", configSchema);

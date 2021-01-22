@@ -1,4 +1,4 @@
-import ProductModel, { IProduct } from "./model";
+import ProductModel, {IProduct} from "./model";
 
 export async function create(product: IProduct) {
     await ProductModel.create(product);

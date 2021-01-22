@@ -10,6 +10,7 @@
         "nodemon": "cross-env NODE_ENV=development nodemon src/server.ts",
         "clean": "tsc --build --clean",
         "start": "cross-env NODE_ENV=production ts-node src/server.ts",
+        "api:unreal": "cross-env NODE_ENV=production ts-node src/scrapper/unreal",
         "test": "cross-env NODE_ENV=test jest --runInBand"
     },
     "_moduleAliases": {
@@ -17,6 +18,7 @@
     },
     "dependencies": {
         "async-mutex": "^0.2.4",
+        "axios": "^0.21.1",
         "bcryptjs": "^2.4.3",
         "cors": "^2.8.5",
         "date-fns": "^2.16.1",
