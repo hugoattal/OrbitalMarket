@@ -14,6 +14,7 @@
         "clean": "tsc --build --clean",
         "start": "cross-env NODE_ENV=production ts-node src/server.ts",
         "api:unreal": "cross-env NODE_ENV=production ts-node src/scrapper/unreal",
+        "manual:update-score": "cross-env NODE_ENV=production ts-node src/crons/update-score",
         "test": "cross-env NODE_ENV=test jest --runInBand"
     },
     "_moduleAliases": {

@@ -11,11 +11,6 @@ jsf.format("objectId", () => {
     return Mongo.Types.ObjectId();
 });
 
-jsf.format("slug", (schema) => {
-    console.log(schema);
-    return "test";
-});
-
 jsf.option({
     alwaysFakeOptionals: true,
     resolveJsonPath: true

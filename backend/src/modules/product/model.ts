@@ -6,14 +6,14 @@ export interface IProduct {
     owner: Mongo.Types.ObjectId;
     price: {
         value: number;
-        history: Array<{
+        history?: Array<{
             value: number;
             date: Date;
         }>;
     };
     discount: {
         value: number;
-        history: Array<{
+        history?: Array<{
             value: number;
             date: Date;
         }>;

@@ -1,12 +1,9 @@
 import "module-alias/register";
 import Mongo, { connectDatabase, closeDatabase } from "@/database";
 import * as UnrealAPI from "./api";
-import { IProduct } from "@/modules/product/model";
+import * as ProductService from "@/modules/product/service";
 import UserModel from "@/modules/user/model";
-import ProductModel from "@/modules/product/model";
-
-// Electronic Nodes ID
-// 5cb2a394d0c04e73891762be4cbd7216
+import ProductModel, { IProduct } from "@/modules/product/model";
 
 async function init() {
     await connectDatabase();
@@ -38,7 +35,7 @@ async function processProductData(data: any) {
 
     const product: IProduct = {
         title: data.title,
-        slug: data.urlSlug || makeSlug(data.title),
+        slug: data.urlSlug || ProductService.utils.makeSlug(data.title),
         owner: ownerId,
         price: {
             value: data.priceValue,
@@ -88,20 +85,13 @@ async function processProductData(data: any) {
                 updateDate: new Date(release.dateAdded)
             };
         }),
-        tags: [],
+        tags: [], //TODO: Tags
         meta: {
             unrealId: data.id
         }
     };
 
     await upsertProduct(product);
-
-    function makeSlug(text: string) {
-        return text.toLowerCase()
-            .replace(/[^a-z0-9 -]/g, "")
-            .replace(/\s+/g, "-")
-            .replace(/-+/g, "-");
-    }
 }
 
 async function upsertOwner(data: any): Promise<Mongo.Types.ObjectId> {
@@ -134,8 +124,8 @@ async function upsertProduct(data: IProduct) {
         await ProductModel.create(data);
     }
     else {
-        data.price.history = product.price.history;
-        data.discount.history = product.price.history;
+        data.price.history = product.price.history || [];
+        data.discount.history = product.price.history || [];
 
         if (data.price.value !== product.price.value) {
             data.price.history.push({
