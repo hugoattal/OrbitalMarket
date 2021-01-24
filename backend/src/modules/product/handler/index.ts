@@ -1,5 +1,5 @@
 import * as Fastify from "fastify";
-import * as ProductService from "./service";
+import * as ProductService from "../service";
 import { FastifyRequest } from "fastify";
 import * as Schema from "./schema";
 

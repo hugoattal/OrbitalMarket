@@ -1,5 +1,5 @@
 import ProductModel from "./model";
-import { ISearch, ESortDirection, ESortField } from "./schema";
+import { ISearch, ESortDirection, ESortField } from "./handler/schema";
 
 export * as utils from "./utils";
 
@@ -25,8 +25,14 @@ export async function search(params: ISearch) {
             break;
     }
 
+    const findCondition = {} as Record<string, any>;
+
+    if (params.searchText && params.searchText !== "") {
+        findCondition["$text"] = { $search: params.searchText };
+    }
+
     return ProductModel
-        .aggregate([])
+        .find(findCondition)
         .sort(sortArgument)
         .skip(params.skip)
         .limit(params.limit)

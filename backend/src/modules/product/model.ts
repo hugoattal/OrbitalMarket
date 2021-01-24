@@ -132,4 +132,6 @@ const productSchema: Mongo.Schema = new Mongo.Schema({
     meta: Object
 });
 
+productSchema.index({ title: "text", "description.short": "text" });
+
 export default Mongo.model<IProductDocument>("product", productSchema);
