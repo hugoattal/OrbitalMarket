@@ -39,7 +39,7 @@ export interface IProduct {
         updateDate: Date
     }>;
     tags: Array<Mongo.Types.ObjectId>;
-    cache?: any;
+    computed?: any;
     meta?: any;
 }
 
@@ -128,7 +128,7 @@ const productSchema: Mongo.Schema = new Mongo.Schema({
         type: Mongo.Schema.Types.ObjectId,
         ref: "tag"
     }],
-    cache: Object,
+    computed: Object,
     meta: Object
 });
 

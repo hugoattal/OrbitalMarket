@@ -7,5 +7,8 @@ export default defineConfig({
     plugins: [vue()],
     alias: {
         "@": path.resolve(__dirname, "./src"),
+    },
+    server: {
+        port: 8080
     }
 });

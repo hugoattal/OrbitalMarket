@@ -32,6 +32,9 @@ async function processProductData(data: any) {
     const ownerId = await upsertOwner(data.seller);
 
     data.discountPercentage = data.discountPercentage || 0;
+    if (!data.categories || data.categories.length === 0) {
+        data.categories = [{ path: "unknown" }];
+    }
 
     const product: IProduct = {
         title: data.title,

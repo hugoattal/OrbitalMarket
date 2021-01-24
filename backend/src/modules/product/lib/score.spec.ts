@@ -20,7 +20,7 @@ describe("product/lib/score", () => {
         goodProduct = await ProductModel.findById(goodProduct._id);
         badProduct = await ProductModel.findById(badProduct._id);
 
-        expect(goodProduct.cache.score).toBeGreaterThan(badProduct.cache.score);
+        expect(goodProduct.computed.score.value).toBeGreaterThan(badProduct.computed.score.value);
     });
     test("it should generate a better score when the product is more recent", async () => {
         let recentProduct = await Fake.generate(ProductModel, {
@@ -39,6 +39,6 @@ describe("product/lib/score", () => {
         recentProduct = await ProductModel.findById(recentProduct._id);
         oldProduct = await ProductModel.findById(oldProduct._id);
 
-        expect(recentProduct.cache.score).toBeGreaterThan(oldProduct.cache.score);
+        expect(recentProduct.computed.score.value).toBeGreaterThan(oldProduct.computed.score.value);
     });
 });
