@@ -1,19 +1,14 @@
 {
     "compilerOptions": {
-        "baseUrl": "./",
+        "baseUrl": ".",
         "paths": {
-            "@/*": [
-                "src/*"
-            ],
-            "@": [
-                "src/"
-            ]
+            "@/*": ["src/*"]
         },
-        "target": "esnext",
+        "target": "es2016",
         "module": "esnext",
+        "esModuleInterop": true,
         "moduleResolution": "node",
         "strict": true,
-        "jsx": "preserve",
         "sourceMap": true,
         "lib": [
             "esnext",

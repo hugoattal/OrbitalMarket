@@ -33,6 +33,7 @@ module.exports = {
         "space-infix-ops": ["error"],
         "vue/html-indent": ["error", 4],
         "vue/no-multiple-template-root": "off",
-        "@typescript-eslint/no-explicit-any": "off"
+        "@typescript-eslint/no-explicit-any": "off",
+        "import/no-absolute-path": "off"
     }
 };

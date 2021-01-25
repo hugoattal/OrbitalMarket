@@ -1,10 +1,10 @@
 <template>
     <div class="logo">
         <svg class="svg-text">
-            <use :href="SVGLogoTextURL"/>
+            <use :href="SVGLogoTextURL" />
         </svg>
         <svg class="svg-satellite">
-            <use :href="SVGLogoSatelliteURL"/>
+            <use :href="SVGLogoSatelliteURL" />
         </svg>
     </div>
 </template>
@@ -15,10 +15,10 @@ import SVGLogoTextURL from "@/assets/logo_text.svg";
 import SVGLogoSatelliteURL from "@/assets/satellite.svg";
 
 export default defineComponent({
-    data() {
+    data () {
         return {
-            SVGLogoTextURL: SVGLogoTextURL + "#Logo",
-            SVGLogoSatelliteURL: SVGLogoSatelliteURL + "#Logo"
+            SVGLogoTextURL: `${SVGLogoTextURL}#Logo`,
+            SVGLogoSatelliteURL: `${SVGLogoSatelliteURL}#Logo`
         };
     }
 });
@@ -53,7 +53,6 @@ export default defineComponent({
             50% {
                 transform: translate(0px, 10px);
             }
-
 
         }
     }

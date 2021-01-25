@@ -68,7 +68,7 @@ const productSchema: Mongo.Schema = new Mongo.Schema({
         history: [
             {
                 value: Number,
-                date: Date,
+                date: Date
             }
         ]
     },
@@ -81,7 +81,7 @@ const productSchema: Mongo.Schema = new Mongo.Schema({
         history: [
             {
                 value: Number,
-                date: Date,
+                date: Date
             }
         ]
     },
@@ -124,6 +124,6 @@ const productSchema: Mongo.Schema = new Mongo.Schema({
     meta: Object
 });
 
-productSchema.index({ title: "text", "description.short": "text" });
+productSchema.index({ title: "text", "description.short": "text" }, { "weights": { title: 3, "description.short": 2 } });
 
 export default Mongo.model<IProductDocument>("product", productSchema);

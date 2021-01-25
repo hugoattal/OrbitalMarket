@@ -10,7 +10,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import SearchService from "@/services/search.service";
+import SearchService, { ISearchProduct } from "@/services/search.service";
 import ProductCard from "@/components/product/Card.vue";
 
 export default defineComponent({
@@ -18,7 +18,7 @@ export default defineComponent({
     components: { ProductCard },
     data () {
         return {
-            results: []
+            results: [] as Array<ISearchProduct>
         };
     },
     watch: {

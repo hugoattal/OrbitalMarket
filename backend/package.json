@@ -28,6 +28,7 @@
         "date-fns": "^2.16.1",
         "dotenv": "^8.2.0",
         "fastify": "^3.8.0",
+        "fastify-static": "^3.4.0",
         "lodash": "^4.17.20",
         "middie": "^5.2.0",
         "mongodb": "^3.6.3",

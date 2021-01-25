@@ -1,10 +1,12 @@
 import "module-alias/register";
 import { connectDatabase } from "@/database";
 import * as Fastify from "fastify";
+import FastifyStatic from "fastify-static";
 import cors from "cors";
 import Middie from "middie";
 
 import ProductHandler from "@/modules/product/handler";
+import * as path from "path";
 
 async function init() {
     const isDevelopment = (process.env.NODE_ENV === "development");
@@ -19,7 +21,15 @@ async function init() {
 
     await connectDatabase();
 
-    server.register(ProductHandler, { prefix: "/products" });
+    server.register(FastifyStatic, {
+        root: path.join(__dirname, "../../frontend/dist")
+    });
+
+    server.setNotFoundHandler((_req, res) => {
+        res.sendFile("index.html");
+    });
+
+    server.register(ProductHandler, { prefix: "/api/products" });
 
     return server;
 }
