@@ -1,30 +1,43 @@
 <template>
     <div class="input-wrapper">
-        <div v-if="$slots.prepend" class="prepend">
-            <slot name="prepend"></slot>
+        <div
+            v-if="$slots.prepend"
+            class="prepend"
+        >
+            <slot name="prepend" />
         </div>
-        <div class="input"
-             :class="{
-        'has-append': $slots.append,
-        'has-prepend': $slots.prepend
-         }">
-        <span v-if="$slots.prefix || prefixIcon" class="el-input__prefix">
-            <slot name="prefix"></slot>
-            <i
-                v-if="prefixIcon"
-                class="las"
-                :class="prefixIcon"
-            ></i>
-        </span>
+        <div
+            class="input"
+            :class="{
+                'has-append': $slots.append,
+                'has-prepend': $slots.prepend
+            }"
+        >
+            <span
+                v-if="$slots.prefix || prefixIcon"
+                class="el-input__prefix"
+            >
+                <slot name="prefix" />
+                <i
+                    v-if="prefixIcon"
+                    class="las"
+                    :class="prefixIcon"
+                />
+            </span>
             <input
                 ref="input"
+                v-model="value"
                 type="text"
                 :placeholder="placeholder"
                 :autofocus="autofocus"
-            />
+                @keyup.enter="$emit('validate')"
+            >
         </div>
-        <div v-if="$slots.append" class="append">
-            <slot name="append"></slot>
+        <div
+            v-if="$slots.append"
+            class="append"
+        >
+            <slot name="append" />
         </div>
     </div>
 </template>
@@ -33,10 +46,38 @@
 import { defineComponent } from "vue";
 
 export default defineComponent({
+    name: "UIInput",
     props: {
-        placeholder: String,
-        prefixIcon: String,
-        autofocus: Boolean
+        placeholder: {
+            type: String,
+            default: ""
+        },
+        prefixIcon: {
+            type: String,
+            default: ""
+        },
+        autofocus: Boolean,
+        modelValue: {
+            type: String,
+            default: ""
+        }
+    },
+    emits: ["update:modelValue", "validate"],
+    data () {
+        return {
+            value: ""
+        };
+    },
+    watch: {
+        modelValue: {
+            immediate: true,
+            handler () {
+                this.value = this.modelValue;
+            }
+        },
+        value () {
+            this.$emit("update:modelValue", this.value);
+        }
     }
 });
 </script>

@@ -1,0 +1,64 @@
+<template>
+    <div class="search-bar">
+        <UIInput
+            ref="search-input"
+            v-model="searchText"
+            class="search-input"
+            prefix-icon="la-satellite-dish"
+            autofocus
+            @validate="search"
+        >
+            <template #append>
+                <Button
+                    class="search-button"
+                    @click="search"
+                >
+                    Search
+                </Button>
+            </template>
+        </UIInput>
+        <ThemeSwitcher />
+    </div>
+</template>
+
+<script lang="ts">
+import { defineComponent } from "vue";
+import ThemeSwitcher from "@/components/theme/Switcher.vue";
+import Button from "@/components/ui/Button.vue";
+import router from "@/router";
+import UIInput from "@/components/ui/Input.vue";
+
+export default defineComponent({
+    name: "LandingSearchBar",
+    components: { UIInput, Button, ThemeSwitcher },
+    data () {
+        return {
+            searchText: this.$route.query.searchText || ""
+        };
+    },
+    methods: {
+        search () {
+            router.push({ name: "search", query: { ...this.$route.query, searchText: this.searchText } });
+        }
+    }
+});
+</script>
+
+<style scoped lang="scss">
+.search-bar {
+    display: flex;
+
+    & > * {
+        margin: 0 var(--length-margin-base);
+    }
+
+    .search-input {
+        width: 500px;
+
+        .las {
+            padding-right: var(--length-padding-base);
+            color: var(--color-primary);
+        }
+    }
+}
+</style>

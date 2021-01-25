@@ -1,8 +1,8 @@
 <template>
     <div class="page">
-        <Background/>
+        <Background />
         <div class="search">
-            <Logo/>
+            <Logo />
             <SearchBar />
             <ButtonsBar />
         </div>
@@ -13,10 +13,11 @@
 import { defineComponent } from "vue";
 import Logo from "./Logo.vue";
 import Background from "./Background.vue";
-import SearchBar from "./SearchBar.vue";
-import ButtonsBar from "@/components/landing/ButtonsBar.vue";
+import SearchBar from "@/components/elements/SearchBar.vue";
+import ButtonsBar from "@/components/pages/landing/ButtonsBar.vue";
 
 export default defineComponent({
+    name: "LandingLayout",
     components: { ButtonsBar, SearchBar, Background, Logo }
 });
 </script>

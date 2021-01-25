@@ -18,17 +18,14 @@ export interface IProduct {
             date: Date;
         }>;
     };
-    ratings: Array<Number>;
+    ratings: Array<number>;
     releaseDate: Date;
     description: {
         short: string;
         long: string;
         technical: string;
     };
-    pictures: Array<{
-        type: string;
-        url: string;
-    }>;
+    pictures: Record<string, Array<string>>;
     category: {
         main: string;
         path: Array<string>
@@ -104,12 +101,7 @@ const productSchema: Mongo.Schema = new Mongo.Schema({
         },
         technical: String
     },
-    pictures: [
-        {
-            style: String,
-            url: String
-        }
-    ],
+    pictures: Object,
     category: {
         main: {
             type: String,

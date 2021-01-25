@@ -1,8 +1,8 @@
 <template>
     <div class="background">
-        <div class="stars small"></div>
-        <div class="stars medium"></div>
-        <div class="stars large"></div>
+        <div class="stars small" />
+        <div class="stars medium" />
+        <div class="stars large" />
     </div>
 </template>
 
@@ -22,7 +22,6 @@ export default defineComponent({});
     bottom: 0;
     overflow: hidden;
 }
-
 
 @keyframes movingStars {
     from {
@@ -48,7 +47,6 @@ export default defineComponent({});
             background-position: 2000px -2000px;
         }
     }
-
 
     &.small {
         background: url("/src/assets/stars.svg#Stars");

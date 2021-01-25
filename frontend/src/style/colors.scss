@@ -1,35 +1,40 @@
 :root {
     --base-color-black: hsl(0, 0%, 0%);
-    --base-color-black50: hsla(0, 0%, 0%, 0.5);
     --base-color-white: hsl(0, 0%, 100%);
-    --base-color-white50: hsla(0, 0%, 100%, 0.5);
 
-    --base-color-grey10: hsl(0, 0%, 10%);
+    --base-color-grey05: hsl(0, 0%, 05%);
+    --base-color-grey10: hsl(0, 0%, 08%);
     --base-color-grey90: hsl(0, 0%, 90%);
+    --base-color-grey95: hsl(0, 0%, 95%);
 
     --base-color-west-side: hsl(30, 100%, 55%);
+    --base-color-yellow: hsl(45, 100%, 60%);
+
+    --color-star: var(--base-color-yellow);
 }
 
 @mixin light-theme {
     --color-landing-background: var(--base-color-white);
-    --color-landing-background50: var(--base-color-white50);
     --color-landing-content: var(--base-color-black);
-    --color-landing-content50: var(--base-color-black50);
 
     --color-background: var(--base-color-grey90);
     --color-content: var(--base-color-grey10);
+    --color-shadow: rgba(0,0,0,0.1);
+    --color-shadow-dark: rgba(0,0,0,0.5);
+    --color-light: rgba(255,255,255,0.5);
 
     --color-primary: var(--base-color-west-side);
 }
 
 @mixin dark-theme {
     --color-landing-background: var(--base-color-black);
-    --color-landing-background50: var(--base-color-black50);
     --color-landing-content: var(--base-color-white);
-    --color-landing-content50: var(--base-color-white50);
 
     --color-background: var(--base-color-grey10);
     --color-content: var(--base-color-grey90);
+    --color-shadow: rgba(0,0,0,0.5);
+    --color-shadow-dark: rgba(0,0,0,0.5);
+    --color-light: rgba(255,255,255,0.05);
 
     --color-primary: var(--base-color-west-side);
 }

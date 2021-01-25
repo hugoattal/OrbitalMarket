@@ -1,16 +1,15 @@
 <template>
     <div class="landing">
-        <Layout />
+        <LandingLayout />
     </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import ThemeSwitcher from "@/components/theme/ThemeSwitcher.vue";
-import Layout from "@/components/landing/Layout.vue";
+import LandingLayout from "@/components/pages/landing/Layout.vue";
 
 export default defineComponent({
-    components: { Layout, ThemeSwitcher }
+    components: { LandingLayout }
 });
 </script>
 

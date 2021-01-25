@@ -26,6 +26,18 @@ export const PartialProduct = {
             },
             additionalProperties: false
         },
+        pictures: {
+            type: "object",
+            properties: {
+                thumbnail: {
+                    type: "array",
+                    items: {
+                        type: "string"
+                    }
+                }
+            },
+            additionalProperties: false
+        },
         computed: {
             type: "object",
             properties: {
@@ -48,6 +60,7 @@ export enum ESortField {
     lastUpdate = "lastUpdate",
     reviews = "reviews",
     name = "name",
+    relevance = "relevance",
 }
 
 export interface ISearch {
@@ -56,7 +69,6 @@ export interface ISearch {
     searchText?: string;
     sortDirection: ESortDirection;
     sortField: ESortField;
-
 }
 
 export const Search = {
@@ -71,8 +83,8 @@ export const Search = {
             limit: {
                 type: "integer",
                 minimum: 1,
-                maximum: 20,
-                default: 1
+                maximum: 40,
+                default: 40
             },
             searchText: { type: "string" },
             sortDirection: {
@@ -82,7 +94,7 @@ export const Search = {
             },
             sortField: {
                 type: "string",
-                enum: ["popularity", "releaseDate", "lastUpdate", "reviews", "name"],
+                enum: ["popularity", "releaseDate", "lastUpdate", "reviews", "name", "relevance"],
                 default: "popularity"
             }
         },

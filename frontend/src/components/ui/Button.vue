@@ -1,13 +1,19 @@
 <template>
-    <div class="button">
-        <slot/>
+    <div
+        class="button"
+        @click="$emit('click')"
+    >
+        <slot />
     </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 
-export default defineComponent({});
+export default defineComponent({
+    name: "UIButton",
+    emits: ["click"]
+});
 </script>
 
 <style scoped lang="scss">

@@ -1,9 +1,10 @@
 import "module-alias/register";
-import Mongo, { connectDatabase, closeDatabase } from "@/database";
+import { connectDatabase, closeDatabase } from "@/database";
 import * as UnrealAPI from "./api";
 import * as ProductService from "@/modules/product/service";
-import UserModel from "@/modules/user/model";
-import ProductModel, { IProduct } from "@/modules/product/model";
+import { IProduct } from "@/modules/product/model";
+import { computeScore } from "@/modules/product/lib/score";
+import * as Upsert from "./upsert";
 
 async function init() {
     await connectDatabase();
@@ -29,7 +30,7 @@ async function loadProducts() {
 
 async function processProductData(data: any) {
 
-    const ownerId = await upsertOwner(data.seller);
+    const ownerId = await Upsert.owner(data.seller);
 
     data.discountPercentage = data.discountPercentage || 0;
     if (!data.categories || data.categories.length === 0) {
@@ -71,12 +72,14 @@ async function processProductData(data: any) {
             long: data.longDescription,
             technical: data.technicalDetails
         },
-        pictures: data.keyImages.map((picture: any) => {
-            return {
-                style: picture.type,
-                url: picture.url
-            };
-        }),
+        pictures: data.keyImages.reduce((object: Record<string, Array<string>>, element: { type: string, url: string }) => {
+            element.type = element.type.toLowerCase();
+            if (!object[element.type]) {
+                object[element.type] = [];
+            }
+            object[element.type].push(element.url);
+            return object;
+        }, {}),
         category: {
             main: "unreal",
             path: data.categories[0].path.split("/")
@@ -94,58 +97,18 @@ async function processProductData(data: any) {
         }
     };
 
-    await upsertProduct(product);
+    addComputed(product);
+
+    await Upsert.product(product);
 }
 
-async function upsertOwner(data: any): Promise<Mongo.Types.ObjectId> {
-    let owner = await UserModel.findOne({
-        meta: { unrealId: data.owner }
-    }).exec();
+function addComputed(product: IProduct) {
+    product.computed = {
+        score: computeScore(product.ratings, product.releaseDate, product.price.value === 0),
+        lastUpdate: getLastUpdate(product.releases)
+    };
 
-    if (!owner) {
-        owner = await UserModel.create({
-            name: data.name,
-            publicMail: data.supportEmail,
-            networks: {
-                website: data.website,
-                facebook: data.facebook,
-                twitter: data.twitter
-            },
-            meta: { unrealId: data.owner }
-        });
-    }
-
-    return owner._id;
-}
-
-async function upsertProduct(data: IProduct) {
-    let product: IProduct = await ProductModel.findOne({
-        meta: { unrealId: data.meta.unrealId }
-    }).exec();
-
-    if (!product) {
-        await ProductModel.create(data);
-    }
-    else {
-        data.price.history = product.price.history || [];
-        data.discount.history = product.price.history || [];
-
-        if (data.price.value !== product.price.value) {
-            data.price.history.push({
-                value: data.price.value,
-                date: new Date()
-            });
-        }
-
-        if (data.discount.value !== product.discount.value) {
-            data.discount.history.push({
-                value: data.discount.value,
-                date: new Date()
-            });
-        }
-
-        await ProductModel.updateOne(
-            { meta: { unrealId: data.meta.unrealId } }, data
-        ).exec();
+    function getLastUpdate(releases: Array<{ updateDate: Date }>): Date {
+        return new Date(Math.max(...releases.map((release) => release.updateDate.getTime())));
     }
 }

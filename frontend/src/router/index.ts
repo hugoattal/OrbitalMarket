@@ -9,6 +9,14 @@ const routes: Array<RouteRecordRaw> = [
         meta: {
             guest: true
         }
+    },
+    {
+        component: () => import(/* webpackChunkName: "search" */ "../views/Search.vue"),
+        name: "search",
+        path: "/search",
+        meta: {
+            guest: true
+        }
     }
 ];
 
