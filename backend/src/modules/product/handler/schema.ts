@@ -1,3 +1,5 @@
+import { merge } from "lodash";
+
 export const PartialProduct = {
     type: "object",
     properties: {
@@ -5,6 +7,7 @@ export const PartialProduct = {
         title: { type: "string" },
         slug: { type: "string" },
         owner: { type: "string" },
+        releaseDate: { type: "string", format: "date-time" },
         price: {
             type: "object",
             properties: {
@@ -41,13 +44,38 @@ export const PartialProduct = {
         computed: {
             type: "object",
             properties: {
-                score: {}
+                score: {},
+                lastUpdate: { type: "string", format: "date-time" }
             },
             additionalProperties: false
         }
     },
     additionalProperties: false
 };
+
+export const FullProduct = merge(PartialProduct, {
+    properties: {
+
+        description: {
+            properties: {
+                long: { type: "string" },
+                technical: { type: "string" }
+            }
+        },
+        pictures: {
+            properties: {
+                screenshot: {
+                    type: "array",
+                    items: {
+                        type: "string"
+                    }
+                }
+            }
+        }
+
+    }
+});
+
 
 export enum ESortDirection {
     asc = "asc",
@@ -98,7 +126,6 @@ export const Search = {
                 default: "popularity"
             }
         },
-        required: ["skip", "limit"],
         additionalProperties: false
     },
     response: {
@@ -106,5 +133,22 @@ export const Search = {
             type: "array",
             items: PartialProduct
         }
+    }
+};
+
+
+export const GetById = {
+    params: {
+        type: "object",
+        properties: {
+            id: {
+                type: "string"
+            }
+        },
+        required: ["id"],
+        additionalProperties: false
+    },
+    response: {
+        200: FullProduct
     }
 };

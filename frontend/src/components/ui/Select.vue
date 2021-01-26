@@ -64,7 +64,7 @@ export default defineComponent({
     align-items: center;
     box-sizing: border-box;
 
-    border: var(--length-border-base) solid var(--color-content);
+    border: var(--length-border-base) solid var(--color-primary);
     border-radius: var(--length-radius-base);
     transition: all var(--duration-fast);
 

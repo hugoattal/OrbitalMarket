@@ -1,10 +1,13 @@
 <template>
-    <div
+    <component
+        :is="componentTag"
         class="button"
+        :href="href"
+        :target="target"
         @click="$emit('click')"
     >
         <slot />
-    </div>
+    </component>
 </template>
 
 <script lang="ts">
@@ -12,7 +15,22 @@ import { defineComponent } from "vue";
 
 export default defineComponent({
     name: "UIButton",
-    emits: ["click"]
+    props: {
+        href: {
+            type: String,
+            default: ""
+        },
+        target: {
+            type: String,
+            default: ""
+        }
+    },
+    emits: ["click"],
+    computed: {
+        componentTag () {
+            return this.href ? "a" : "div";
+        }
+    }
 });
 </script>
 
@@ -25,7 +43,7 @@ export default defineComponent({
     align-items: center;
     box-sizing: border-box;
 
-    border: var(--length-border-base) solid var(--color-content);
+    border: var(--length-border-base) solid var(--color-primary);
     border-radius: var(--length-radius-base);
     cursor: pointer;
     transition: all var(--duration-fast);

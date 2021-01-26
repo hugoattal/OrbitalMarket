@@ -59,9 +59,13 @@ export default defineComponent({
     margin-top: var(--length-margin-base);
     display: flex;
 
+    width: calc(100vw - 20px);
+    max-width: 600px;
+
     .select {
         margin: 0 var(--length-margin-base);
-        width: 270px;
+        flex-grow: 1;
+        flex-basis: 50%;
         display: flex;
     }
 }

@@ -1,42 +1,37 @@
 :root {
-    --base-color-black: hsl(0, 0%, 0%);
-    --base-color-white: hsl(0, 0%, 100%);
 
-    --base-color-grey05: hsl(0, 0%, 05%);
-    --base-color-grey10: hsl(0, 0%, 08%);
-    --base-color-grey90: hsl(0, 0%, 90%);
-    --base-color-grey95: hsl(0, 0%, 95%);
-
-    --base-color-west-side: hsl(30, 100%, 55%);
-    --base-color-yellow: hsl(45, 100%, 60%);
-
-    --color-star: var(--base-color-yellow);
 }
 
 @mixin light-theme {
-    --color-landing-background: var(--base-color-white);
-    --color-landing-content: var(--base-color-black);
+    --color-landing-background: white;
+    --color-landing-content: black;
 
-    --color-background: var(--base-color-grey90);
-    --color-content: var(--base-color-grey10);
-    --color-shadow: rgba(0,0,0,0.1);
-    --color-shadow-dark: rgba(0,0,0,0.5);
-    --color-light: rgba(255,255,255,0.5);
+    --color-background: hsl(210, 10%, 98%);
+    --color-primary: hsl(210, 90%, 50%);
+    --color-content-background: hsl(210, 25%, 100%);
+    --color-content-light: hsl(210, 25%, 90%);
 
-    --color-primary: var(--base-color-west-side);
+    --color-content: hsl(0, 0%, 08%);
+    --color-content-50: hsla(0, 0%, 08%, 0.3);
+    --color-shadow: rgba(0, 0, 0, 0.05);
+    --color-shadow-dark: rgba(0, 0, 0, 0.5);
+    --color-light: rgba(255, 255, 255, 0.5);
 }
 
 @mixin dark-theme {
-    --color-landing-background: var(--base-color-black);
-    --color-landing-content: var(--base-color-white);
+    --color-landing-background: black;
+    --color-landing-content: white;
 
-    --color-background: var(--base-color-grey10);
-    --color-content: var(--base-color-grey90);
-    --color-shadow: rgba(0,0,0,0.5);
-    --color-shadow-dark: rgba(0,0,0,0.5);
-    --color-light: rgba(255,255,255,0.05);
+    --color-background: hsl(210, 30%, 10%);
+    --color-primary: hsl(210, 90%, 50%);
+    --color-content-background: hsl(210, 25%, 15%);
+    --color-content-light: hsl(210, 25%, 20%);
 
-    --color-primary: var(--base-color-west-side);
+    --color-content: hsl(0, 0%, 90%);
+    --color-content-50: hsla(0, 0%, 90%, 0.3);
+    --color-shadow: rgba(0, 0, 0, 0.2);
+    --color-shadow-dark: rgba(0, 0, 0, 0.5);
+    --color-light: rgba(255, 255, 255, 0.05);
 }
 
 :root {

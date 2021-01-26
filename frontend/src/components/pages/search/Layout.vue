@@ -30,11 +30,16 @@ export default defineComponent({
 
     .search {
         height: 180px;
+        padding-bottom: 20px;
 
         display: flex;
         justify-content: center;
         align-items: center;
         flex-direction: column;
+
+        background-color: var(--color-content-background);
+        border-bottom: 1px solid var(--color-content-light);
+        box-shadow: 0 0 10px var(--color-shadow);
     }
 }
 </style>

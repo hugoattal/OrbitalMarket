@@ -4,7 +4,13 @@ import { FastifyRequest } from "fastify";
 import * as Schema from "./schema";
 
 export default async function (server: Fastify.FastifyInstance) {
+    server.get("/product/:id", { schema: Schema.GetById }, getByIdHandler);
     server.get("/search", { schema: Schema.Search }, searchHandler);
+}
+
+async function getByIdHandler(request: FastifyRequest) {
+    const id = (request.params as Record<string, string>).id;
+    return ProductService.getById(id);
 }
 
 async function searchHandler(request: FastifyRequest) {

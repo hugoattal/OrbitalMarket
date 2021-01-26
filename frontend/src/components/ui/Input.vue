@@ -88,7 +88,7 @@ export default defineComponent({
 }
 
 .input {
-    border: var(--length-border-base) solid var(--color-content);
+    border: var(--length-border-base) solid var(--color-primary);
     border-radius: var(--length-radius-base);
     height: var(--length-button-base);
     padding: var(--length-padding-s) var(--length-padding-base);

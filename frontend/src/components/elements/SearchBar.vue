@@ -47,13 +47,15 @@ export default defineComponent({
 <style scoped lang="scss">
 .search-bar {
     display: flex;
+    width: calc(100vw - 20px);
+    max-width: 600px;
 
     & > * {
         margin: 0 var(--length-margin-base);
     }
 
     .search-input {
-        width: 500px;
+        flex-grow: 1;
 
         .las {
             padding-right: var(--length-padding-base);

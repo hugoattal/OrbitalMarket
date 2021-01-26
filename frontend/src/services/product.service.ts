@@ -1,6 +1,6 @@
 import ApiService from "@/services/api.service";
 
-export interface ISearchProduct {
+export interface IProduct {
     _id: string;
     title: string;
     slug: string;
@@ -10,8 +10,10 @@ export interface ISearchProduct {
     discount: { value: number };
     description: {
         short: string;
+        long: string;
+        technical: string;
     };
-    pictures: { thumbnail: Array<string> };
+    pictures: { thumbnail: Array<string>, screenshot: Array<string> };
     computed: {
         score: {
             value: number;
@@ -23,8 +25,8 @@ export interface ISearchProduct {
 }
 
 export default {
-    async query (params: any): Promise<Array<ISearchProduct>> {
-        const result = await ApiService.get("/products/search", { params });
+    async getById (id: number): Promise<IProduct> {
+        const result = await ApiService.get(`/products/product/${id}`);
         return result.data;
     }
 };

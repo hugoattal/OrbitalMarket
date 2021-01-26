@@ -7,7 +7,7 @@
 }
 
 * {
-    transition: color var(--duration-fast), background var(--duration-fast);
+    transition: color var(--duration-fast), border-color var(--duration-fast), background var(--duration-fast);
 }
 
 body {

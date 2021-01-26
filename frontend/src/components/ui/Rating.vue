@@ -42,12 +42,12 @@ export default defineComponent({
         };
     },
     methods: {
-        clamp (input, min, max) {
+        clamp (input: number, min: number, max: number) {
             return Math.min(Math.max(input, min), max);
         },
-        styleWidth (width) {
+        styleWidth (width: number) {
             return {
-                width: `${width * 14}px`
+                width: `${width * 100}%`
             };
         }
     }
@@ -57,6 +57,7 @@ export default defineComponent({
 <style scoped lang="scss">
 .rating {
     opacity: 0.5;
+
     &.hasRatings {
         opacity: 1;
     }
@@ -64,6 +65,8 @@ export default defineComponent({
 
 .star {
     display: inline-block;
+    position: relative;
+    color: var(--color-primary);
 
     .la-star {
         display: block;
@@ -75,7 +78,7 @@ export default defineComponent({
     }
 
     .las, .lar {
-        font-size: 14px;
+        font-size: inherit;
     }
 }
 </style>
