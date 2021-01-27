@@ -1,20 +1,33 @@
 <template>
     <div class="select-wrapper">
         <slot />
-        <select
-            v-model="value"
+        <div
             class="select"
+            @click="deploy = !deploy"
         >
-            <option
-                v-for="option in options"
-                :key="option.key"
-                :value="option.key"
+            <input
+                :value="value"
+                type="text"
+                readonly
             >
-                {{ option.value }}
-            </option>
-        </select>
-        <div class="arrow">
-            <i class="las la-caret-down" />
+            <ul
+                v-if="deploy"
+                class="select-options"
+            >
+                <li
+                    v-for="optionKey in Object.keys(options)"
+                    :key="optionKey"
+                    @click="key = optionKey"
+                >
+                    {{ options[optionKey] }}
+                </li>
+            </ul>
+            <div
+                class="arrow"
+                :class="{deploy}"
+            >
+                <i class="las la-caret-down" />
+            </div>
         </div>
     </div>
 </template>
@@ -26,7 +39,7 @@ export default defineComponent({
     name: "UISelect",
     props: {
         options: {
-            type: Array as PropType<Array<{key: string; value: string;}>>,
+            type: Object as PropType<Record<string, string>>,
             required: true
         },
         modelValue: {
@@ -37,18 +50,24 @@ export default defineComponent({
     emits: ["update:modelValue"],
     data () {
         return {
-            value: ""
+            key: "",
+            deploy: false
         };
+    },
+    computed: {
+        value () {
+            return this.options[this.key];
+        }
     },
     watch: {
         modelValue: {
             immediate: true,
             handler () {
-                this.value = this.modelValue;
+                this.key = this.modelValue;
             }
         },
         value () {
-            this.$emit("update:modelValue", this.value);
+            this.$emit("update:modelValue", this.key);
         }
     }
 });
@@ -71,26 +90,67 @@ export default defineComponent({
     padding: var(--length-padding-base);
 
     .select {
+        width: 0;
         flex-grow: 1;
-        font-weight: bold;
         background: none;
         height: var(--length-button-base);
-        border: none;
-        outline: none;
-        appearance: none;
         cursor: pointer;
-        padding-right: var(--length-padding-l);
-        padding-left: var(--length-padding-s);
+        position: relative;
 
-        &:hover {
-            color: var(--color-primary);
+        input {
+            cursor: pointer;
+            font-weight: bold;
+            height: 100%;
+            width: 100%;
+            box-sizing: border-box;
+            padding-right: var(--length-padding-l);
+            padding-left: var(--length-padding-s);
+        }
+
+        &:hover{
+            input, .arrow {
+                color: var(--color-primary);
+            }
+        }
+    }
+
+    .select-options {
+        margin: 0;
+        padding: 0;
+        position: absolute;
+        z-index: 1000;
+        top: 100%;
+        left: 0;
+        right: 0;
+        border: 2px solid var(--color-primary);
+        border-bottom-left-radius: var(--length-radius-base);
+        border-bottom-right-radius: var(--length-radius-base);
+        border-top: none;
+        overflow: hidden;
+
+        background: var(--color-background);
+
+        li {
+            padding: var(--length-padding-s) var(--length-padding-base);
+            list-style-type: none;
+
+            &:hover {
+                color: var(--color-primary);
+                background: var(--color-content-background);
+            }
         }
     }
 
     .arrow {
         position: absolute;
-        right: var(--length-padding-base);
+        right: 0;
         pointer-events: none;
+        top: calc(50% - 12px);
+        transition: transform var(--duration-fast);
+
+        &.deploy {
+            transform: translateY(2px) rotate(180deg);
+        }
     }
 }
 </style>

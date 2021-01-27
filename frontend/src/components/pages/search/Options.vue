@@ -27,18 +27,18 @@ export default defineComponent({
     components: { UISelect },
     data () {
         return {
-            sortOptions: [
-                { key: "popularity", value: "Popularity" },
-                { key: "releaseDate", value: "Release Date" },
-                { key: "lastUpdate", value: "Last Update" },
-                { key: "reviews", value: "Reviews" },
-                { key: "name", value: "Name" },
-                { key: "relevance", value: "Relevance" }
-            ],
-            directionOptions: [
-                { key: "asc", value: "Ascending" },
-                { key: "desc", value: "Descending" }
-            ],
+            sortOptions: {
+                popularity: "Popularity",
+                releaseDate: "Release Date",
+                lastUpdate: "Last Update",
+                reviews: "Reviews",
+                name: "Name",
+                relevance: "Relevance"
+            },
+            directionOptions: {
+                asc: "Ascending",
+                desc: "Descending"
+            },
             sortField: this.$route.query.sortField || "popularity",
             sortDirection: this.$route.query.sortDirection || "desc"
         };

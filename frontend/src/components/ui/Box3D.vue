@@ -58,8 +58,10 @@ export default defineComponent({
             position: absolute;
             width: 80px;
             height: 100px;
-            background-size: cover;
+            background-color: var(--color-background);
+            background-size: contain;
             background-position: center center;
+            background-repeat: no-repeat;
             box-shadow: 0 0 5px var(--color-shadow-dark), inset 0 0 20px var(--color-shadow);
             transform: translate3d(40px, 0px, 0px);
             border: 1px solid black;

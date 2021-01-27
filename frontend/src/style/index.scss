@@ -24,7 +24,8 @@ a {
     }
 }
 
-button {
+button, input {
+    border: none;
     background: none;
     outline: none;
 }
