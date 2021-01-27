@@ -46,6 +46,7 @@ export default defineComponent({
     align-items: center;
 
     .las {
+        opacity: 0.5;
         font-size: 50px;
         animation: rotating 2s linear infinite;
     }

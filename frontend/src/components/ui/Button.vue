@@ -28,7 +28,7 @@ export default defineComponent({
     emits: ["click"],
     computed: {
         componentTag () {
-            return this.href ? "a" : "div";
+            return this.href ? "a" : "button";
         }
     }
 });

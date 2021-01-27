@@ -62,6 +62,8 @@ export default defineComponent({
             background-position: center center;
             box-shadow: 0 0 5px var(--color-shadow-dark), inset 0 0 20px var(--color-shadow);
             transform: translate3d(40px, 0px, 0px);
+            border: 1px solid black;
+            box-sizing: border-box;
         }
 
         .side {

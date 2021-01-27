@@ -8,9 +8,6 @@ export interface ISearchProduct {
     releaseDate: string;
     price: { value: number };
     discount: { value: number };
-    description: {
-        short: string;
-    };
     pictures: { thumbnail: Array<string> };
     computed: {
         score: {

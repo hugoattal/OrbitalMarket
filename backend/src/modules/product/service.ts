@@ -46,7 +46,6 @@ export async function search(params: ISearch) {
         price: 1,
         releaseDate: 1,
         discount: 1,
-        "description.short": 1,
         "pictures.thumbnail": 1,
         computed: 1
     };

@@ -23,7 +23,7 @@
             <div class="rating-wrapper">
                 <UIRating
                     class="stars"
-                    :rating="product.computed.score.meanRating"
+                    :rating="parseFloat(product.computed.score.meanRating)"
                     :has-ratings="!!product.computed.score.totalRatings"
                 />
                 <div class="total">

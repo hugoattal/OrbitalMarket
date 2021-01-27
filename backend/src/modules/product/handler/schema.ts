@@ -22,13 +22,6 @@ export const PartialProduct = {
             },
             additionalProperties: false
         },
-        description: {
-            type: "object",
-            properties: {
-                short: { type: "string" }
-            },
-            additionalProperties: false
-        },
         pictures: {
             type: "object",
             properties: {
