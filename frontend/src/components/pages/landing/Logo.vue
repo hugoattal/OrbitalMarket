@@ -1,9 +1,11 @@
 <template>
     <div class="logo">
         <svg class="svg-text">
+            <title>Orbital Market</title>
             <use :href="SVGLogoTextURL" />
         </svg>
         <svg class="svg-satellite">
+            <title>Satellite</title>
             <use :href="SVGLogoSatelliteURL" />
         </svg>
     </div>

@@ -1,9 +1,11 @@
 <template>
     <div class="page">
         <div class="search">
-            <Logo />
-            <SearchBar />
-            <SearchOptions />
+            <Logo role="banner" />
+            <div role="search">
+                <SearchBar />
+                <SearchOptions />
+            </div>
         </div>
         <SearchResults />
     </div>

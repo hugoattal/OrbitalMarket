@@ -2,9 +2,9 @@
     <div class="page">
         <Background />
         <div class="search">
-            <Logo />
-            <SearchBar />
-            <ButtonsBar />
+            <Logo role="banner" />
+            <SearchBar role="search" />
+            <ButtonsBar role="navigation" />
         </div>
     </div>
 </template>

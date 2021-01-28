@@ -4,16 +4,14 @@
             v-model="sortField"
             class="select"
             :options="sortOptions"
-        >
-            Sort by:
-        </UISelect>
+            label="Sort by"
+        />
         <UISelect
             v-model="sortDirection"
             class="select"
             :options="directionOptions"
-        >
-            Direction:
-        </UISelect>
+            label="Direction"
+        />
     </div>
 </template>
 

@@ -1,13 +1,21 @@
 <template>
-    <div class="select-wrapper">
-        <slot />
+    <div
+        class="select-wrapper"
+    >
+        <label :for="elementId">
+            {{ label }}
+        </label>:
         <div
+            ref="select"
             class="select"
-            @click="deploy = !deploy"
+            tabindex="0"
+            @focusin="deploy = true"
+            @focusout="deploy = false"
         >
             <input
+                :id="elementId"
                 :value="value"
-                type="text"
+                type="button"
                 readonly
             >
             <ul
@@ -17,7 +25,7 @@
                 <li
                     v-for="optionKey in Object.keys(options)"
                     :key="optionKey"
-                    @click="key = optionKey"
+                    @click.prevent="setKey(optionKey)"
                 >
                     {{ options[optionKey] }}
                 </li>
@@ -34,10 +42,15 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
+import { getUniqueId } from "@/modules/id.module";
 
 export default defineComponent({
     name: "UISelect",
     props: {
+        label: {
+            type: String,
+            required: true
+        },
         options: {
             type: Object as PropType<Record<string, string>>,
             required: true
@@ -51,7 +64,8 @@ export default defineComponent({
     data () {
         return {
             key: "",
-            deploy: false
+            deploy: false,
+            elementId: `select-${getUniqueId()}`
         };
     },
     computed: {
@@ -68,6 +82,12 @@ export default defineComponent({
         },
         value () {
             this.$emit("update:modelValue", this.key);
+        }
+    },
+    methods: {
+        setKey (key) {
+            this.key = key;
+            this.$refs.select.blur();
         }
     }
 });
@@ -98,13 +118,14 @@ export default defineComponent({
         position: relative;
 
         input {
-            cursor: pointer;
             font-weight: bold;
             height: 100%;
             width: 100%;
             box-sizing: border-box;
             padding-right: var(--length-padding-l);
             padding-left: var(--length-padding-s);
+            pointer-events: none;
+            text-align: left;
         }
 
         &:hover{

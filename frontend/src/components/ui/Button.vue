@@ -5,6 +5,7 @@
         :href="href"
         :target="target"
         @click="$emit('click')"
+        @keypress.enter="$emit('click')"
     >
         <slot />
     </component>
@@ -50,7 +51,7 @@ export default defineComponent({
 
     padding: var(--length-padding-base);
 
-    &:hover {
+    &:hover, &:focus {
         color: var(--color-primary);
     }
 }
