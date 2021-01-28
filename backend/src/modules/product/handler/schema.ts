@@ -38,7 +38,8 @@ export const PartialProduct = {
             type: "object",
             properties: {
                 score: {},
-                lastUpdate: { type: "string", format: "date-time" }
+                lastUpdate: { type: "string", format: "date-time" },
+                isBoosted: { type: "boolean" }
             },
             additionalProperties: false
         }
@@ -51,6 +52,7 @@ export const FullProduct = merge(PartialProduct, {
 
         description: {
             properties: {
+                short: { type: "string" },
                 long: { type: "string" },
                 technical: { type: "string" }
             }

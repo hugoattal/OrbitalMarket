@@ -1,11 +1,22 @@
 import ProductModel from "./model";
 import { ESortDirection, ESortField, ISearch } from "./handler/schema";
+import { isValidObjectId } from "mongoose";
 
 export * as utils from "./utils";
 
 
 export async function getById(id: string) {
-    return ProductModel.findById(id);
+    if (isValidObjectId(id)) {
+        const product = await ProductModel.findById(id);
+
+        if (product) {
+            return product;
+        }
+    }
+
+
+    return ProductModel.findOne({ slug: id }).exec();
+
 }
 
 export async function search(params: ISearch) {

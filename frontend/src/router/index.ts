@@ -17,6 +17,14 @@ const routes: Array<RouteRecordRaw> = [
         meta: {
             guest: true
         }
+    },
+    {
+        component: () => import(/* webpackChunkName: "product" */ "../views/Product.vue"),
+        name: "product",
+        path: "/product/:slug",
+        meta: {
+            guest: true
+        }
     }
 ];
 

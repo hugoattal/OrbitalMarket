@@ -15,6 +15,7 @@ export interface ISearchProduct {
             totalRatings: number;
             meanRatings: number;
         },
+        isBoosted: boolean,
         lastUpdate: string
     }
 }

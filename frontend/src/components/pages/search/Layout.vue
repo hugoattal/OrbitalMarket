@@ -42,6 +42,10 @@ export default defineComponent({
         background-color: var(--color-content-background);
         border-bottom: 1px solid var(--color-content-light);
         box-shadow: 0 0 10px var(--color-shadow);
+
+        @media screen and (max-width: 500px) {
+            height: 220px;
+        }
     }
 }
 </style>

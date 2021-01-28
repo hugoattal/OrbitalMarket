@@ -12,11 +12,15 @@
                     class="modal"
                     @click.stop
                 >
-                    <div
-                        class="close"
-                        @click="value=false"
-                    >
-                        <i class="las la-times" />
+                    <div class="icons">
+                        <i
+                            class="las la-expand"
+                            @click="$emit('expand')"
+                        />
+                        <i
+                            class="las la-times"
+                            @click="value=false"
+                        />
                     </div>
                     <slot />
                 </div>
@@ -27,7 +31,6 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-
 export default defineComponent({
     name: "UIModal",
     props: {
@@ -35,7 +38,7 @@ export default defineComponent({
             type: Boolean
         }
     },
-    emits: ["update:modelValue"],
+    emits: ["update:modelValue", "expand"],
     data () {
         return {
             value: false
@@ -46,12 +49,17 @@ export default defineComponent({
             immediate: true,
             handler () {
                 this.value = this.modelValue;
+                document.body.style.overflow = this.value ? "hidden" : "unset";
             }
         },
         value () {
             this.$emit("update:modelValue", this.value);
         }
+    },
+    unmounted () {
+        document.body.style.overflow = "unset";
     }
+
 });
 </script>
 
@@ -78,17 +86,21 @@ export default defineComponent({
     align-items: center;
     justify-content: center;
 
-    .close {
+    .icons {
         position: absolute;
         top: 0;
         right: 0;
-        display: inline-block;
-        padding: var(--length-padding-base);
-        color: var(--color-content-50);
-        cursor: pointer;
+        margin-right: var(--length-padding-l);
 
-        &:hover {
-            color: var(--color-primary);
+        .las {
+            padding: var(--length-padding-base);
+            display: inline-block;
+            color: var(--color-content-50);
+            cursor: pointer;
+
+            &:hover {
+                color: var(--color-primary);
+            }
         }
     }
 

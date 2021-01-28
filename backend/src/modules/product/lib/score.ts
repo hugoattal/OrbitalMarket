@@ -23,11 +23,11 @@ export async function updateScores() {
         ));
 }
 
-export function computeScore(ratings: Array<number>, releaseDate: Date, isFree: boolean) {
+export function computeScore(ratings: Array<number>, releaseDate: Date, isFree: boolean): {value: number, totalRatings: number, meanRating: number} {
     const totalRatings = _.sum(ratings);
 
     if (totalRatings === 0) {
-        return 0;
+        return { value: 0, totalRatings: 0, meanRating: 0 };
     }
 
     const meanRating = getMeanRating(ratings);

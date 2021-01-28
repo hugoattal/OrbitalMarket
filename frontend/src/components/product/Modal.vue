@@ -5,9 +5,7 @@
                 <ProductDescription :product-id="productId" />
             </template>
             <template #fallback>
-                <div class="spinner">
-                    <i class="las la-circle-notch" />
-                </div>
+                <Spinner class="spinner" />
             </template>
         </Suspense>
     </div>
@@ -16,10 +14,11 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import ProductDescription from "@/components/product/Description.vue";
+import Spinner from "@/components/ui/Spinner.vue";
 
 export default defineComponent({
     name: "ProductModal",
-    components: { ProductDescription },
+    components: { Spinner, ProductDescription },
     props: {
         productId: {
             type: String,
@@ -32,10 +31,11 @@ export default defineComponent({
 <style scoped lang="scss">
 .product-modal {
     height: calc(100vh - 100px);
-    max-height: 400px;
+    max-height: 600px;
     width: calc(100vw - 100px);
     max-width: 900px;
     padding: var(--length-padding-l);
+    overflow: auto;
 }
 
 .spinner {
@@ -44,20 +44,6 @@ export default defineComponent({
     display: flex;
     justify-content: center;
     align-items: center;
-
-    .las {
-        opacity: 0.5;
-        font-size: 50px;
-        animation: rotating 2s linear infinite;
-    }
-
-    @keyframes rotating {
-        from {
-            transform: rotate(0deg);
-        }
-        to {
-            transform: rotate(360deg);
-        }
-    }
+    font-size: 50px;
 }
 </style>

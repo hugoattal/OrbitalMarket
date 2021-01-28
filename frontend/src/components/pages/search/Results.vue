@@ -14,7 +14,7 @@
         class="loading"
     >
         <Observer @intersect="loadNext" />
-        <i class="las la-circle-notch" />
+        <Spinner />
     </div>
 </template>
 
@@ -23,10 +23,11 @@ import { defineComponent } from "vue";
 import SearchService, { ISearchProduct } from "@/services/search.service";
 import ProductCard from "@/components/product/Card.vue";
 import Observer from "@/components/elements/Observer.vue";
+import Spinner from "@/components/ui/Spinner.vue";
 
 export default defineComponent({
     name: "SearchResults",
-    components: { Observer, ProductCard },
+    components: { Spinner, Observer, ProductCard },
     data () {
         return {
             produts: [] as Array<ISearchProduct>,
@@ -92,20 +93,6 @@ export default defineComponent({
     justify-content: center;
     align-items: center;
     height: 100px;
-
-    .las {
-        opacity: 0.5;
-        font-size: 50px;
-        animation: rotating 2s linear infinite;
-    }
-
-    @keyframes rotating {
-        from {
-            transform: rotate(0deg);
-        }
-        to {
-            transform: rotate(360deg);
-        }
-    }
+    font-size: 50px;
 }
 </style>

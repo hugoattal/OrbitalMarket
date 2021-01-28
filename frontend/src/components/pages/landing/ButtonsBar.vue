@@ -47,10 +47,24 @@ export default defineComponent({
     margin-top: var(--length-margin-base);
     display: flex;
 
+    @media screen and (max-width: 500px) {
+        flex-direction: column;
+    }
+
     .button {
         margin: 0 var(--length-margin-base);
         width: 122px;
         display: flex;
+
+        @media screen and (max-width: 500px) {
+            width: calc(100vw - 2 * var(--length-margin-base) - 2 * var(--length-margin-s));
+            flex-basis: 0;
+            margin-bottom: var(--length-margin-base);
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
 
         .las {
             margin-right: var(--length-margin-s);

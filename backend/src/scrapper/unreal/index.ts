@@ -37,15 +37,17 @@ async function processProductData(data: any) {
         data.categories = [{ path: "unknown" }];
     }
 
+    const price = convertEURtoUSD(data.priceValue);
+
     const product: IProduct = {
         title: data.title,
         slug: data.urlSlug || ProductService.utils.makeSlug(data.title),
         owner: ownerId,
         price: {
-            value: data.priceValue,
+            value: price,
             history: [
                 {
-                    value: data.priceValue,
+                    value: price,
                     date: new Date(data.effectiveDate)
                 }
             ]
@@ -102,13 +104,30 @@ async function processProductData(data: any) {
     await Upsert.product(product);
 }
 
+function convertEURtoUSD(priceInEuro: number): number {
+    return Math.ceil(priceInEuro * 1.008) - 1;
+}
+
 function addComputed(product: IProduct) {
+    const isBoosted = getIsBoosted();
+    const score = computeScore(product.ratings, product.releaseDate, product.price.value === 0);
+
+    if (isBoosted) {
+        score.value *= 1.1;
+    }
+
     product.computed = {
-        score: computeScore(product.ratings, product.releaseDate, product.price.value === 0),
+        isBoosted,
+        score,
         lastUpdate: getLastUpdate(product.releases)
     };
 
     function getLastUpdate(releases: Array<{ updateDate: Date }>): Date {
         return new Date(Math.max(...releases.map((release) => release.updateDate.getTime())));
+    }
+
+    function getIsBoosted(): boolean {
+        const orbitalString = "<a href=\"https://orbital-market.com/";
+        return product.description.long.indexOf(orbitalString) >= 0;
     }
 }

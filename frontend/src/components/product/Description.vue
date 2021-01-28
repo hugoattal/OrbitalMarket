@@ -1,5 +1,5 @@
 <template>
-    <div class="product-description">
+    <div class="product-header">
         <div class="screen-panel">
             <UISlideshow :slides="product.pictures.screenshot" />
         </div>
@@ -15,18 +15,41 @@
                     ({{ product.computed.score.totalRatings || 0 }})
                 </div>
             </div>
+            <p class="description-short">
+                {{ product.description.short }}
+            </p>
             <div class="info">
                 <p><span class="category">Released:</span> {{ displayDate(product.releaseDate) }}</p>
                 <p><span class="category">Last update:</span> {{ displayDate(product.computed.lastUpdate) }}</p>
             </div>
-            <p>{{ product.description.short }}</p>
             <UIButton
                 :href="marketplaceLink"
                 target="_blank"
+                class="marketplace-link"
             >
                 Unreal Marketplace <i class="las la-external-link-alt" />
             </UIButton>
         </div>
+    </div>
+    <div class="product-description">
+        <UITabs>
+            <UITab>
+                <template #title>
+                    Detailed description
+                </template>
+                <template #content>
+                    <div v-html="product.description.long" />
+                </template>
+            </UITab>
+            <UITab>
+                <template #title>
+                    Technical description
+                </template>
+                <template #content>
+                    <div v-html="product.description.technical" />
+                </template>
+            </UITab>
+        </UITabs>
     </div>
 </template>
 
@@ -37,10 +60,12 @@ import UIButton from "@/components/ui/Button.vue";
 import UISlideshow from "@/components/ui/Slideshow.vue";
 import UIRating from "@/components/ui/Rating.vue";
 import { displayDate, displayPrice } from "@/components/product/product";
+import UITabs from "@/components/ui/Tabs.vue";
+import UITab from "@/components/ui/Tab.vue";
 
 export default defineComponent({
     name: "ProductDescription",
-    components: { UIRating, UISlideshow, UIButton },
+    components: { UITab, UITabs, UIRating, UISlideshow, UIButton },
     props: {
         productId: {
             type: String,
@@ -53,7 +78,7 @@ export default defineComponent({
         return { displayDate, displayPrice, product };
     },
     computed: {
-        marketplaceLink () {
+        marketplaceLink (): string {
             return `https://www.unrealengine.com/marketplace/product/${this.product.slug}`;
         }
     }
@@ -61,9 +86,13 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
-.product-description {
+.product-header {
     display: flex;
     gap: var(--length-padding-xl);
+
+    @media screen and (max-width: 600px) {
+        flex-direction: column;
+    }
 
     h1 {
         font-size: 200%;
@@ -77,6 +106,7 @@ export default defineComponent({
 
     .description-panel {
         flex-basis: 50%;
+        margin-top: var(--length-margin-base);
     }
 
     .rating-wrapper {
@@ -94,6 +124,10 @@ export default defineComponent({
         }
     }
 
+    .description-short, .marketplace-link {
+        margin: var(--length-margin-base) 0;
+    }
+
     .info {
         padding: var(--length-padding-s) 0;
 
@@ -109,6 +143,23 @@ export default defineComponent({
 
     .la-external-link-alt {
         padding-left: var(--length-padding-base);
+    }
+}
+
+.product-description {
+    margin: var(--length-margin-base) 0;
+
+    :deep(p) {
+        margin: var(--length-margin-s) 0;
+    }
+
+    :deep(a) {
+        color: var(--color-primary);
+        text-decoration: none;
+
+        &:hover {
+            text-decoration: underline;
+        }
     }
 }
 </style>

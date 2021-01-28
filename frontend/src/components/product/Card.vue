@@ -1,16 +1,26 @@
 <template>
     <article
         class="product"
+        :class="{boost: product.computed.isBoosted}"
         @click="showModal = true"
     >
         <div class="marketplace-link">
             <a
-                :href="marketplaceLink"
                 target="_blank"
-                @click.stop
+                :href="`/product/${product.slug}`"
+                @click.stop.prevent="goToProductPage"
             >
-                <i class="las la-external-link-alt" />
+                <i class="las la-expand" />
             </a>
+        </div>
+        <div
+            v-if="product.computed.isBoosted"
+            class="boost-icon"
+        >
+            <i class="las la-meteor" />
+            <div class="tooltip">
+                This product support the <b>Orbital Market</b> by adding a link in his description.
+            </div>
         </div>
         <Box3D
             :background="product.pictures.thumbnail[0]"
@@ -39,7 +49,10 @@
             </div>
         </div>
     </article>
-    <UIModal v-model="showModal">
+    <UIModal
+        v-model="showModal"
+        @expand="goToProductPage"
+    >
         <ProductModal :product-id="product._id" />
     </UIModal>
 </template>
@@ -52,6 +65,7 @@ import Box3D from "@/components/ui/Box3D.vue";
 import UIModal from "@/components/ui/Modal.vue";
 import ProductModal from "@/components/product/Modal.vue";
 import { displayDate, displayPrice } from "@/components/product/product";
+import router from "@/router";
 
 export default defineComponent({
     name: "ProductCard",
@@ -74,6 +88,11 @@ export default defineComponent({
         marketplaceLink () {
             return `https://www.unrealengine.com/marketplace/product/${this.product.slug}`;
         }
+    },
+    methods: {
+        goToProductPage () {
+            router.push({ name: "product", params: { slug: this.product.slug } });
+        }
     }
 });
 </script>
@@ -82,7 +101,6 @@ export default defineComponent({
 .product {
     height: 270px;
     border-radius: var(--length-radius-base);
-    overflow: hidden;
     position: relative;
     box-shadow: 0 0 10px var(--color-shadow);
     background: var(--color-content-background);
@@ -90,14 +108,29 @@ export default defineComponent({
     cursor: pointer;
     transition: transform var(--duration-fast), border-color var(--duration-fast);
 
+    &.boost {
+        border-color: var(--color-content-highlight);
+    }
+
+    &:hover {
+        z-index: 1;
+        transform: scale(1.05);
+        border-color: var(--color-primary);
+
+        :deep(.scene .box) {
+            transform: translate3d(0px, 25px, 0) rotate3d(0, 1, 0, 15deg);
+        }
+    }
+
     .marketplace-link {
         position: absolute;
+        z-index: 2;
         top: 0;
-        right: 0;
+        left: 0;
 
         a {
             display: inline-block;
-            padding: var(--length-padding-s);
+            padding: var(--length-padding-base);
             color: var(--color-content-50);
 
             &:hover {
@@ -106,17 +139,37 @@ export default defineComponent({
         }
     }
 
-    .box {
-        margin: auto;
+    .boost-icon {
+        position: absolute;
+        z-index: 2;
+        top: 0;
+        right: 0;
+        padding: var(--length-padding-base);
+        color: var(--color-primary);
+
+        &:hover .tooltip {
+            display: block;
+        }
+
+        .tooltip {
+            display: none;
+            position: absolute;
+            top: 38px;
+            left: calc(50% - 80px);
+            z-index: 1000;
+            font-size: 80%;
+            width: 160px;
+            background: var(--color-background);
+            padding: var(--length-padding-s);
+            border-radius: var(--length-radius-base);
+            color: var(--color-content);
+            border: 1px solid var(--color-primary);
+            box-sizing: border-box;
+        }
     }
 
-    &:hover {
-        transform: scale(1.05);
-        border-color: var(--color-primary);
-
-        :deep(.scene .box) {
-            transform: translate3d(0px, 25px, 0) rotate3d(0, 1, 0, 15deg);
-        }
+    .box {
+        margin: auto;
     }
 
     .content {

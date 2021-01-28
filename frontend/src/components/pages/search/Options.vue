@@ -60,11 +60,24 @@ export default defineComponent({
     width: calc(100vw - 20px);
     max-width: 600px;
 
+    @media screen and (max-width: 500px) {
+        flex-direction: column;
+    }
+
     .select {
         margin: 0 var(--length-margin-base);
         flex-grow: 1;
         flex-basis: 50%;
         display: flex;
+
+        @media screen and (max-width: 500px) {
+            flex-basis: 0;
+            margin-bottom: var(--length-margin-base);
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
     }
 }
 </style>
