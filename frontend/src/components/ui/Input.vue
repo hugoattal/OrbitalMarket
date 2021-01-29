@@ -101,6 +101,7 @@ export default defineComponent({
     }
 
     input {
+        width: 100%;
         background: none;
         border: none;
         outline: none;

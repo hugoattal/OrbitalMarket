@@ -34,6 +34,8 @@ export default defineComponent({
     position: relative;
     margin: 2vw 0;
 
+    max-width: calc(100vw - var(--length-margin-l));
+
     .svg-text {
         width: 50vw;
     }

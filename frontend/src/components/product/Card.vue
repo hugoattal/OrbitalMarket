@@ -49,11 +49,12 @@
             </div>
         </div>
     </article>
-    <UIModal
-        v-model="showModal"
-        @expand="goToProductPage"
-    >
-        <ProductModal :product-id="product._id" />
+    <UIModal v-model="showModal">
+        <ProductModal
+            :product-id="product._id"
+            @expand="goToProductPage"
+            @close="showModal = false"
+        />
     </UIModal>
 </template>
 

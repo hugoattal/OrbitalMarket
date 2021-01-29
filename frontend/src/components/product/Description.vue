@@ -1,55 +1,57 @@
 <template>
-    <div class="product-header">
-        <div class="screen-panel">
-            <UISlideshow :slides="product.pictures.screenshot" />
-        </div>
-        <div class="description-panel">
-            <h1>{{ product.title }}</h1>
-            <div class="rating-wrapper">
-                <UIRating
-                    class="stars"
-                    :rating="parseFloat(product.computed.score.meanRating)"
-                    :has-ratings="!!product.computed.score.totalRatings"
-                />
-                <div class="total">
-                    ({{ product.computed.score.totalRatings || 0 }})
-                </div>
-            </div>
-            <p class="description-short">
-                {{ product.description.short }}
-            </p>
-            <div class="info">
-                <p><span class="category">Released:</span> {{ displayDate(product.releaseDate) }}</p>
-                <p><span class="category">Last update:</span> {{ displayDate(product.computed.lastUpdate) }}</p>
-            </div>
-            <UIButton
-                :href="marketplaceLink"
-                target="_blank"
-                class="marketplace-link"
-            >
-                Unreal Marketplace <i class="las la-external-link-alt" />
-            </UIButton>
-        </div>
-    </div>
     <div class="product-description">
-        <UITabs>
-            <UITab>
-                <template #title>
-                    Detailed description
-                </template>
-                <template #content>
-                    <div v-html="product.description.long" />
-                </template>
-            </UITab>
-            <UITab>
-                <template #title>
-                    Technical description
-                </template>
-                <template #content>
-                    <div v-html="product.description.technical" />
-                </template>
-            </UITab>
-        </UITabs>
+        <div class="product-header">
+            <div class="screen-panel">
+                <UISlideshow :slides="product.pictures.screenshot" />
+            </div>
+            <div class="description-panel">
+                <h1>{{ product.title }}</h1>
+                <div class="rating-wrapper">
+                    <UIRating
+                        class="stars"
+                        :rating="parseFloat(product.computed.score.meanRating)"
+                        :has-ratings="!!product.computed.score.totalRatings"
+                    />
+                    <div class="total">
+                        ({{ product.computed.score.totalRatings || 0 }})
+                    </div>
+                </div>
+                <p class="description-short">
+                    {{ product.description.short }}
+                </p>
+                <div class="info">
+                    <p><span class="category">Released:</span> {{ displayDate(product.releaseDate) }}</p>
+                    <p><span class="category">Last update:</span> {{ displayDate(product.computed.lastUpdate) }}</p>
+                </div>
+                <UIButton
+                    :href="marketplaceLink"
+                    target="_blank"
+                    class="marketplace-link"
+                >
+                    Unreal Marketplace <i class="las la-external-link-alt" />
+                </UIButton>
+            </div>
+        </div>
+        <div class="product-details">
+            <UITabs>
+                <UITab>
+                    <template #title>
+                        Detailed description
+                    </template>
+                    <template #content>
+                        <div v-html="product.description.long" />
+                    </template>
+                </UITab>
+                <UITab>
+                    <template #title>
+                        Technical description
+                    </template>
+                    <template #content>
+                        <div v-html="product.description.technical" />
+                    </template>
+                </UITab>
+            </UITabs>
+        </div>
     </div>
 </template>
 
@@ -86,6 +88,10 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
+.product-description {
+    padding: 0 var(--length-padding-l);
+}
+
 .product-header {
     display: flex;
     gap: var(--length-padding-xl);
@@ -106,7 +112,6 @@ export default defineComponent({
 
     .description-panel {
         flex-basis: 50%;
-        margin-top: var(--length-margin-base);
     }
 
     .rating-wrapper {
@@ -146,7 +151,7 @@ export default defineComponent({
     }
 }
 
-.product-description {
+.product-details {
     margin: var(--length-margin-base) 0;
 
     :deep(p) {

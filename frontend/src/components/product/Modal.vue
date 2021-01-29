@@ -2,7 +2,22 @@
     <div class="product-modal">
         <Suspense>
             <template #default>
-                <ProductDescription :product-id="productId" />
+                <div class="product-container">
+                    <div class="icons">
+                        <i
+                            class="las la-expand"
+                            @click="$emit('expand')"
+                        />
+                        <i
+                            class="las la-times"
+                            @click="$emit('close')"
+                        />
+                    </div>
+                    <ProductDescription
+                        :product-id="productId"
+                        class="product-description"
+                    />
+                </div>
             </template>
             <template #fallback>
                 <Spinner class="spinner" />
@@ -24,7 +39,8 @@ export default defineComponent({
             type: String,
             required: true
         }
-    }
+    },
+    emits: ["expand", "close"]
 });
 </script>
 
@@ -34,8 +50,34 @@ export default defineComponent({
     max-height: 600px;
     width: calc(100vw - 100px);
     max-width: 900px;
-    padding: var(--length-padding-l);
     overflow: auto;
+
+    .product-container {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+
+        .product-description {
+            height: 100%;
+            overflow: auto;
+        }
+    }
+
+    .icons {
+        display: flex;
+        justify-content: right;
+
+        .las {
+            padding: var(--length-padding-base);
+            display: inline-block;
+            color: var(--color-content-50);
+            cursor: pointer;
+
+            &:hover {
+                color: var(--color-primary);
+            }
+        }
+    }
 }
 
 .spinner {

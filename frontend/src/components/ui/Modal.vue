@@ -12,16 +12,6 @@
                     class="modal"
                     @click.stop
                 >
-                    <div class="icons">
-                        <i
-                            class="las la-expand"
-                            @click="$emit('expand')"
-                        />
-                        <i
-                            class="las la-times"
-                            @click="value=false"
-                        />
-                    </div>
                     <slot />
                 </div>
             </div>
@@ -85,24 +75,6 @@ export default defineComponent({
     display: flex;
     align-items: center;
     justify-content: center;
-
-    .icons {
-        position: absolute;
-        top: 0;
-        right: 0;
-        margin-right: var(--length-padding-l);
-
-        .las {
-            padding: var(--length-padding-base);
-            display: inline-block;
-            color: var(--color-content-50);
-            cursor: pointer;
-
-            &:hover {
-                color: var(--color-primary);
-            }
-        }
-    }
 
     .modal {
         border-radius: var(--length-radius-base);
