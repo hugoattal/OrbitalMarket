@@ -105,7 +105,10 @@ async function processProductData(data: any) {
 }
 
 function convertEURtoUSD(priceInEuro: number): number {
-    return Math.ceil(priceInEuro * 1.008) - 1;
+    if (priceInEuro === 0) {
+        return 0;
+    }
+    return Math.round(priceInEuro * 1.008 / 100) * 100 - 1;
 }
 
 function addComputed(product: IProduct) {
