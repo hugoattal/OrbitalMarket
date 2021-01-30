@@ -35,7 +35,7 @@ import Observer from "@/components/elements/Observer.vue";
 import Spinner from "@/components/ui/Spinner.vue";
 import DisplayBar from "@/components/pages/search/DisplayBar.vue";
 
-const PRODUCT_PER_PAGE = 25;
+const PRODUCT_PER_PAGE = 24;
 
 export default defineComponent({
     name: "SearchResults",
