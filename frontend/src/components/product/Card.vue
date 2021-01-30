@@ -1,31 +1,40 @@
 <template>
     <article
         class="product"
-        :class="{boost: product.computed.isBoosted}"
+        :class="{boost: product.computed.isBoosted, [displayType]: true}"
         @click="showModal = true"
     >
-        <div class="marketplace-link">
-            <a
-                target="_blank"
-                :href="`/product/${product.slug}`"
-                @click.stop.prevent="goToProductPage"
-            >
-                <i class="las la-expand" />
-            </a>
-        </div>
-        <div
-            v-if="product.computed.isBoosted"
-            class="boost-icon"
-        >
-            <i class="las la-meteor" />
-            <div class="tooltip">
-                This product support the <b>Orbital Market</b> by adding a link in his description.
-            </div>
-        </div>
         <Box3D
+            v-if="displayType === 'box'"
             :background="product.pictures.thumbnail[0]"
             class="box"
         />
+        <img
+            v-else
+            class="thumbnail"
+            :src="product.pictures.thumbnail[0]"
+            alt="thumbnail"
+        >
+        <div class="icons">
+            <div class="expand-link">
+                <a
+                    target="_blank"
+                    :href="`/product/${product.slug}`"
+                    @click.stop.prevent="goToProductPage"
+                >
+                    <i class="las la-expand" />
+                </a>
+            </div>
+            <div
+                v-if="product.computed.isBoosted"
+                class="boost-icon"
+            >
+                <i class="las la-meteor" />
+                <div class="tooltip">
+                    This product support the <b>Orbital Market</b> by adding a link in his description.
+                </div>
+            </div>
+        </div>
         <div class="content">
             <div class="title">
                 {{ product.title }}
@@ -75,6 +84,11 @@ export default defineComponent({
         product: {
             type: Object as PropType<ISearchProduct>,
             required: true
+        },
+        displayType: {
+            type: String,
+            validator: (value) => ["box", "square", "list"].includes(value),
+            default: "box"
         }
     },
     setup () {
@@ -100,7 +114,6 @@ export default defineComponent({
 
 <style scoped lang="scss">
 .product {
-    height: 270px;
     border-radius: var(--length-radius-base);
     position: relative;
     box-shadow: 0 0 10px var(--color-shadow);
@@ -108,6 +121,101 @@ export default defineComponent({
     border: 1px solid var(--color-content-light);
     cursor: pointer;
     transition: transform var(--duration-fast), border-color var(--duration-fast);
+
+    &.box {
+        height: 270px;
+    }
+
+    &.square {
+        padding-bottom: var(--length-padding-base);
+
+        .thumbnail {
+            border-top-left-radius: var(--length-radius-base);
+            border-top-right-radius: var(--length-radius-base);
+            border-bottom: 1px solid var(--color-content-light);
+            width: 100%;
+            margin-bottom: var(--length-margin-xs);
+        }
+
+        .icons {
+            opacity: 0;
+            transition: opacity var(--duration-fast);
+
+            .expand-link {
+                border-top-left-radius: var(--length-radius-base);
+                border-bottom-right-radius: var(--length-radius-base);
+                background: var(--color-content-background);
+            }
+
+            .boost-icon {
+                border-top-right-radius: var(--length-radius-base);
+                border-bottom-left-radius: var(--length-radius-base);
+                background: var(--color-content-background);
+            }
+        }
+
+        &:hover .icons {
+            opacity: 1;
+        }
+    }
+
+    &.list {
+        display: flex;
+        height: 60px;
+        position: relative;
+        right: 0;
+        left: 0;
+        max-width: calc(100vw - 2 * var(--length-margin-l) - 2 * var(--length-padding-base));
+
+        .icons {
+            flex-shrink: 0;
+            position: static;
+            width: 100px;
+            justify-content: left;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            padding-left: var(--length-padding-base);
+        }
+
+        .thumbnail {
+            height: 100%;
+            border-top-left-radius: var(--length-radius-base);
+            border-bottom-left-radius: var(--length-radius-base);
+        }
+
+        .content {
+            display: flex;
+            flex-grow: 1;
+            align-items: center;
+            min-width: 0;
+
+            .title {
+                flex-grow: 1;
+                flex-shrink: 1;
+                font-size: 140%;
+            }
+
+            .rating-wrapper {
+                width: 140px;
+                flex-shrink: 0;
+            }
+
+            .price {
+                width: 70px;
+                flex-shrink: 0;
+            }
+
+            .info {
+                width: 140px;
+                flex-shrink: 0;
+            }
+        }
+
+        &:hover {
+            transform: none;
+        }
+    }
 
     &.boost {
         border-color: var(--color-content-highlight);
@@ -123,12 +231,17 @@ export default defineComponent({
         }
     }
 
-    .marketplace-link {
+    .icons {
         position: absolute;
         z-index: 2;
         top: 0;
+        right: 0;
         left: 0;
+        display: flex;
+        justify-content: space-between;
+    }
 
+    .expand-link {
         a {
             display: inline-block;
             padding: var(--length-padding-base);
@@ -141,10 +254,7 @@ export default defineComponent({
     }
 
     .boost-icon {
-        position: absolute;
-        z-index: 2;
-        top: 0;
-        right: 0;
+        position: relative;
         padding: var(--length-padding-base);
         color: var(--color-primary);
 

@@ -26,9 +26,16 @@
                 <UIButton
                     :href="marketplaceLink"
                     target="_blank"
-                    class="marketplace-link"
+                    class="link"
                 >
                     Unreal Marketplace <i class="las la-external-link-alt" />
+                </UIButton>
+                <UIButton
+                    :href="launcherLink"
+                    target="_blank"
+                    class="link"
+                >
+                    Epic Launcher <i class="las la-external-link-alt" />
                 </UIButton>
             </div>
         </div>
@@ -82,6 +89,9 @@ export default defineComponent({
     computed: {
         marketplaceLink (): string {
             return `https://www.unrealengine.com/marketplace/product/${this.product.slug}`;
+        },
+        launcherLink (): string {
+            return `com.epicgames.launcher://ue/marketplace/product/${this.product.slug}`;
         }
     }
 });
@@ -129,7 +139,7 @@ export default defineComponent({
         }
     }
 
-    .description-short, .marketplace-link {
+    .description-short, .link {
         margin: var(--length-margin-base) 0;
     }
 

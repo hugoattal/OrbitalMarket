@@ -1,11 +1,18 @@
 <template>
-    <ul class="results">
+    <div class="display-bar">
+        <DisplayBar v-model="displayType" />
+    </div>
+    <ul
+        class="results"
+        :class="displayType"
+    >
         <li
-            v-for="product in produts"
+            v-for="product in products"
             :key="product._id"
         >
             <ProductCard
                 :product="product"
+                :display-type="displayType"
             />
         </li>
     </ul>
@@ -24,16 +31,18 @@ import SearchService, { ISearchProduct } from "@/services/search.service";
 import ProductCard from "@/components/product/Card.vue";
 import Observer from "@/components/elements/Observer.vue";
 import Spinner from "@/components/ui/Spinner.vue";
+import DisplayBar from "@/components/pages/search/DisplayBar.vue";
 
 export default defineComponent({
     name: "SearchResults",
-    components: { Spinner, Observer, ProductCard },
+    components: { DisplayBar, Spinner, Observer, ProductCard },
     data () {
         return {
-            produts: [] as Array<ISearchProduct>,
+            products: [] as Array<ISearchProduct>,
             isLoading: true,
             isMoreProducts: true,
-            page: 0
+            page: 0,
+            displayType: ""
         };
     },
     computed: {
@@ -49,8 +58,8 @@ export default defineComponent({
             immediate: true,
             async handler () {
                 this.page = 0;
-                this.produts = await SearchService.query(this.params);
-                this.isMoreProducts = (this.produts.length === 24);
+                this.products = await SearchService.query(this.params);
+                this.isMoreProducts = (this.products.length === 24);
                 this.isLoading = false;
             }
         }
@@ -67,7 +76,7 @@ export default defineComponent({
                     this.isMoreProducts = false;
                 }
                 else {
-                    this.produts.push(...nextProducts);
+                    this.products.push(...nextProducts);
                 }
             }
         }
@@ -76,12 +85,24 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
+.display-bar {
+    padding: var(--length-padding-xl);
+    padding-bottom: 0;
+}
+
 .results {
     padding: var(--length-padding-xl);
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: var(--length-margin-l);
     margin: 0;
+
+    &.box, &.square {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: var(--length-margin-l);
+    }
+
+    &.list {
+        gap: var(--length-margin-base);
+    }
 
     li {
         list-style-type: none;

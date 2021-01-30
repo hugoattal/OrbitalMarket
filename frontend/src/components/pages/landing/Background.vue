@@ -23,15 +23,6 @@ export default defineComponent({});
     overflow: hidden;
 }
 
-@keyframes movingStars {
-    from {
-        transform: translate(-1000px, 0)
-    }
-    to {
-        transform: translate(0, -1000px)
-    }
-}
-
 .stars {
     position: absolute;
     background-repeat: repeat;

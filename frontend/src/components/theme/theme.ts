@@ -1,14 +1,15 @@
-export default {
-    isDarkMode(){
-        if (localStorage.getItem("theme")) {
-            return localStorage.getItem("theme") === "dark";
-        }
+import StorageModule from "@/modules/storage.module";
 
-        return !!window?.matchMedia("(prefers-color-scheme: dark)").matches;
+export default {
+    isDarkMode () {
+        const isDefaultDark = !!window?.matchMedia("(prefers-color-scheme: dark)").matches;
+        const defaultTheme = isDefaultDark ? "dark" : "light";
+
+        return StorageModule.getElement("theme", defaultTheme);
     },
-    update(isDarkMode: boolean){
+    update (isDarkMode: boolean) {
         const theme = isDarkMode ? "dark" : "light";
         document.documentElement.setAttribute("data-theme", theme);
-        localStorage.setItem("theme", theme);
+        StorageModule.setElement("theme", theme);
     }
 };
