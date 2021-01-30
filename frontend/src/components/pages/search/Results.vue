@@ -15,12 +15,14 @@
                 :display-type="displayType"
             />
         </li>
+        <li v-if="isMoreProducts">
+            <Observer @intersect="loadNext" />
+        </li>
     </ul>
     <div
         v-if="isMoreProducts"
         class="loading"
     >
-        <Observer @intersect="loadNext" />
         <Spinner />
     </div>
 </template>
