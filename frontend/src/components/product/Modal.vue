@@ -65,7 +65,7 @@ export default defineComponent({
 
     .icons {
         display: flex;
-        justify-content: right;
+        justify-content: flex-end;
 
         .las {
             padding: var(--length-padding-base);

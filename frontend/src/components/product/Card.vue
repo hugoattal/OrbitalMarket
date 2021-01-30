@@ -174,7 +174,7 @@ export default defineComponent({
             flex-shrink: 0;
             position: static;
             width: 100px;
-            justify-content: left;
+            justify-content: flex-start;
             height: 100%;
             display: flex;
             align-items: center;
