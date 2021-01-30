@@ -20,29 +20,33 @@ export async function getById(id: string) {
 }
 
 export async function search(params: ISearch) {
-    const sortArgument = {} as Record<string, number | Record<string, any>>;
+    const sortArgument = [] as Array<Record<string, any>>;
     const sortDirection = (params.sortDirection === ESortDirection.asc) ? 1 : -1;
 
     switch (params.sortField) {
     case ESortField.lastUpdate:
-        sortArgument["computed.lastUpdate"] = sortDirection;
+        sortArgument.push(["computed.lastUpdate", sortDirection]);
+        sortArgument.push(["releaseDate", sortDirection]);
         break;
     case ESortField.name:
-        sortArgument["title"] = sortDirection;
+        sortArgument.push(["title", sortDirection]);
         break;
     case ESortField.popularity:
-        sortArgument["computed.score.value"] = sortDirection;
+        sortArgument.push(["computed.score.value", sortDirection]);
         break;
     case ESortField.releaseDate:
-        sortArgument["releaseDate"] = sortDirection;
+        sortArgument.push(["releaseDate", sortDirection]);
         break;
     case ESortField.reviews:
-        sortArgument["computed.score.totalRatings"] = sortDirection;
+        sortArgument.push(["computed.score.totalRatings", sortDirection]);
+        sortArgument.push(["releaseDate", sortDirection]);
         break;
     case ESortField.relevance:
-        sortArgument["score"] = { $meta: "textScore" };
+        sortArgument.push(["score", sortDirection]);
         break;
     }
+
+    sortArgument.push(["title", "asc"]);
 
     const findCondition = {} as Record<string, any>;
 

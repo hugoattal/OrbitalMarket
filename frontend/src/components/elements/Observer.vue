@@ -15,7 +15,7 @@ export default defineComponent({
     emits: ["intersect"],
     data () {
         return {
-            observer: null
+            observer: null as IntersectionObserver
         };
     },
     mounted () {

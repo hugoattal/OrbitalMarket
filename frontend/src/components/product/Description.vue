@@ -1,11 +1,11 @@
 <template>
     <div class="product-description">
+        <h1>{{ product.title }}</h1>
         <div class="product-header">
             <div class="screen-panel">
                 <UISlideshow :slides="product.pictures.screenshot" />
             </div>
             <div class="description-panel">
-                <h1>{{ product.title }}</h1>
                 <div class="rating-wrapper">
                     <UIRating
                         class="stars"
@@ -98,6 +98,13 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
+
+h1 {
+    font-size: 200%;
+    margin: 0;
+    padding-bottom: var(--length-padding-l);
+}
+
 .product-description {
     padding: 0 var(--length-padding-l);
 }
@@ -108,12 +115,6 @@ export default defineComponent({
 
     @media screen and (max-width: 600px) {
         flex-direction: column;
-    }
-
-    h1 {
-        font-size: 200%;
-        margin: 0;
-        padding-bottom: var(--length-padding-l);
     }
 
     .screen-panel {

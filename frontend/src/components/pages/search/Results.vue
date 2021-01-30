@@ -20,7 +20,7 @@
         </li>
     </ul>
     <div
-        v-if="isMoreProducts"
+        v-if="isMoreProducts || isLoading"
         class="loading"
     >
         <Spinner />
@@ -35,6 +35,8 @@ import Observer from "@/components/elements/Observer.vue";
 import Spinner from "@/components/ui/Spinner.vue";
 import DisplayBar from "@/components/pages/search/DisplayBar.vue";
 
+const PRODUCT_PER_PAGE = 25;
+
 export default defineComponent({
     name: "SearchResults",
     components: { DisplayBar, Spinner, Observer, ProductCard },
@@ -42,7 +44,7 @@ export default defineComponent({
         return {
             products: [] as Array<ISearchProduct>,
             isLoading: true,
-            isMoreProducts: true,
+            isMoreProducts: false,
             page: 0,
             displayType: ""
         };
@@ -50,8 +52,8 @@ export default defineComponent({
     computed: {
         params () {
             const params = this.$route.query || {};
-            params.limit = 24;
-            params.skip = 24 * this.page;
+            params.limit = PRODUCT_PER_PAGE;
+            params.skip = PRODUCT_PER_PAGE * this.page;
             return params;
         }
     },
@@ -60,8 +62,9 @@ export default defineComponent({
             immediate: true,
             async handler () {
                 this.page = 0;
+                this.isMoreProducts = false;
                 this.products = await SearchService.query(this.params);
-                this.isMoreProducts = (this.products.length === 24);
+                this.isMoreProducts = (this.products.length === PRODUCT_PER_PAGE);
                 this.isLoading = false;
             }
         }
@@ -69,15 +72,15 @@ export default defineComponent({
     methods: {
         async loadNext () {
             if (!this.isLoading) {
+                this.isMoreProducts = false;
                 this.isLoading = true;
                 this.page++;
                 const nextProducts = await SearchService.query(this.params);
                 this.isLoading = false;
 
-                if (nextProducts.length === 0) {
-                    this.isMoreProducts = false;
-                }
-                else {
+                this.isMoreProducts = (nextProducts.length === PRODUCT_PER_PAGE);
+
+                if (nextProducts.length > 0) {
                     this.products.push(...nextProducts);
                 }
             }

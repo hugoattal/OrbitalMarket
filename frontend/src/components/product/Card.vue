@@ -36,7 +36,10 @@
             </div>
         </div>
         <div class="content">
-            <div class="title">
+            <div
+                class="title"
+                :title="product.title"
+            >
                 {{ product.title }}
             </div>
             <div class="rating-wrapper">
@@ -193,7 +196,6 @@ export default defineComponent({
             .title {
                 flex-grow: 1;
                 flex-shrink: 1;
-                font-size: 140%;
             }
 
             .rating-wrapper {
