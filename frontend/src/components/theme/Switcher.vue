@@ -1,5 +1,8 @@
 <template>
-    <Button class="button" @click="switchTheme">
+    <Button
+        class="button"
+        @click="switchTheme"
+    >
         <div class="theme-switcher">
             <i
                 class="las"
@@ -20,7 +23,7 @@ export default defineComponent({
     components: {
         Button
     },
-    setup() {
+    setup () {
         const isDarkMode = ref(Theme.isDarkMode());
 
         const switchTheme = () => {
@@ -29,8 +32,8 @@ export default defineComponent({
 
         watch(
             () => isDarkMode.value,
-            (isDarkMode) => {
-                Theme.update(isDarkMode);
+            (darkModeValue) => {
+                Theme.update(darkModeValue);
             },
             { lazy: true }
         );

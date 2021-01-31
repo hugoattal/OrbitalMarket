@@ -5,7 +5,7 @@ export default {
         const isDefaultDark = !!window?.matchMedia("(prefers-color-scheme: dark)").matches;
         const defaultTheme = isDefaultDark ? "dark" : "light";
 
-        return StorageModule.getElement("theme", defaultTheme);
+        return StorageModule.getElement("theme", defaultTheme) === "dark";
     },
     update (isDarkMode: boolean) {
         const theme = isDarkMode ? "dark" : "light";

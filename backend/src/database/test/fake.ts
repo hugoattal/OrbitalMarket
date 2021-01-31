@@ -16,10 +16,14 @@ jsf.option({
     resolveJsonPath: true
 });
 
-export async function generate<DataModel extends typeof Mongo.Model>(model: DataModel, overwrite?: Partial<InstanceType<DataModel>>): Promise<InstanceType<DataModel>> {
+type DeepPartial<T> = {
+    [P in keyof T]?: DeepPartial<T[P]>;
+};
+
+export async function generate<DataModel extends typeof Mongo.Model>(model: DataModel, overwrite?: DeepPartial<InstanceType<DataModel>>): Promise<InstanceType<DataModel>> {
     const jsonSchema = makeJsonSchema(model.schema);
     let fake = await jsf.resolve(jsonSchema);
-    fake = _.assign(fake, overwrite);
+    fake = _.merge(fake, overwrite);
     const generatedModel = await model.create(fake);
     return generatedModel as InstanceType<DataModel>;
 }
@@ -34,22 +38,22 @@ function makeJsonSchema(model: Mongo.Schema): any {
         const options = (schemaType as any).options;
         let value = null;
         switch (schemaType.constructor.name) {
-            case "SchemaString":
-                value = { type: "string" };
-                break;
-            case "SchemaNumber":
-                value = { type: "number" };
-                break;
-            case "SchemaDate":
-                value = { type: "string", format: "date-time" };
-                break;
-            case "ObjectId":
-                value = { type: "string", format: "objectId" };
-                break;
+        case "SchemaString":
+            value = { type: "string" };
+            break;
+        case "SchemaNumber":
+            value = { type: "number" };
+            break;
+        case "SchemaDate":
+            value = { type: "string", format: "date-time" };
+            break;
+        case "ObjectId":
+            value = { type: "string", format: "objectId" };
+            break;
         }
 
         if (value) {
-            _.set(properties, path, {...options, ...value});
+            _.set(properties, path, { ...options, ...value });
         }
     });
 

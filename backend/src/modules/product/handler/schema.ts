@@ -87,11 +87,11 @@ export enum ESortField {
 }
 
 export interface ISearch {
-    skip: number;
-    limit: number;
+    skip?: number;
+    limit?: number;
     searchText?: string;
-    sortDirection: ESortDirection;
-    sortField: ESortField;
+    sortDirection?: ESortDirection;
+    sortField?: ESortField;
 }
 
 export const Search = {

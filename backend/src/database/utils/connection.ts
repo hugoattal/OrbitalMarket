@@ -5,7 +5,7 @@ mongoose.set("useUnifiedTopology", true);
 export let db: mongoose.Connection;
 
 export async function connectDatabase() {
-    const options = { useNewUrlParser: true };
+    const options = { useNewUrlParser: true, useCreateIndex: true, useFindAndModify: false };
     await mongoose.connect(process.env.DB_URI as string, options);
     db = mongoose.connection;
 }
