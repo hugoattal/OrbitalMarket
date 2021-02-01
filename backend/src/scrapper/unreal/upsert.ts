@@ -24,7 +24,7 @@ export async function owner(data: any): Promise<Mongo.Types.ObjectId> {
 }
 
 export async function product(data: IProduct) {
-    let product: IProduct = await ProductModel.findOne({
+    const product: IProduct = await ProductModel.findOne({
         meta: { unrealId: data.meta.unrealId }
     }).exec();
 

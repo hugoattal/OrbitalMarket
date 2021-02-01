@@ -1,8 +1,8 @@
 import { ESortDirection, ESortField, ISearch } from "@/modules/product/handler/schema";
-import ProductModel, { IProduct } from "@/modules/product/model";
+import ProductModel, { IProductDocument } from "@/modules/product/model";
 import { has } from "lodash";
 
-export async function search(params: ISearch): Promise<Array<IProduct>> {
+export async function search(params: ISearch): Promise<Array<IProductDocument>> {
     if (!has(params,"skip")) {
         params.skip = 0;
     }

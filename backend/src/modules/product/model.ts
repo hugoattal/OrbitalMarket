@@ -1,7 +1,6 @@
 import Mongo from "@/database";
 
 export interface IProduct {
-    _id: Mongo.Types.ObjectId;
     title: string;
     slug: string;
     owner: Mongo.Types.ObjectId;
@@ -41,7 +40,7 @@ export interface IProduct {
     meta?: any;
 }
 
-interface IProductDocument extends Omit<IProduct, "_id">, Mongo.Document {
+export interface IProductDocument extends IProduct, Mongo.Document {
 }
 
 const productSchema: Mongo.Schema = new Mongo.Schema({
