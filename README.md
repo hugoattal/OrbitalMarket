@@ -1,7 +1,7 @@
-<p style="text-align: center">
+<p align="center">
 <a href="https://orbital-market.com/">
 <img src="https://user-images.githubusercontent.com/4563971/106478378-6d3e9280-64a9-11eb-8ae8-ab267d097760.png" alt="Orbital Market"/>
-</a>
+</a><br>
 <i>Enhanced marketplace platform for the Unreal Engine marketplace</i>
 </p>
 
@@ -9,6 +9,7 @@
 
 **Orbital Market** is a project to improve the Unreal Engine marketplace.
 It's basically a fast search engine with a lot of options.
+(If you have any suggestion/idea, don't hesitate to create a topic in the [discussions part](https://github.com/TheHerobrine/OrbitalMarket/discussions))
 
 **Orbital Market** is accessible here: https://orbital-market.com/
 
