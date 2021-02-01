@@ -56,3 +56,8 @@ pm2 stop orbital-market-api
 pm2 delete orbital-market-api
 ```
 
+## Telegraf
+
+```
+ln -s /home/orbital-market/system/telegraf/orbital-market.conf /etc/telegraf/telegraf.d/
+```
