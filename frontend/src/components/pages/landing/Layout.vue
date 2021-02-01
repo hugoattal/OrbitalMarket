@@ -6,6 +6,7 @@
             <SearchBar role="search" />
             <ButtonsBar role="navigation" />
         </div>
+        <Footer class="footer" />
     </div>
 </template>
 
@@ -15,10 +16,11 @@ import Logo from "./Logo.vue";
 import Background from "./Background.vue";
 import SearchBar from "@/components/elements/SearchBar.vue";
 import ButtonsBar from "@/components/pages/landing/ButtonsBar.vue";
+import Footer from "@/components/theme/Footer.vue";
 
 export default defineComponent({
     name: "LandingLayout",
-    components: { ButtonsBar, SearchBar, Background, Logo }
+    components: { Footer, ButtonsBar, SearchBar, Background, Logo }
 });
 </script>
 
@@ -40,6 +42,14 @@ export default defineComponent({
         justify-content: center;
         align-items: center;
         margin-bottom: var(--length-margin-base);
+    }
+
+    .footer {
+        position: absolute;
+        z-index: 5;
+        bottom: 0;
+        right: 0;
+        left: 0;
     }
 }
 </style>

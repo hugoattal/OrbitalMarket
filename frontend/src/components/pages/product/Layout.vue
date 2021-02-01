@@ -15,6 +15,7 @@
                 <Spinner class="spinner" />
             </template>
         </Suspense>
+        <Footer />
     </div>
 </template>
 
@@ -25,10 +26,11 @@ import ProductDescription from "@/components/product/Description.vue";
 import SearchBar from "@/components/elements/SearchBar.vue";
 import ButtonsBar from "@/components/pages/landing/ButtonsBar.vue";
 import Spinner from "@/components/ui/Spinner.vue";
+import Footer from "@/components/theme/Footer.vue";
 
 export default defineComponent({
     name: "ProductLayout",
-    components: { Spinner, ButtonsBar, SearchBar, ProductDescription, Logo }
+    components: { Footer, Spinner, ButtonsBar, SearchBar, ProductDescription, Logo }
 });
 </script>
 

@@ -28,6 +28,7 @@
             <div
                 v-if="product.computed.isBoosted"
                 class="boost-icon"
+                @click.stop
             >
                 <i class="las la-meteor" />
                 <div class="tooltip">
@@ -64,6 +65,7 @@
     <UIModal v-model="showModal">
         <ProductModal
             :product-id="product._id"
+            :product-slug="product.slug"
             @expand="goToProductPage"
             @close="showModal = false"
         />

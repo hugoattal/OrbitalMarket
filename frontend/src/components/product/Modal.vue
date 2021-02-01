@@ -4,10 +4,13 @@
             <template #default>
                 <div class="product-container">
                     <div class="icons">
-                        <i
-                            class="las la-expand"
-                            @click="$emit('expand')"
-                        />
+                        <a
+                            target="_blank"
+                            :href="`/product/${productSlug}`"
+                            @click.stop.prevent="$emit('expand')"
+                        >
+                            <i class="las la-expand" />
+                        </a>
                         <i
                             class="las la-times"
                             @click="$emit('close')"
@@ -36,6 +39,10 @@ export default defineComponent({
     components: { Spinner, ProductDescription },
     props: {
         productId: {
+            type: String,
+            required: true
+        },
+        productSlug: {
             type: String,
             required: true
         }
