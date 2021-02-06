@@ -5,7 +5,7 @@ import * as Schema from "./schema";
 
 export default async function (server: Fastify.FastifyInstance) {
     server.get("/product/:id", { schema: Schema.GetById }, getByIdHandler);
-    server.get("/search", { schema: Schema.Search }, searchHandler);
+    server.post("/search", { schema: Schema.Search }, searchHandler);
 }
 
 async function getByIdHandler(request: FastifyRequest) {
@@ -14,6 +14,6 @@ async function getByIdHandler(request: FastifyRequest) {
 }
 
 async function searchHandler(request: FastifyRequest) {
-    const params = request.query as Schema.ISearch;
+    const params = request.body as Schema.ISearch;
     return ProductService.search(params);
 }

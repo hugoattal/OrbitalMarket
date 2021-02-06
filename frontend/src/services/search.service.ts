@@ -22,7 +22,7 @@ export interface ISearchProduct {
 
 export default {
     async query (params: any): Promise<Array<ISearchProduct>> {
-        const result = await ApiService.get("/products/search", { params });
+        const result = await ApiService.post("/products/search", params);
         return result.data;
     }
 };

@@ -2,15 +2,15 @@
     <div class="buttons-bar">
         <Button
             class="button"
-            @click="goToLatest"
-        >
-            <i class="las la-clock" /> Latest
-        </Button>
-        <Button
-            class="button"
             @click="goToToplist"
         >
             <i class="las la-rocket" /> Toplist
+        </Button>
+        <Button
+            class="button"
+            @click="goToLatest"
+        >
+            <i class="las la-clock" /> Latest
         </Button>
         <Button
             class="button"

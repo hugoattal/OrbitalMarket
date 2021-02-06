@@ -39,7 +39,8 @@ export const PartialProduct = {
             properties: {
                 score: {},
                 lastUpdate: { type: "string", format: "date-time" },
-                isBoosted: { type: "boolean" }
+                isBoosted: { type: "boolean" },
+                engineVersion: { type: "object" }
             },
             additionalProperties: false
         }
@@ -92,10 +93,14 @@ export interface ISearch {
     searchText?: string;
     sortDirection?: ESortDirection;
     sortField?: ESortField;
+    engineVersion?: {
+        min: Array<number>;
+        max: Array<number>;
+    }
 }
 
 export const Search = {
-    querystring: {
+    body: {
         type: "object",
         properties: {
             skip: {
@@ -119,6 +124,10 @@ export const Search = {
                 type: "string",
                 enum: ["popularity", "releaseDate", "lastUpdate", "reviews", "name", "relevance"],
                 default: "popularity"
+            },
+            engineVersion: {
+                min: { type: "array", items: { type: "number" } },
+                max: { type: "array", items: { type: "number" } }
             }
         },
         additionalProperties: false

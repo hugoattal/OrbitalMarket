@@ -3,6 +3,8 @@ import _ from "lodash";
 import * as jsf from "json-schema-faker";
 import faker from "faker/locale/fr";
 
+import { PartialDeep } from "type-fest";
+
 jsf.extend("faker", () => {
     return faker;
 });
@@ -16,11 +18,7 @@ jsf.option({
     resolveJsonPath: true
 });
 
-type DeepPartial<T> = {
-    [P in keyof T]?: DeepPartial<T[P]>;
-};
-
-export async function generate<DataModel extends typeof Mongo.Model>(model: DataModel, overwrite?: DeepPartial<InstanceType<DataModel>>): Promise<InstanceType<DataModel>> {
+export async function generate<DataModel extends typeof Mongo.Model>(model: DataModel, overwrite?: PartialDeep<InstanceType<DataModel>>): Promise<InstanceType<DataModel>> {
     const jsonSchema = makeJsonSchema(model.schema);
     let fake = await jsf.resolve(jsonSchema);
     fake = _.merge(fake, overwrite);

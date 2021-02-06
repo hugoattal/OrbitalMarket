@@ -16,6 +16,9 @@
                         ({{ product.computed.score.totalRatings || 0 }})
                     </div>
                 </div>
+                <div class="price">
+                    {{ displayPrice(product.price.value) }}
+                </div>
                 <p class="description-short">
                     {{ product.description.short }}
                 </p>
@@ -106,7 +109,7 @@ h1 {
 }
 
 .product-description {
-    padding: 0 var(--length-padding-l);
+    padding: 0 var(--length-padding-xl);
 }
 
 .product-header {
@@ -140,8 +143,22 @@ h1 {
         }
     }
 
+    .price {
+        text-align: right;
+        font-weight: bold;
+        font-size: 200%;
+    }
+
     .description-short, .link {
         margin: var(--length-margin-base) 0;
+    }
+
+    .link {
+        padding-left: var(--length-padding-xl);
+
+        .las {
+            opacity: 0.5;
+        }
     }
 
     .info {
@@ -163,7 +180,7 @@ h1 {
 }
 
 .product-details {
-    margin: var(--length-margin-base) 0;
+    margin-bottom: var(--length-margin-l);
 
     :deep(p) {
         margin: var(--length-margin-s) 0;

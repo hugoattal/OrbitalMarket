@@ -36,8 +36,8 @@ export interface IProduct {
         updateDate: Date
     }>;
     tags: Array<Mongo.Types.ObjectId>;
-    computed?: any;
-    meta?: any;
+    computed?: Record<string,any>;
+    meta?: Record<string,any>;
 }
 
 export interface IProductDocument extends IProduct, Mongo.Document {
