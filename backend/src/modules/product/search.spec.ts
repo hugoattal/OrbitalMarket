@@ -81,4 +81,17 @@ describe("product/search", () => {
         expect(results[2]._id).toStrictEqual(productD._id);
         expect(results[3]._id).toStrictEqual(productE._id);
     });
+    test("it should find the product with the right price", async () => {
+        await ProductModel.ensureIndexes();
+        const productA = await Fake.generate(ProductModel, { title: "A", price: { value: 0 } });
+        const productB = await Fake.generate(ProductModel, { title: "B", price: { value: 1000 } });
+        const productC = await Fake.generate(ProductModel, { title: "C", price: { value: 2000 } });
+
+        const results = await search({ sortField: ESortField.name, price: { min: 500, max: 1000 } });
+
+        expect(results).toHaveLength(1);
+        expect(results[0]._id).not.toStrictEqual(productA._id);
+        expect(results[0]._id).toStrictEqual(productB._id);
+        expect(results[0]._id).not.toStrictEqual(productC._id);
+    });
 });

@@ -4,8 +4,6 @@ import { has } from "lodash";
 import * as mongoUtils from "@/utils/mongo";
 
 export async function search(params: ISearch): Promise<Array<IProductDocument>> {
-    console.log(params);
-
     if (!has(params, "skip")) {
         params.skip = 0;
     }
@@ -54,17 +52,30 @@ export async function search(params: ISearch): Promise<Array<IProductDocument>> 
 
     const aggregationStages = [];
 
+    const matchStage = [];
+
     if (params.engineVersion) {
-        aggregationStages.push({
-            $match:
-                mongoUtils.isRangeInRange(
-                    "computed.engineVersion.min.1", "computed.engineVersion.max.1",
-                    params.engineVersion.min[1], params.engineVersion.max[1]
-                )
-        });
+        matchStage.push(
+            mongoUtils.isRangeInRange(
+                "computed.engineVersion.min.1", "computed.engineVersion.max.1",
+                params.engineVersion.min[1], params.engineVersion.max[1]
+            )
+        );
     }
 
-    console.log(aggregationStages);
+    if (params.price) {
+        matchStage.push(
+            mongoUtils.isInRange("price.value", params.price.min, params.price.max)
+        );
+    }
+
+    if (matchStage.length > 0) {
+        aggregationStages.push({
+            $match: {
+                $and: matchStage
+            }
+        });
+    }
 
     if (params.searchText) {
         aggregationStages.push({

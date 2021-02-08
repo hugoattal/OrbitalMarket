@@ -96,6 +96,10 @@ export interface ISearch {
     engineVersion?: {
         min: Array<number>;
         max: Array<number>;
+    },
+    price ?: {
+        min: number,
+        max: number
     }
 }
 
