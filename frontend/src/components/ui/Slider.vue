@@ -121,7 +121,6 @@ export default defineComponent({
                 border-radius: 50%;
                 background: var(--color-background);
                 border: 2px solid var(--color-primary);
-                transition: border var(--duration-fast);
             }
 
             &::-moz-range-thumb {
@@ -130,7 +129,6 @@ export default defineComponent({
                 border-radius: 50%;
                 background: var(--color-background);
                 border: 2px solid var(--color-primary);
-                transition: border var(--duration-fast);
             }
 
             &:hover {

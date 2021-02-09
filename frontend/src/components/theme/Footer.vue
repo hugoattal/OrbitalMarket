@@ -38,7 +38,6 @@ export default defineComponent({});
         display: inline-block;
         color: var(--color-primary);
         opacity: 0.5;
-        transition: opacity var(--duration-fast);
 
         &:hover {
             opacity: 1;

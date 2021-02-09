@@ -7,7 +7,13 @@
 }
 
 * {
-    transition: color var(--duration-fast), border-color var(--duration-fast), background var(--duration-fast);
+    transition: color var(--duration-fast),
+    border-color var(--duration-fast),
+    border var(--duration-fast),
+    background-color var(--duration-fast),
+    background var(--duration-fast),
+    transform var(--duration-fast),
+    opacity var(--duration-fast);
 }
 
 body {

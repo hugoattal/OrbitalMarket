@@ -5,13 +5,19 @@
                 Display:
             </template>
             <UIRadioElement key="box">
-                <i class="las la-cube" />
+                <div title="3D Box">
+                    <i class="las la-cube" />
+                </div>
             </UIRadioElement>
             <UIRadioElement key="square">
-                <i class="las la-stop" />
+                <div title="2D Square">
+                    <i class="las la-stop" />
+                </div>
             </UIRadioElement>
             <UIRadioElement key="list">
-                <i class="las la-stream" />
+                <div title="List">
+                    <i class="las la-stream" />
+                </div>
             </UIRadioElement>
         </UIRadioList>
         <UIPriceRange v-model="priceRange">
@@ -41,8 +47,8 @@ export default defineComponent({
     data () {
         return {
             displayType: StorageModule.getElement("displayType", "box"),
-            priceRange: { },
-            engineRange: { }
+            priceRange: {},
+            engineRange: {}
         };
     },
     watch: {
@@ -88,5 +94,6 @@ export default defineComponent({
 .display-bar {
     display: flex;
     gap: var(--length-margin-l);
+    flex-wrap: wrap;
 }
 </style>

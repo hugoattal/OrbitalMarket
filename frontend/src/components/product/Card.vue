@@ -126,7 +126,6 @@ export default defineComponent({
     background: var(--color-content-background);
     border: 1px solid var(--color-content-light);
     cursor: pointer;
-    transition: transform var(--duration-fast), border-color var(--duration-fast);
 
     &.box {
         padding-bottom: var(--length-padding-base);
@@ -145,7 +144,6 @@ export default defineComponent({
 
         .icons {
             opacity: 0;
-            transition: opacity var(--duration-fast);
 
             .expand-link {
                 border-top-left-radius: var(--length-radius-base);
@@ -219,6 +217,24 @@ export default defineComponent({
 
         &:hover {
             transform: none;
+        }
+
+        @media screen and (max-width: 800px) {
+            height: 120px;
+
+            .icons {
+                flex-direction: column;
+                width: 32px;
+            }
+
+            .content {
+                flex-direction: column;
+                align-items: flex-start;
+
+                .title{
+                    width: 100%;
+                }
+            }
         }
     }
 

@@ -167,7 +167,6 @@ export default defineComponent({
         right: 0;
         pointer-events: none;
         top: calc(50% - 12px);
-        transition: transform var(--duration-fast);
 
         &.deploy {
             transform: translateY(2px) rotate(180deg);

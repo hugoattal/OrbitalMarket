@@ -52,7 +52,6 @@ export default defineComponent({
         position: relative;
         transform-style: preserve-3d;
         transform: translate3d(0px, 25px, 0) rotate3d(0, 1, 0, 25deg);
-        transition: transform var(--duration-fast);
 
         .front {
             position: absolute;

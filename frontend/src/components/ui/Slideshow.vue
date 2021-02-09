@@ -90,7 +90,6 @@ export default defineComponent({
         bottom: 0;
         background: rgba(0, 0, 0, 0.5);
         cursor: pointer;
-        transition: opacity var(--duration-fast);
     }
 
     .left {
@@ -112,7 +111,6 @@ export default defineComponent({
         box-sizing: border-box;
         text-align: center;
         left: calc(50% - 40px);
-        transition: opacity var(--duration-fast);
         opacity: 0;
     }
 
