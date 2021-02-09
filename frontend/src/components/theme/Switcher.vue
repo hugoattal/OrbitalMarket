@@ -3,7 +3,10 @@
         class="button"
         @click="switchTheme"
     >
-        <div class="theme-switcher">
+        <div
+            class="theme-switcher"
+            title="Toggle dark/light theme"
+        >
             <i
                 class="las"
                 :class="{'la-moon':isDarkMode, 'la-sun':!isDarkMode}"

@@ -54,11 +54,11 @@ export async function search(params: ISearch): Promise<Array<IProductDocument>> 
 
     const matchStage = [];
 
-    if (params.engineVersion) {
+    if (params.engine) {
         matchStage.push(
             mongoUtils.isRangeInRange(
-                "computed.engineVersion.min.1", "computed.engineVersion.max.1",
-                params.engineVersion.min[1], params.engineVersion.max[1]
+                "computed.engine.min.1", "computed.engine.max.1",
+                params.engine.min[1], params.engine.max[1]
             )
         );
     }
@@ -69,20 +69,18 @@ export async function search(params: ISearch): Promise<Array<IProductDocument>> 
         );
     }
 
-    if (matchStage.length > 0) {
-        aggregationStages.push({
-            $match: {
-                $and: matchStage
+    if (params.searchText) {
+        matchStage.push( {
+            $text: {
+                $search: params.searchText
             }
         });
     }
 
-    if (params.searchText) {
+    if (matchStage.length > 0) {
         aggregationStages.push({
             $match: {
-                $text: {
-                    $search: params.searchText
-                }
+                $and: matchStage
             }
         });
     }

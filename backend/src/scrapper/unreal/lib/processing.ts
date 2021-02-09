@@ -94,18 +94,18 @@ function addComputed(product: IProduct, data: any) {
         score.value *= 1.1;
     }
 
-    const engineVersion = {} as any;
+    const engine = {} as any;
 
     if (data.compatibleApps.length > 0) {
-        engineVersion.min = (_.first(data.compatibleApps) as string).split(".").map(element => parseInt(element));
-        engineVersion.max = (_.last(data.compatibleApps) as string).split(".").map(element => parseInt(element));
+        engine.min = (_.first(data.compatibleApps) as string).split(".").map(element => parseInt(element));
+        engine.max = (_.last(data.compatibleApps) as string).split(".").map(element => parseInt(element));
     }
 
     product.computed = {
         isBoosted,
         score,
         lastUpdate: getLastUpdate(product.releases),
-        engineVersion
+        engine
     };
 
     function getLastUpdate(releases: Array<{ updateDate: Date }>): Date {

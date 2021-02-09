@@ -7,3 +7,12 @@ export function displayPrice (price: number): string {
 export function displayDate (date: string): string {
     return format(new Date(date), "dd/MM/yy");
 }
+
+export function displayEngineVersion (engine): string {
+    if (engine && engine.min && engine.max) {
+        return `${engine.min[0]}.${engine.min[1]}-${engine.max[0]}.${engine.max[1]}`;
+    }
+    else {
+        return "None";
+    }
+}

@@ -40,7 +40,10 @@ export const PartialProduct = {
                 score: {},
                 lastUpdate: { type: "string", format: "date-time" },
                 isBoosted: { type: "boolean" },
-                engineVersion: { type: "object" }
+                engine: {
+                    min: { type: "array", items: { type: "number" } },
+                    max: { type: "array", items: { type: "number" } }
+                }
             },
             additionalProperties: false
         }
@@ -93,11 +96,11 @@ export interface ISearch {
     searchText?: string;
     sortDirection?: ESortDirection;
     sortField?: ESortField;
-    engineVersion?: {
+    engine?: {
         min: Array<number>;
         max: Array<number>;
     },
-    price ?: {
+    price?: {
         min: number,
         max: number
     }
@@ -129,9 +132,13 @@ export const Search = {
                 enum: ["popularity", "releaseDate", "lastUpdate", "reviews", "name", "relevance"],
                 default: "popularity"
             },
-            engineVersion: {
+            engine: {
                 min: { type: "array", items: { type: "number" } },
                 max: { type: "array", items: { type: "number" } }
+            },
+            price: {
+                min: { type: "number" },
+                max: { type: "number" }
             }
         },
         additionalProperties: false

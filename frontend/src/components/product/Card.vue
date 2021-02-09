@@ -59,6 +59,7 @@
             <div class="info">
                 <p><span class="category">Released:</span> {{ displayDate(product.releaseDate) }}</p>
                 <p><span class="category">Last update:</span> {{ displayDate(product.computed.lastUpdate) }}</p>
+                <p><span class="category">Engine version:</span> {{ displayEngineVersion(product.computed.engine) }}</p>
             </div>
         </div>
     </article>
@@ -79,7 +80,7 @@ import UIRating from "@/components/ui/Rating.vue";
 import Box3D from "@/components/ui/Box3D.vue";
 import UIModal from "@/components/ui/Modal.vue";
 import ProductModal from "@/components/product/Modal.vue";
-import { displayDate, displayPrice } from "@/components/product/product";
+import { displayDate, displayPrice, displayEngineVersion } from "@/components/product/product";
 import router from "@/router";
 
 export default defineComponent({
@@ -97,7 +98,7 @@ export default defineComponent({
         }
     },
     setup () {
-        return { displayDate, displayPrice };
+        return { displayDate, displayPrice, displayEngineVersion };
     },
     data () {
         return {
@@ -128,7 +129,7 @@ export default defineComponent({
     transition: transform var(--duration-fast), border-color var(--duration-fast);
 
     &.box {
-        height: 270px;
+        padding-bottom: var(--length-padding-base);
     }
 
     &.square {

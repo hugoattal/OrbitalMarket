@@ -1,10 +1,11 @@
 <template>
-    <div class="display-bar">
-        <DisplayBar v-model="displayType" />
-    </div>
+    <OptionsBar
+        v-model="options"
+        class="display-bar"
+    />
     <ul
         class="results"
-        :class="displayType"
+        :class="options.displayType"
     >
         <li
             v-for="product in products"
@@ -12,7 +13,7 @@
         >
             <ProductCard
                 :product="product"
-                :display-type="displayType"
+                :display-type="options.displayType"
             />
         </li>
         <li v-if="isMoreProducts">
@@ -33,20 +34,20 @@ import SearchService, { ISearchProduct } from "@/services/search.service";
 import ProductCard from "@/components/product/Card.vue";
 import Observer from "@/components/elements/Observer.vue";
 import Spinner from "@/components/ui/Spinner.vue";
-import DisplayBar from "@/components/pages/search/DisplayBar.vue";
+import OptionsBar from "@/components/pages/search/OptionsBar.vue";
 
 const PRODUCT_PER_PAGE = 24;
 
 export default defineComponent({
     name: "SearchResults",
-    components: { DisplayBar, Spinner, Observer, ProductCard },
+    components: { OptionsBar, Spinner, Observer, ProductCard },
     data () {
         return {
             products: [] as Array<ISearchProduct>,
             isLoading: true,
             isMoreProducts: false,
             page: 0,
-            displayType: ""
+            options: {}
         };
     },
     computed: {
@@ -54,6 +55,21 @@ export default defineComponent({
             const params = this.$route.query || {};
             params.limit = PRODUCT_PER_PAGE;
             params.skip = PRODUCT_PER_PAGE * this.page;
+
+            if (this.options?.priceRange) {
+                params.price = this.options.priceRange;
+            }
+            else {
+                delete params.price;
+            }
+
+            if (this.options?.engineRange) {
+                params.engine = this.options.engineRange;
+            }
+            else {
+                delete params.engine;
+            }
+
             return params;
         }
     },
@@ -61,11 +77,17 @@ export default defineComponent({
         "$route.query": {
             immediate: true,
             async handler () {
-                this.page = 0;
-                this.isMoreProducts = false;
-                this.products = await SearchService.query(this.params);
-                this.isMoreProducts = (this.products.length === PRODUCT_PER_PAGE);
-                this.isLoading = false;
+                await this.sendQuery();
+            }
+        },
+        "options.priceRange": {
+            async handler () {
+                await this.sendQuery();
+            }
+        },
+        "options.engineRange": {
+            async handler () {
+                await this.sendQuery();
             }
         }
     },
@@ -84,6 +106,13 @@ export default defineComponent({
                     this.products.push(...nextProducts);
                 }
             }
+        },
+        async sendQuery () {
+            this.page = 0;
+            this.isMoreProducts = false;
+            this.products = await SearchService.query(this.params);
+            this.isMoreProducts = (this.products.length === PRODUCT_PER_PAGE);
+            this.isLoading = false;
         }
     }
 });

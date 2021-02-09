@@ -25,6 +25,7 @@
                 <div class="info">
                     <p><span class="category">Released:</span> {{ displayDate(product.releaseDate) }}</p>
                     <p><span class="category">Last update:</span> {{ displayDate(product.computed.lastUpdate) }}</p>
+                    <p><span class="category">Engine Version:</span> {{ displayEngineVersion(product.computed.engine) }}</p>
                 </div>
                 <UIButton
                     :href="marketplaceLink"
@@ -71,7 +72,7 @@ import ProductService, { IProduct } from "@/services/product.service";
 import UIButton from "@/components/ui/Button.vue";
 import UISlideshow from "@/components/ui/Slideshow.vue";
 import UIRating from "@/components/ui/Rating.vue";
-import { displayDate, displayPrice } from "@/components/product/product";
+import { displayDate, displayPrice, displayEngineVersion } from "@/components/product/product";
 import UITabs from "@/components/ui/Tabs.vue";
 import UITab from "@/components/ui/Tab.vue";
 
@@ -87,7 +88,7 @@ export default defineComponent({
     async setup (props) {
         const product = await ProductService.getById(props.productId) as IProduct;
 
-        return { displayDate, displayPrice, product };
+        return { displayDate, displayPrice, displayEngineVersion, product };
     },
     computed: {
         marketplaceLink (): string {
