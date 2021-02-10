@@ -1,68 +1,73 @@
 <template>
-    <article
-        class="product"
-        :class="{boost: product.computed.isBoosted, [displayType]: true}"
-        @click="showModal = true"
+    <a
+        :href="`/product/${product.slug}`"
+        class="card-link"
+        @click.prevent="showModal = true"
     >
-        <Box3D
-            v-if="displayType === 'box'"
-            :background="product.pictures.thumbnail[0]"
-            class="box"
-        />
-        <img
-            v-else
-            class="thumbnail"
-            :src="product.pictures.thumbnail[0]"
-            alt="thumbnail"
+        <article
+            class="product"
+            :class="{boost: product.computed.isBoosted, [displayType]: true}"
         >
-        <div class="icons">
-            <div class="expand-link">
-                <a
-                    target="_blank"
-                    :href="`/product/${product.slug}`"
-                    @click.stop.prevent="goToProductPage"
+            <Box3D
+                v-if="displayType === 'box'"
+                :background="product.pictures.thumbnail[0]"
+                class="box"
+            />
+            <img
+                v-else
+                class="thumbnail"
+                :src="product.pictures.thumbnail[0]"
+                alt="thumbnail"
+            >
+            <div class="icons">
+                <div class="expand-link">
+                    <a
+                        target="_blank"
+                        :href="`/product/${product.slug}`"
+                        @click.stop.prevent="goToProductPage"
+                    >
+                        <i class="las la-expand" />
+                    </a>
+                </div>
+                <div
+                    v-if="product.computed.isBoosted"
+                    class="boost-icon"
+                    @click.stop
                 >
-                    <i class="las la-expand" />
-                </a>
-            </div>
-            <div
-                v-if="product.computed.isBoosted"
-                class="boost-icon"
-                @click.stop
-            >
-                <i class="las la-meteor" />
-                <div class="tooltip">
-                    This product support the <b>Orbital Market</b> by adding a link in his description.
+                    <i class="las la-meteor" />
+                    <div class="tooltip">
+                        This product support the <b>Orbital Market</b> by adding a link in his description.
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="content">
-            <div
-                class="title"
-                :title="product.title"
-            >
-                {{ product.title }}
-            </div>
-            <div class="rating-wrapper">
-                <UIRating
-                    class="stars"
-                    :rating="parseFloat(product.computed.score.meanRating)"
-                    :has-ratings="!!product.computed.score.totalRatings"
-                />
-                <div class="total">
-                    ({{ product.computed.score.totalRatings || 0 }})
+            <div class="content">
+                <div
+                    class="title"
+                    :title="product.title"
+                >
+                    {{ product.title }}
+                </div>
+                <div class="rating-wrapper">
+                    <UIRating
+                        class="stars"
+                        :rating="parseFloat(product.computed.score.meanRating)"
+                        :has-ratings="!!product.computed.score.totalRatings"
+                    />
+                    <div class="total">
+                        ({{ product.computed.score.totalRatings || 0 }})
+                    </div>
+                </div>
+                <div class="price">
+                    {{ displayPrice(product.price.value) }}
+                </div>
+                <div class="info">
+                    <p><span class="category">Released:</span> {{ displayDate(product.releaseDate) }}</p>
+                    <p><span class="category">Last update:</span> {{ displayDate(product.computed.lastUpdate) }}</p>
+                    <p><span class="category">Engine version:</span> {{ displayEngineVersion(product.computed.engine) }}</p>
                 </div>
             </div>
-            <div class="price">
-                {{ displayPrice(product.price.value) }}
-            </div>
-            <div class="info">
-                <p><span class="category">Released:</span> {{ displayDate(product.releaseDate) }}</p>
-                <p><span class="category">Last update:</span> {{ displayDate(product.computed.lastUpdate) }}</p>
-                <p><span class="category">Engine version:</span> {{ displayEngineVersion(product.computed.engine) }}</p>
-            </div>
-        </div>
-    </article>
+        </article>
+    </a>
     <UIModal v-model="showModal">
         <ProductModal
             :product-id="product._id"
@@ -119,6 +124,10 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
+.card-link {
+    display: block;
+}
+
 .product {
     border-radius: var(--length-radius-base);
     position: relative;

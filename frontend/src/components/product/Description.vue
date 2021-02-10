@@ -90,6 +90,11 @@ export default defineComponent({
 
         return { displayDate, displayPrice, displayEngineVersion, product };
     },
+    data () {
+        return {
+            savedPageTitle: ""
+        };
+    },
     computed: {
         marketplaceLink (): string {
             return `https://www.unrealengine.com/marketplace/product/${this.product.slug}`;
@@ -97,6 +102,13 @@ export default defineComponent({
         launcherLink (): string {
             return `com.epicgames.launcher://ue/marketplace/product/${this.product.slug}`;
         }
+    },
+    mounted () {
+        this.savedPageTitle = document.title;
+        document.title = this.product.title;
+    },
+    unmounted () {
+        document.title = this.savedPageTitle;
     }
 });
 </script>

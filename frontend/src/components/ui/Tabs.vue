@@ -62,13 +62,14 @@ export default defineComponent({
             border-right: 2px solid var(--color-content-highlight);
             border-bottom: 2px solid var(--color-content-highlight);
             cursor: pointer;
+            transition: color var(--duration-fast), background var(--duration-fast);
 
             &:hover {
                 color: var(--color-primary);
             }
 
             &.selected {
-                border-bottom: 0 solid var(--color-content-highlight);
+                border-bottom: none;
                 background: var(--color-content-background);
             }
 
