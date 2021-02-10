@@ -47,6 +47,11 @@ export default defineComponent({
         },
         sortDirection () {
             router.push({ name: "search", query: { ...this.$route.query, sortDirection: this.sortDirection } });
+        },
+        "$route.query.sortField": {
+            handler () {
+                this.sortField = this.$route.query.sortField || "popularity";
+            }
         }
     }
 });

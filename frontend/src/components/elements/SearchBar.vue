@@ -38,7 +38,14 @@ export default defineComponent({
     },
     methods: {
         search () {
-            router.push({ name: "search", query: { ...this.$route.query, searchText: this.searchText } });
+            const query = { ...this.$route.query };
+
+            if (this.searchText) {
+                query.searchText = this.searchText;
+                query.sortField = "relevance";
+            }
+
+            router.push({ name: "search", query });
         }
     }
 });

@@ -13,14 +13,14 @@ export async function search(params: ISearch): Promise<Array<IProductDocument>> 
     }
 
     if (!has(params, "sortDirection")) {
-        params.sortDirection = ESortDirection.asc;
+        params.sortDirection = ESortDirection.desc;
     }
 
     if (!has(params, "sortField")) {
         params.sortField = ESortField.popularity;
     }
 
-    const sortArgument = {} as Record<string, number>;
+    const sortArgument = {} as Record<string, number | { $meta: string }>;
     const sortDirection = (params.sortDirection === ESortDirection.asc) ? 1 : -1;
 
     switch (params.sortField) {
@@ -48,7 +48,9 @@ export async function search(params: ISearch): Promise<Array<IProductDocument>> 
         break;
     }
 
-    sortArgument["_id"] = sortDirection;
+    if (!has(sortArgument, "$meta")) {
+        sortArgument["_id"] = sortDirection;
+    }
 
     const aggregationStages = [];
 
@@ -70,7 +72,7 @@ export async function search(params: ISearch): Promise<Array<IProductDocument>> 
     }
 
     if (params.searchText) {
-        matchStage.push( {
+        matchStage.push({
             $text: {
                 $search: params.searchText
             }
@@ -85,6 +87,27 @@ export async function search(params: ISearch): Promise<Array<IProductDocument>> 
         });
     }
 
+    const projectStage = {
+        title: 1,
+        slug: 1,
+        owner: 1,
+        price: 1,
+        releaseDate: 1,
+        discount: 1,
+        "pictures.thumbnail": 1,
+        computed: 1
+    } as Record<string, any>;
+
+    if (params.searchText) {
+        projectStage.score = {
+            $multiply: [{ $meta: "textScore" }, "$computed.score.value"]
+        };
+    }
+
+    aggregationStages.push({
+        $project: projectStage
+    });
+
     aggregationStages.push({
         $sort: sortArgument
     });
@@ -95,19 +118,6 @@ export async function search(params: ISearch): Promise<Array<IProductDocument>> 
 
     aggregationStages.push({
         $limit: params.limit
-    });
-
-    aggregationStages.push({
-        $project: {
-            title: 1,
-            slug: 1,
-            owner: 1,
-            price: 1,
-            releaseDate: 1,
-            discount: 1,
-            "pictures.thumbnail": 1,
-            computed: 1
-        }
     });
 
     return ProductModel.aggregate(aggregationStages).exec();

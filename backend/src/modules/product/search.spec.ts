@@ -116,4 +116,16 @@ describe("product/search", () => {
         expect(results[0]._id).toStrictEqual(productB._id);
         expect(results[0]._id).not.toStrictEqual(productC._id);
     });
+    test("it should find sort the product according to relevancy", async () => {
+        await ProductModel.ensureIndexes();
+        const productA = await Fake.generate(ProductModel, { title: "Darker Nodes", description: { short: "A theme editor plugin" } });
+        const productB = await Fake.generate(ProductModel, { title: "Electronic Nodes", description: { short: "Improve Blueprints readability" }  });
+        await Fake.generate(ProductModel, { title: "Voxel Plugin", description: { short: "Voxel plugin with powerful tools" }  });
+
+        const results = await search({ sortField: ESortField.relevance, searchText: "Electronic Nodes" });
+
+        expect(results).toHaveLength(2);
+        expect(results[0]._id).toStrictEqual(productB._id);
+        expect(results[1]._id).toStrictEqual(productA._id);
+    });
 });
