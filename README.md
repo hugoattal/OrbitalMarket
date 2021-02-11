@@ -19,7 +19,7 @@ The products are updated automatically by a script using the Unreal Engine marke
 This script is fired manually, but will soon be fired automatically with a CRON at 2am GMT+0.
 
 If you are a seller, putting a link to your **Orbital Market** card in your products description will be greatly appreciated!
-If you do so, you'll get a score boost of 10%, and a small highlight on your products.
+If you do so, you'll get a score boost of 20%, a higher search result, and a highlight on your products.
 
 ## Contribution / Licence
 
