@@ -91,7 +91,7 @@ function addComputed(product: IProduct, data: any) {
     const score = computeScore(product.ratings, product.releaseDate, product.price.value === 0);
 
     if (isBoosted) {
-        score.value *= 1.1;
+        score.value *= 1.2;
     }
 
     const engine = {} as any;

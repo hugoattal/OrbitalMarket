@@ -100,7 +100,13 @@ export async function search(params: ISearch): Promise<Array<IProductDocument>> 
 
     if (params.searchText) {
         projectStage.score = {
-            $multiply: [{ $meta: "textScore" }, { $add: ["$computed.score.value", 100] }]
+            $multiply: [{ $meta: "textScore" }, {
+                $add: [
+                    { $sqrt: "$computed.score.value" },
+                    10,
+                    { $cond: { if: "$computed.isBoosted", then: 5, else: 0 } }
+                ]
+            }]
         };
     }
 

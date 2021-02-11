@@ -249,6 +249,7 @@ export default defineComponent({
 
     &.boost {
         border-color: var(--color-content-highlight);
+        box-shadow: inset 0 0 64px var(--color-primary-transparent);
     }
 
     &:hover {
