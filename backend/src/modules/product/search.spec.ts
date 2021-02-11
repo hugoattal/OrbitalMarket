@@ -3,7 +3,7 @@ import * as Fake from "@/database/test/fake";
 import ProductModel from "@/modules/product/model";
 
 import { search } from "./search";
-import { ESortField } from "@/modules/product/handler/schema";
+import { ESortDirection, ESortField } from "@/modules/product/handler/schema";
 
 describe("product/search", () => {
     beforeEach(async () => {
@@ -31,7 +31,7 @@ describe("product/search", () => {
         const productA = await Fake.generate(ProductModel, { title: "A" });
         const productB = await Fake.generate(ProductModel, { title: "B" });
 
-        const results = await search({ sortField: ESortField.name });
+        const results = await search({ sortField: ESortField.name, sortDirection: ESortDirection.asc });
 
         expect(results).toHaveLength(2);
         expect(results[0]._id).toStrictEqual(productA._id);
@@ -43,7 +43,7 @@ describe("product/search", () => {
         const productB = await Fake.generate(ProductModel, { title: "B" });
         const productC = await Fake.generate(ProductModel, { title: "C" });
 
-        const results = await search({ sortField: ESortField.name, skip: 1, limit: 1 });
+        const results = await search({ skip: 1, limit: 1 });
 
         expect(results).toHaveLength(1);
         expect(results[0]._id).not.toStrictEqual(productA._id);
@@ -73,7 +73,11 @@ describe("product/search", () => {
             computed: { engine: { min: [4, 17], max: [4, 19] } }
         });
 
-        const results = await search({ sortField: ESortField.name, engine: { min: [4, 15], max: [4, 20] } });
+        const results = await search({
+            sortField: ESortField.name,
+            sortDirection: ESortDirection.asc,
+            engine: { min: [4, 15], max: [4, 20] }
+        });
 
         expect(results).toHaveLength(4);
         expect(results[0]._id).toStrictEqual(productA._id);
@@ -96,7 +100,11 @@ describe("product/search", () => {
             computed: { engine: { min: [4, 25], max: [4, 25] } }
         });
 
-        const results = await search({ sortField: ESortField.name, engine: { min: [4, 25], max: [4, 25] } });
+        const results = await search({
+            sortField: ESortField.name,
+            sortDirection: ESortDirection.asc,
+            engine: { min: [4, 25], max: [4, 25] }
+        });
 
         expect(results).toHaveLength(3);
         expect(results[0]._id).toStrictEqual(productA._id);
@@ -109,7 +117,11 @@ describe("product/search", () => {
         const productB = await Fake.generate(ProductModel, { title: "B", price: { value: 1000 } });
         const productC = await Fake.generate(ProductModel, { title: "C", price: { value: 2000 } });
 
-        const results = await search({ sortField: ESortField.name, price: { min: 500, max: 1000 } });
+        const results = await search({
+            sortField: ESortField.name,
+            sortDirection: ESortDirection.asc,
+            price: { min: 500, max: 1000 }
+        });
 
         expect(results).toHaveLength(1);
         expect(results[0]._id).not.toStrictEqual(productA._id);
@@ -118,11 +130,20 @@ describe("product/search", () => {
     });
     test("it should find sort the product according to relevancy", async () => {
         await ProductModel.ensureIndexes();
-        const productA = await Fake.generate(ProductModel, { title: "Darker Nodes", description: { short: "A theme editor plugin" } });
-        const productB = await Fake.generate(ProductModel, { title: "Electronic Nodes", description: { short: "Improve Blueprints readability" }  });
-        await Fake.generate(ProductModel, { title: "Voxel Plugin", description: { short: "Voxel plugin with powerful tools" }  });
+        const productA = await Fake.generate(ProductModel, {
+            title: "Darker Nodes",
+            description: { short: "A theme editor plugin" }
+        });
+        const productB = await Fake.generate(ProductModel, {
+            title: "Electronic Nodes",
+            description: { short: "Improve Blueprints readability" }
+        });
+        await Fake.generate(ProductModel, {
+            title: "Voxel Plugin",
+            description: { short: "Voxel plugin with powerful tools" }
+        });
 
-        const results = await search({ sortField: ESortField.relevance, searchText: "Electronic Nodes" });
+        const results = await search({ sortField: ESortField.popularity, searchText: "Electronic Nodes" });
 
         expect(results).toHaveLength(2);
         expect(results[0]._id).toStrictEqual(productB._id);

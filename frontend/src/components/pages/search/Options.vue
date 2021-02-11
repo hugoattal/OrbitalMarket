@@ -30,8 +30,7 @@ export default defineComponent({
                 releaseDate: "Release Date",
                 lastUpdate: "Last Update",
                 reviews: "Reviews",
-                name: "Name",
-                relevance: "Relevance"
+                name: "Name"
             },
             directionOptions: {
                 asc: "Ascending",

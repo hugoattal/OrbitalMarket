@@ -32,7 +32,12 @@ export async function search(params: ISearch): Promise<Array<IProductDocument>> 
         sortArgument["title"] = sortDirection;
         break;
     case ESortField.popularity:
-        sortArgument["computed.score.value"] = sortDirection;
+        if (params.searchText) {
+            sortArgument["score"] = sortDirection;
+        }
+        else {
+            sortArgument["computed.score.value"] = sortDirection;
+        }
         break;
     case ESortField.releaseDate:
         sortArgument["releaseDate"] = sortDirection;
@@ -40,11 +45,6 @@ export async function search(params: ISearch): Promise<Array<IProductDocument>> 
     case ESortField.reviews:
         sortArgument["computed.score.totalRatings"] = sortDirection;
         sortArgument["releaseDate"] = sortDirection;
-        break;
-    case ESortField.relevance:
-        if (params.searchText) {
-            sortArgument["score"] = sortDirection;
-        }
         break;
     }
 
@@ -100,7 +100,7 @@ export async function search(params: ISearch): Promise<Array<IProductDocument>> 
 
     if (params.searchText) {
         projectStage.score = {
-            $multiply: [{ $meta: "textScore" }, "$computed.score.value"]
+            $multiply: [{ $meta: "textScore" }, { $add: ["$computed.score.value", 100] }]
         };
     }
 
