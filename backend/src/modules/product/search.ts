@@ -79,6 +79,15 @@ export async function search(params: ISearch): Promise<Array<IProductDocument>> 
         });
     }
 
+    if (params.discounted) {
+        matchStage.push({
+            $and: [
+                { "discount.value": { $gt: 0 } },
+                { "price.value": { $gt: 0 } }
+            ]
+        });
+    }
+
     if (matchStage.length > 0) {
         aggregationStages.push({
             $match: {

@@ -63,13 +63,13 @@ export default defineComponent({
     &::before {
         content: '';
         width: 0;
-        padding-bottom: calc(100% / (16 / 10)); /* here you can place any ratio */
+        padding-bottom: calc(100% / (16 / 10));
         grid-area: 1 / 1 / 1 / 1;
     }
 
     & > *:first-child {
-        grid-area: 1 / 1 / 1 / 1; /* the same as ::before */
-        background: rgba(0, 0, 0, 0.1); /* just for instance */
+        grid-area: 1 / 1 / 1 / 1;
+        background: rgba(0, 0, 0, 0.1);
     }
 
     img {

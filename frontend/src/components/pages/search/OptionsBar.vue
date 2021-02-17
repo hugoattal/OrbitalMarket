@@ -25,6 +25,9 @@
                 Price:
             </template>
         </UIPriceRange>
+        <UIRadioButton v-model="discounted">
+            Discounted
+        </UIRadioButton>
         <UIEngineRange v-model="engineRange">
             <template #label>
                 Engine:
@@ -40,15 +43,17 @@ import UIRadioList from "@/components/ui/RadioList.vue";
 import UIRadioElement from "@/components/ui/RadioElement.vue";
 import UIPriceRange from "@/components/ui/PriceRange.vue";
 import UIEngineRange from "@/components/ui/EngineRange.vue";
+import UIRadioButton from "@/components/ui/RadioButton.vue";
 
 export default defineComponent({
-    components: { UIEngineRange, UIPriceRange, UIRadioElement, UIRadioList },
+    components: { UIRadioButton, UIEngineRange, UIPriceRange, UIRadioElement, UIRadioList },
     emits: ["update:modelValue"],
     data () {
         return {
             displayType: StorageModule.getElement("displayType", "box"),
             priceRange: {},
-            engineRange: {}
+            engineRange: {},
+            discounted: false
         };
     },
     watch: {
@@ -68,6 +73,11 @@ export default defineComponent({
             handler () {
                 this.updateValue();
             }
+        },
+        discounted: {
+            handler () {
+                this.updateValue();
+            }
         }
     },
     methods: {
@@ -82,6 +92,10 @@ export default defineComponent({
 
             if (Object.keys(this.engineRange).length) {
                 options.engineRange = this.engineRange;
+            }
+
+            if (this.discounted) {
+                options.discounted = this.discounted;
             }
 
             this.$emit("update:modelValue", options);

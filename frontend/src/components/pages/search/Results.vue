@@ -52,7 +52,7 @@ export default defineComponent({
     },
     computed: {
         params () {
-            const params = this.$route.query || {};
+            const params = { ...this.$route.query } as Record<string, string|number>;
             params.limit = PRODUCT_PER_PAGE;
             params.skip = PRODUCT_PER_PAGE * this.page;
 
@@ -68,6 +68,13 @@ export default defineComponent({
             }
             else {
                 delete params.engine;
+            }
+
+            if (this.options?.discounted) {
+                params.discounted = this.options.discounted;
+            }
+            else {
+                delete params.discounted;
             }
 
             return params;
@@ -86,6 +93,11 @@ export default defineComponent({
             }
         },
         "options.engineRange": {
+            async handler () {
+                await this.sendQuery();
+            }
+        },
+        "options.discounted": {
             async handler () {
                 await this.sendQuery();
             }

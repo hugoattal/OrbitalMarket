@@ -16,7 +16,21 @@
                         ({{ product.computed.score.totalRatings || 0 }})
                     </div>
                 </div>
-                <div class="price">
+                <div
+                    v-if="isDiscounted"
+                    class="price"
+                >
+                    <span class="old">{{ displayPrice(product.price.value) }}</span>
+                    {{ displayPrice(product.price.value * (1 - product.discount.value / 100)) }}
+
+                    <div class="discount">
+                        -{{ product.discount.value }}%
+                    </div>
+                </div>
+                <div
+                    v-else
+                    class="price"
+                >
                     {{ displayPrice(product.price.value) }}
                 </div>
                 <p class="description-short">
@@ -101,6 +115,9 @@ export default defineComponent({
         },
         launcherLink (): string {
             return `com.epicgames.launcher://ue/marketplace/product/${this.product.slug}`;
+        },
+        isDiscounted () {
+            return this.product.discount.value > 0 && this.product.price.value > 0;
         }
     },
     mounted () {
@@ -160,6 +177,23 @@ h1 {
         text-align: right;
         font-weight: bold;
         font-size: 200%;
+        position: relative;
+        margin: var(--length-margin-s) 0;
+
+        .old {
+            text-decoration: line-through;
+            opacity: 0.25;
+        }
+
+        .discount {
+            background: var(--color-primary);
+            display: inline-block;
+            padding: var(--length-padding-xs) var(--length-padding-l) var(--length-padding-xs) var(--length-padding-s);
+            clip-path: polygon(0 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
+            position: absolute;
+            left: 0;
+            box-shadow: 0 0 12px var(--color-shadow);
+        }
     }
 
     .description-short, .link {

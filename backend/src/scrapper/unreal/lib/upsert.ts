@@ -23,12 +23,12 @@ export async function owner(data: any): Promise<Mongo.Types.ObjectId> {
     return owner._id;
 }
 
-export async function product(data: IProduct) {
+export async function product(data: IProduct): Promise<void> {
     if (!data.meta?.unrealId) {
         return;
     }
 
-    const product: IProduct = await ProductModel.findOne({
+    const product = await ProductModel.findOne({
         meta: { unrealId: data.meta.unrealId }
     }).exec();
 
@@ -37,7 +37,7 @@ export async function product(data: IProduct) {
     }
     else {
         data.price.history = product.price.history || [];
-        data.discount.history = product.price.history || [];
+        data.discount.history = product.discount.history || [];
 
         if (data.price.value !== product.price.value) {
             data.price.history.push({

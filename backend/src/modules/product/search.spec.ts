@@ -38,7 +38,6 @@ describe("product/search", () => {
         expect(results[1]._id).toStrictEqual(productB._id);
     });
     test("it should skip one and limit one", async () => {
-        await ProductModel.ensureIndexes();
         const productA = await Fake.generate(ProductModel, { title: "A" });
         const productB = await Fake.generate(ProductModel, { title: "B" });
         const productC = await Fake.generate(ProductModel, { title: "C" });
@@ -51,7 +50,6 @@ describe("product/search", () => {
         expect(results[0]._id).not.toStrictEqual(productC._id);
     });
     test("it should find the products with the right engine version", async () => {
-        await ProductModel.ensureIndexes();
         const productA = await Fake.generate(ProductModel, {
             title: "A",
             computed: { engine: { min: [4, 10], max: [4, 20] } }
@@ -86,7 +84,6 @@ describe("product/search", () => {
         expect(results[3]._id).toStrictEqual(productE._id);
     });
     test("it should find the products with the exact engine version", async () => {
-        await ProductModel.ensureIndexes();
         const productA = await Fake.generate(ProductModel, {
             title: "A",
             computed: { engine: { min: [4, 20], max: [4, 25] } }
@@ -112,7 +109,6 @@ describe("product/search", () => {
         expect(results[2]._id).toStrictEqual(productC._id);
     });
     test("it should find the product with the right price", async () => {
-        await ProductModel.ensureIndexes();
         const productA = await Fake.generate(ProductModel, { title: "A", price: { value: 0 } });
         const productB = await Fake.generate(ProductModel, { title: "B", price: { value: 1000 } });
         const productC = await Fake.generate(ProductModel, { title: "C", price: { value: 2000 } });
@@ -129,7 +125,6 @@ describe("product/search", () => {
         expect(results[0]._id).not.toStrictEqual(productC._id);
     });
     test("it should find sort the product according to relevancy", async () => {
-        await ProductModel.ensureIndexes();
         const productA = await Fake.generate(ProductModel, {
             title: "Darker Nodes",
             description: { short: "A theme editor plugin" }
@@ -149,4 +144,48 @@ describe("product/search", () => {
         expect(results[0]._id).toStrictEqual(productB._id);
         expect(results[1]._id).toStrictEqual(productA._id);
     });
+    test("it should select only discounted product", async () => {
+        await Fake.generate(ProductModel, {
+            price: { value: 1000 },
+            discount: { value: 0 }
+        });
+        const discountedProduct = await Fake.generate(ProductModel, {
+            price: { value: 2000 },
+            discount: { value: 50 }
+        });
+        await Fake.generate(ProductModel, {
+            price: { value: 0 },
+            discount: { value: 0 }
+        });
+
+        const results = await search({ discounted: true });
+
+        expect(results).toHaveLength(1);
+        expect(results[0]._id).toStrictEqual(discountedProduct._id);
+    });
+    /*
+    test("it should take discount into account when filtering by price", async () => {
+        const productA = await Fake.generate(ProductModel, {
+            title: "A",
+            price: { value: 1000 },
+            discount: { value: 0 }
+        });
+        await Fake.generate(ProductModel, {
+            title: "B",
+            price: { value: 2000 },
+            discount: { value: 0 }
+        });
+        const productC = await Fake.generate(ProductModel, {
+            title: "C",
+            price: { value: 2000 },
+            discount: { value: 50 }
+        });
+
+        const results = await search({ sortField: ESortField.name, price: { min: 0, max: 1000 } });
+
+        expect(results).toHaveLength(2);
+        expect(results[0]._id).toStrictEqual(productA._id);
+        expect(results[1]._id).toStrictEqual(productC._id);
+    });
+     */
 });

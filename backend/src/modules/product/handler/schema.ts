@@ -11,7 +11,8 @@ export const PartialProduct = {
         price: {
             type: "object",
             properties: {
-                value: { type: "number" }
+                value: { type: "number" },
+                discount: { type: "number" }
             },
             additionalProperties: false
         },
@@ -53,7 +54,6 @@ export const PartialProduct = {
 
 export const FullProduct = merge(PartialProduct, {
     properties: {
-
         description: {
             properties: {
                 short: { type: "string" },
@@ -102,7 +102,8 @@ export interface ISearch {
     price?: {
         min: number,
         max: number
-    }
+    },
+    discounted?: boolean;
 }
 
 export const Search = {
@@ -138,7 +139,8 @@ export const Search = {
             price: {
                 min: { type: "number" },
                 max: { type: "number" }
-            }
+            },
+            discounted: { type: "boolean" }
         },
         additionalProperties: false
     },

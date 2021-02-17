@@ -57,13 +57,28 @@
                         ({{ product.computed.score.totalRatings || 0 }})
                     </div>
                 </div>
-                <div class="price">
+                <div
+                    v-if="isDiscounted"
+                    class="price"
+                >
+                    <span class="old">{{ displayPrice(product.price.value) }}</span>
+                    {{ displayPrice(product.price.value * (1 - product.discount.value / 100)) }}
+
+                    <div class="discount">
+                        -{{ product.discount.value }}%
+                    </div>
+                </div>
+                <div
+                    v-else
+                    class="price"
+                >
                     {{ displayPrice(product.price.value) }}
                 </div>
                 <div class="info">
                     <p><span class="category">Released:</span> {{ displayDate(product.releaseDate) }}</p>
                     <p><span class="category">Last update:</span> {{ displayDate(product.computed.lastUpdate) }}</p>
-                    <p><span class="category">Engine version:</span> {{ displayEngineVersion(product.computed.engine) }}</p>
+                    <p><span class="category">Engine version:</span> {{ displayEngineVersion(product.computed.engine) }}
+                    </p>
                 </div>
             </div>
         </article>
@@ -113,6 +128,9 @@ export default defineComponent({
     computed: {
         marketplaceLink () {
             return `https://www.unrealengine.com/marketplace/product/${this.product.slug}`;
+        },
+        isDiscounted () {
+            return this.product.discount.value > 0 && this.product.price.value > 0;
         }
     },
     methods: {
@@ -197,6 +215,10 @@ export default defineComponent({
             border-bottom-left-radius: var(--length-radius-base);
         }
 
+        .discount {
+            display: none;
+        }
+
         .content {
             display: flex;
             flex-grow: 1;
@@ -240,7 +262,7 @@ export default defineComponent({
                 flex-direction: column;
                 align-items: flex-start;
 
-                .title{
+                .title {
                     width: 100%;
                 }
             }
@@ -346,6 +368,21 @@ export default defineComponent({
             text-align: right;
             padding: 0 var(--length-padding-l);
             font-weight: bold;
+
+            .old {
+                text-decoration: line-through;
+                opacity: 0.25;
+            }
+
+            .discount {
+                background: var(--color-primary);
+                display: inline-block;
+                padding: var(--length-padding-xs) var(--length-padding-l) var(--length-padding-xs) var(--length-padding-s);
+                clip-path: polygon(0 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
+                position: absolute;
+                left: 0;
+                box-shadow: 0 0 12px var(--color-shadow);
+            }
         }
     }
 
