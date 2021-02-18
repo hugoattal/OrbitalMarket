@@ -8,7 +8,9 @@ const alias = {
 
 export default defineConfig({
     plugins: [vue()],
-    alias,
+    resolve: {
+        alias
+    },
     server: {
         port: 8080
     }

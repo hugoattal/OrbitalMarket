@@ -215,15 +215,17 @@ export default defineComponent({
             border-bottom-left-radius: var(--length-radius-base);
         }
 
-        .discount {
-            display: none;
-        }
-
         .content {
             display: flex;
             flex-grow: 1;
             align-items: center;
             min-width: 0;
+
+            .price {
+                .discount {
+                    position: static;
+                }
+            }
 
             .title {
                 flex-grow: 1;
@@ -261,6 +263,15 @@ export default defineComponent({
             .content {
                 flex-direction: column;
                 align-items: flex-start;
+
+                .price {
+                    display: flex;
+                    gap: var(--length-padding-base);
+                    .discount {
+                        padding-top: 0;
+                        padding-bottom: 0;
+                    }
+                }
 
                 .title {
                     width: 100%;

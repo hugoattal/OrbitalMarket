@@ -42,7 +42,7 @@ export default defineComponent({});
     &.small {
         background: url("/src/assets/stars.svg#Stars");
         background-size: 500px;
-        animation: movingStars 50s linear infinite;
+        animation: movingStars 150s linear infinite;
     }
 
     &.medium {
@@ -54,7 +54,7 @@ export default defineComponent({});
     &.large {
         background: url("/src/assets/stars.svg#Stars");
         background-size: 2000px;
-        animation: movingStars 150s linear infinite;
+        animation: movingStars 50s linear infinite;
     }
 }
 </style>
