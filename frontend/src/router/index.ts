@@ -27,6 +27,15 @@ const routes: Array<RouteRecordRaw> = [
         meta: {
             guest: true
         }
+    },
+    {
+        component: () => import(/* webpackChunkName: "notFound" */ "../views/NotFound.vue"),
+        name: "notFound",
+        path: "/:pathMatch(.*)*",
+        meta: {
+            guest: true,
+            title: "Orbital Market - Lost in space"
+        }
     }
 ];
 

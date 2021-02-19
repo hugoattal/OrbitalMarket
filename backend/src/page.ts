@@ -7,18 +7,33 @@ import { NotFound } from "http-errors";
 import _ from "lodash";
 import escapeHTML  from "escape-html";
 
-const pageTemplate = fs.readFileSync(path.join(__dirname, "../../frontend/dist/index.html"));
+const pageTemplate = fs.readFileSync(path.join(__dirname, "../../frontend/dist/index.html")).toString();
 
 export default async function (server: Fastify.FastifyInstance): Promise<void> {
     server.get("*", async (request, reply) => {
-        const generatedPage = await generateSSRPage(pageTemplate.toString(), request.url);
-
-        reply.type("text/html").send(generatedPage);
+        try {
+            const generatedPage = await generateSSRPage(pageTemplate, request.url);
+            reply.type("text/html").send(generatedPage);
+        }
+        catch (error) {
+            if (error instanceof NotFound) {
+                reply.callNotFound();
+            }
+            else {
+                throw error;
+            }
+        }
     });
 }
 
 async function generateSSRPage(template: string, url: string): Promise<string> {
     const path = url.split("/");
+    const allowPath = ["product", "search"];
+
+    if (path[1] && !allowPath.includes(path[1])) {
+        throw new NotFound();
+    }
+
     const isProduct = (path[1] === "product");
 
     if (isProduct) {
