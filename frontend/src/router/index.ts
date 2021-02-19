@@ -7,7 +7,8 @@ const routes: Array<RouteRecordRaw> = [
         name: "landing",
         path: "/",
         meta: {
-            guest: true
+            guest: true,
+            title: "Orbital Market"
         }
     },
     {
@@ -15,7 +16,8 @@ const routes: Array<RouteRecordRaw> = [
         name: "search",
         path: "/search",
         meta: {
-            guest: true
+            guest: true,
+            title: "Orbital Market Search"
         }
     },
     {
@@ -31,6 +33,11 @@ const routes: Array<RouteRecordRaw> = [
 const router = createRouter({
     history: createWebHistory(),
     routes
+});
+
+router.beforeEach((to, from, next) => {
+    document.title = to.meta.title || "Orbital Market";
+    next();
 });
 
 export default router;

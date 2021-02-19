@@ -26,7 +26,7 @@ export interface IProduct {
 }
 
 export default {
-    async getById (id: number | number): Promise<IProduct> {
+    async getById (id: string | number): Promise<IProduct> {
         const result = await ApiService.get(`/products/product/${id}`);
         return result.data;
     }

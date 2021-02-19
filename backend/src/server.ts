@@ -4,10 +4,13 @@ import * as Fastify from "fastify";
 import cors from "cors";
 import Middie from "middie";
 
-import ProductHandler from "@/modules/product/handler";
+import StaticHandler from "@/static";
+import APIHandler from "@/api";
+import PageHandler from "@/page";
 
 async function init() {
     const isDevelopment = (process.env.NODE_ENV === "development");
+    await connectDatabase();
 
     const server: Fastify.FastifyInstance = Fastify.fastify({ logger: isDevelopment });
 
@@ -17,9 +20,9 @@ async function init() {
         credentials: true
     }));
 
-    await connectDatabase();
-
-    server.register(ProductHandler, { prefix: "/products" });
+    await server.register(APIHandler, { prefix: "/api" });
+    await server.register(StaticHandler, { prefix: "/static" });
+    await server.register(PageHandler);
 
     return server;
 }
