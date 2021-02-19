@@ -5,6 +5,7 @@ import * as ProductService from "@/modules/product/service";
 import * as UserService from "@/modules/user/service";
 import { NotFound } from "http-errors";
 import _ from "lodash";
+import escapeHTML  from "escape-html";
 
 const pageTemplate = fs.readFileSync(path.join(__dirname, "../../frontend/dist/index.html"));
 
@@ -30,18 +31,18 @@ async function generateSSRPage(template: string, url: string): Promise<string> {
 
         template = template
             .replace("{ssr-og}", "og: https://ogp.me/ns/article#")
-            .replace("{ssr-title}", product.title);
+            .replace("{ssr-title}", escapeHTML(product.title));
 
         let SSRHead = `
-    <meta name="description" content="${product.description.short}">
-    <meta property="og:title" content="${product.title}"/>
+    <meta name="description" content="${escapeHTML(product.description.short)}">
+    <meta property="og:title" content="${escapeHTML(product.title)}"/>
     <meta property="og:site_name" content="Orbital Market"/>
     <meta property="og:url" content="https://orbital-market.com/"/>
-    <meta property="og:description" content="${product.description.short}"/>
+    <meta property="og:description" content="${escapeHTML(product.description.short)}"/>
     <meta property="og:type" content="article"/>
     <meta property="article:published_time" content="${product.releaseDate}"/>
-    <meta property="article:author" content="${owner?.name}"/>
-    <meta property="og:image" content="${product.pictures.thumbnail[0]}"/>
+    <meta property="article:author" content="${escapeHTML(owner?.name || "unknown")}"/>
+    <meta property="og:image" content="${escapeHTML(product.pictures.thumbnail[0])}"/>
     <meta property="og:image:width" content="284"/>
     <meta property="og:image:height" content="284"/>
     <meta name="twitter:card" content="summary">`;
@@ -49,7 +50,7 @@ async function generateSSRPage(template: string, url: string): Promise<string> {
         if (owner?.networks?.twitter) {
             const twitterUserName = "@" + _.last(owner.networks.twitter.split("/"));
             SSRHead += `
-    <meta name="twitter:creator" content="${twitterUserName}">`;
+    <meta name="twitter:creator" content="${escapeHTML(twitterUserName)}">`;
         }
 
         template = template.replace("<!--{ssr-head}-->", SSRHead);
