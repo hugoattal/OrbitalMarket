@@ -33,7 +33,7 @@ export function computeScore(ratings: Array<number>, releaseDate: Date, isFree: 
     const meanRating = getMeanRating(ratings);
     const elapsedDays = differenceInDays(Date.now(), releaseDate);
     const starsDivider = isFree ? 10 : 1;
-    const value = Math.pow(meanRating, 2) * Math.sqrt((totalRatings / starsDivider) / (elapsedDays + 30)) * 1000 + 1 / elapsedDays + 1;
+    const value = Math.pow(meanRating, 2) * Math.sqrt((totalRatings / starsDivider) / (elapsedDays + 30)) * 1000 + 1 / (elapsedDays + 30) + 1;
 
     return {
         value,
