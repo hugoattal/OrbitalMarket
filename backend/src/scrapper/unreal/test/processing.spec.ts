@@ -4,13 +4,6 @@ import { processProductData } from "../lib/processing";
 import { rawProduct } from "@/scrapper/unreal/test/product";
 
 describe("scrapper/unreal", () => {
-    test("it should compute the right lastUpdate", async () => {
-        await processProductData(rawProduct);
-
-        const product = await ProductModel.findOne();
-
-        expect(product.computed.lastUpdate.getTime()).toBe(new Date("2020-12-03T00:00:00.000Z").getTime());
-    });
     test("it should compute the right engine versions", async () => {
         await processProductData(rawProduct);
 

@@ -38,7 +38,6 @@
                 </p>
                 <div class="info">
                     <p><span class="category">Released:</span> {{ displayDate(product.releaseDate) }}</p>
-                    <p><span class="category">Last update:</span> {{ displayDate(product.computed.lastUpdate) }}</p>
                     <p><span class="category">Engine Version:</span> {{ displayEngineVersion(product.computed.engine) }}</p>
                 </div>
                 <UIButton

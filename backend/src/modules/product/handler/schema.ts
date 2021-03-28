@@ -39,7 +39,6 @@ export const PartialProduct = {
             type: "object",
             properties: {
                 score: {},
-                lastUpdate: { type: "string", format: "date-time" },
                 isBoosted: { type: "boolean" },
                 engine: {
                     min: { type: "array", items: { type: "number" } },
@@ -84,7 +83,6 @@ export enum ESortDirection {
 export enum ESortField {
     popularity = "popularity",
     releaseDate = "releaseDate",
-    lastUpdate = "lastUpdate",
     reviews = "reviews",
     name = "name"
 }
@@ -129,7 +127,7 @@ export const Search = {
             },
             sortField: {
                 type: "string",
-                enum: ["popularity", "releaseDate", "lastUpdate", "reviews", "name"],
+                enum: ["popularity", "releaseDate", "reviews", "name"],
                 default: "popularity"
             },
             engine: {

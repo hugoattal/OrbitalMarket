@@ -34,8 +34,8 @@
         "http-errors": "^1.7.3",
         "lodash": "^4.17.20",
         "middie": "^5.2.0",
-        "mongodb": "^3.6.4",
-        "mongoose": "^5.11.16",
+        "mongodb": "^3.6.5",
+        "mongoose": "^5.12.2",
         "uuid": "^8.3.1"
     },
     "devDependencies": {

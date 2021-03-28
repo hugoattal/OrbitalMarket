@@ -20,8 +20,7 @@ export interface IProduct {
             totalRatings: number;
             meanRatings: number;
         },
-        isBoosted: boolean,
-        lastUpdate: string
+        isBoosted: boolean
     }
 }
 

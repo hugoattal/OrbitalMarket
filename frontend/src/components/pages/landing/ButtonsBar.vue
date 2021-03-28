@@ -4,19 +4,19 @@
             class="button"
             @click="goToToplist"
         >
-            <i class="las la-rocket" /> Toplist
+            <i class="las la-rocket" /> Most popular
         </Button>
         <Button
             class="button"
             @click="goToLatest"
         >
-            <i class="las la-clock" /> Latest
+            <i class="las la-clock" /> Latest releases
         </Button>
         <Button
             class="button"
-            @click="goToUpdated"
+            @click="goToReviewed"
         >
-            <i class="las la-wrench" /> Updated
+            <i class="lar la-star" /> Most reviewed
         </Button>
     </div>
 </template>
@@ -35,8 +35,8 @@ export default defineComponent({
         goToToplist () {
             router.push({ name: "search" });
         },
-        goToUpdated () {
-            router.push({ name: "search", query: { sortField: "lastUpdate", sortDirection: "desc" } });
+        goToReviewed () {
+            router.push({ name: "search", query: { sortField: "reviews", sortDirection: "desc" } });
         }
     }
 });
@@ -53,7 +53,7 @@ export default defineComponent({
 
     .button {
         margin: 0 var(--length-margin-base);
-        width: 122px;
+        width: 168px;
         display: flex;
 
         @media screen and (max-width: 500px) {
@@ -66,7 +66,7 @@ export default defineComponent({
             }
         }
 
-        .las {
+        .las, .lar {
             margin-right: var(--length-margin-s);
         }
     }

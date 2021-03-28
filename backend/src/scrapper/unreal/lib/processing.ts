@@ -104,13 +104,8 @@ function addComputed(product: IProduct, data: any) {
     product.computed = {
         isBoosted,
         score,
-        lastUpdate: getLastUpdate(product.releases),
         engine
     };
-
-    function getLastUpdate(releases: Array<{ updateDate: Date }>): Date {
-        return new Date(Math.max(...releases.map((release) => release.updateDate.getTime())));
-    }
 
     function getIsBoosted(): boolean {
         const orbitalString = "<a href=\"https://orbital-market.com/";

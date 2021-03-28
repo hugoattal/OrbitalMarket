@@ -28,7 +28,6 @@ export default defineComponent({
             sortOptions: {
                 popularity: "Popularity",
                 releaseDate: "Release Date",
-                lastUpdate: "Last Update",
                 reviews: "Reviews",
                 name: "Name"
             },

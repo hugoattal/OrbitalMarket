@@ -24,10 +24,6 @@ export async function search(params: ISearch): Promise<Array<IProductDocument>> 
     const sortDirection = (params.sortDirection === ESortDirection.asc) ? 1 : -1;
 
     switch (params.sortField) {
-    case ESortField.lastUpdate:
-        sortArgument["computed.lastUpdate"] = sortDirection;
-        sortArgument["releaseDate"] = sortDirection;
-        break;
     case ESortField.name:
         sortArgument["title"] = sortDirection;
         break;
