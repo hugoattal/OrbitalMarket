@@ -4,6 +4,8 @@ import * as Fastify from "fastify";
 import cors from "cors";
 import Middie from "middie";
 
+import * as Crons from "@/crons";
+
 import StaticHandler from "@/static";
 import APIHandler from "@/api";
 import PageHandler from "@/page";
@@ -12,6 +14,8 @@ import NotFoundHandler from "@/notFound";
 async function init() {
     const isDevelopment = (process.env.NODE_ENV === "development");
     await connectDatabase();
+
+    Crons.register();
 
     const server: Fastify.FastifyInstance = Fastify.fastify({ logger: isDevelopment });
 

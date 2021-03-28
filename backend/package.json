@@ -14,7 +14,7 @@
         "clean": "tsc --build --clean",
         "start": "cross-env NODE_ENV=production ts-node src/server.ts",
         "api:unreal": "cross-env NODE_ENV=production ts-node src/scrapper/unreal",
-        "manual:update-score": "cross-env NODE_ENV=production ts-node src/crons/updateScore",
+        "manual:update-score": "cross-env NODE_ENV=production ts-node src/scripts/updateScore",
         "test": "cross-env NODE_ENV=test jest --runInBand"
     },
     "_moduleAliases": {
@@ -36,6 +36,7 @@
         "middie": "^5.2.0",
         "mongodb": "^3.6.5",
         "mongoose": "^5.12.2",
+        "node-cron": "^3.0.0",
         "uuid": "^8.3.1"
     },
     "devDependencies": {
@@ -49,6 +50,7 @@
         "@types/json-schema-faker": "^0.5.1",
         "@types/lodash": "^4.14.168",
         "@types/mongoose": "^5.10.3",
+        "@types/node-cron": "^2.0.3",
         "@types/uuid": "^8.3.0",
         "@typescript-eslint/eslint-plugin": "^4.7.0",
         "@typescript-eslint/parser": "^4.7.0",

@@ -1,5 +1,20 @@
 import Axios from "axios";
+import { processProductData } from "@/scrapper/unreal/lib/processing";
 
+
+export async function updateProducts(): Promise<void> {
+    const productsCount = await getProductsCount();
+    const step = 100;
+
+    for (let startProduct = 0; startProduct < productsCount; startProduct += step) {
+        console.log(startProduct + " / " + productsCount);
+        const productPage = await getProductPage(startProduct, 100);
+
+        for (const element of productPage.elements) {
+            await processProductData(element);
+        }
+    }
+}
 
 // https://www.unrealengine.com/marketplace/api/assets?start=0&count=1&sortBy=effectiveDate&sortDir=ASC
 export async function getProductPage(start: number, count: number) {
