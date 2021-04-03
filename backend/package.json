@@ -7,7 +7,7 @@
     "license": "none",
     "repository": {
         "type": "git",
-        "url": "https://github.com/TheHerobrine/OrbitalMarket.git"
+        "url": "https://github.com/hugoattal/OrbitalMarket.git"
     },
     "scripts": {
         "nodemon": "cross-env NODE_ENV=development nodemon src/server.ts",

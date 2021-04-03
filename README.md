@@ -9,7 +9,7 @@
 
 **Orbital Market** is a project to improve the Unreal Engine marketplace.
 It's basically a fast search engine with a lot of options.
-(If you have any suggestion/idea, don't hesitate to create a topic in the [discussions part](https://github.com/TheHerobrine/OrbitalMarket/discussions))
+(If you have any suggestion/idea, don't hesitate to create a topic in the [discussions part](https://github.com/hugoattal/OrbitalMarket/discussions))
 
 **Orbital Market** is accessible here: https://orbital-market.com/
 

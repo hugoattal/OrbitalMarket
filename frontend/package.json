@@ -6,7 +6,7 @@
     "license": "none",
     "repository": {
         "type": "git",
-        "url": "https://github.com/TheHerobrine/OrbitalMarket.git"
+        "url": "https://github.com/hugoattal/OrbitalMarket.git"
     },
     "scripts": {
         "dev": "vite",

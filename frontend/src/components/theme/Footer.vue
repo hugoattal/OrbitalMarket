@@ -4,7 +4,7 @@
             class="lab la-twitter"
         /> Hugo Attal</a>
         <span class="separator">|</span>
-        <a href="https://github.com/TheHerobrine/OrbitalMarket"><i
+        <a href="https://github.com/hugoattal/OrbitalMarket"><i
             class="lab la-github"
         /> GitHub Repo</a>
         <span class="separator">|</span>
