@@ -3,6 +3,13 @@ import { IProduct } from "@/modules/product/model";
 import * as ProductService from "@/modules/product/service";
 import { computeScore } from "@/modules/product/lib/score";
 import _ from "lodash";
+import { getConversionRate } from "@/scrapper/unreal/api";
+
+export let conversionRate = 1.0;
+
+export async function updateConversionRate(): Promise<void> {
+    conversionRate = await getConversionRate();
+}
 
 export async function processProductData(data: any): Promise<void> {
     const ownerId = await Upsert.owner(data.seller);
@@ -83,7 +90,7 @@ function convertEURtoUSD(priceInEuro: number): number {
     if (priceInEuro === 0) {
         return 0;
     }
-    return Math.round(priceInEuro * 1.008 / 100) * 100 - 1;
+    return Math.round(priceInEuro * conversionRate / 100) * 100 - 1;
 }
 
 function addComputed(product: IProduct, data: any) {

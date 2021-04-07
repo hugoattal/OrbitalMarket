@@ -9,13 +9,13 @@ describe("scrapper/unreal", () => {
 
         const product = await ProductModel.findOne();
 
-        expect(product.computed.engine).toStrictEqual({ min: [4, 20], max: [4, 26] });
+        expect(product?.computed?.engine).toStrictEqual({ min: [4, 20], max: [4, 26] });
     });
     test("it should compute that it's a boosted product", async () => {
         await processProductData(rawProduct);
 
         const product = await ProductModel.findOne();
 
-        expect(product.computed.isBoosted).toBeTruthy();
+        expect(product?.computed?.isBoosted).toBeTruthy();
     });
 });

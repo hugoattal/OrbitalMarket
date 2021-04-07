@@ -1,8 +1,9 @@
 import Axios from "axios";
-import { processProductData } from "@/scrapper/unreal/lib/processing";
-
+import { processProductData, updateConversionRate } from "@/scrapper/unreal/lib/processing";
 
 export async function updateProducts(): Promise<void> {
+    await updateConversionRate();
+
     const productsCount = await getProductsCount();
     const step = 100;
 
@@ -43,4 +44,11 @@ export async function getRating(productId: string) {
 export async function getProductsCount() {
     const productPage = await getProductPage(0, 1);
     return productPage.paging.total;
+}
+
+export async function getConversionRate() {
+    const VoxelPlugin = await getProduct("b08e5581837e4bbca486b61cdf2751bb");
+    const VoxelPluginPriceInEuro = VoxelPlugin.data.priceValue;
+    const VoxelPluginPriceInUSD = 34999;
+    return VoxelPluginPriceInUSD / VoxelPluginPriceInEuro;
 }

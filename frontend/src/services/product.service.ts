@@ -18,7 +18,7 @@ export interface IProduct {
         score: {
             value: number;
             totalRatings: number;
-            meanRatings: number;
+            meanRating: number;
         },
         isBoosted: boolean
     }

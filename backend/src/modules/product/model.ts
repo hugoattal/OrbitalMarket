@@ -36,7 +36,15 @@ export interface IProduct {
         updateDate: Date
     }>;
     tags: Array<Mongo.Types.ObjectId>;
-    computed?: Record<string,any>;
+    computed?: {
+        isBoosted?: boolean,
+        score?: {
+            value: number,
+            totalRatings: number,
+            meanRating: number
+        },
+        engine: Record<string, any>
+    };
     meta?: Record<string,any>;
 }
 

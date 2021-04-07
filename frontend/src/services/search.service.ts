@@ -13,7 +13,7 @@ export interface ISearchProduct {
         score: {
             value: number;
             totalRatings: number;
-            meanRatings: number;
+            meanRating: number;
         },
         isBoosted: boolean
     }

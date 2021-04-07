@@ -3,9 +3,11 @@ import * as path from "path";
 import * as fs from "fs";
 import * as ProductService from "@/modules/product/service";
 import * as UserService from "@/modules/user/service";
-import { NotFound } from "http-errors";
+import { NotFound, InternalServerError } from "http-errors";
 import _ from "lodash";
-import escapeHTML  from "escape-html";
+import escapeHTML from "escape-html";
+import { IProductDocument } from "@/modules/product/model";
+import { IUser } from "@/modules/user/model";
 
 const pageTemplate = fs.readFileSync(path.join(__dirname, "../../frontend/dist/index.html")).toString();
 
@@ -37,12 +39,24 @@ async function generateSSRPage(template: string, url: string): Promise<string> {
     const isProduct = (path[1] === "product");
 
     if (isProduct) {
+        await generateProductHead();
+    }
+    else {
+        await generateMainHead();
+    }
+
+    return template;
+
+    async function generateProductHead(): Promise<void> {
         const slug = path[2];
         const product = await ProductService.getById(slug);
         if (!product) {
             throw new NotFound();
         }
         const owner = await UserService.getById(product.owner);
+        if (!owner) {
+            throw new InternalServerError();
+        }
 
         template = template
             .replace("{ssr-og}", "og: https://ogp.me/ns/article#")
@@ -55,7 +69,7 @@ async function generateSSRPage(template: string, url: string): Promise<string> {
     <meta property="og:url" content="https://orbital-market.com/"/>
     <meta property="og:description" content="${escapeHTML(product.description.short)}"/>
     <meta property="og:type" content="article"/>
-    <meta property="article:published_time" content="${product.releaseDate}"/>
+    <meta property="article:published_time" content="${product.releaseDate.toISOString()}"/>
     <meta property="article:author" content="${escapeHTML(owner?.name || "unknown")}"/>
     <meta property="og:image" content="${escapeHTML(product.pictures.thumbnail[0])}"/>
     <meta property="og:image:width" content="284"/>
@@ -68,9 +82,56 @@ async function generateSSRPage(template: string, url: string): Promise<string> {
     <meta name="twitter:creator" content="${escapeHTML(twitterUserName)}">`;
         }
 
+        SSRHead += `
+    <script type="application/ld+json">${generateJSONLD(product, owner)}</script>`;
+
         template = template.replace("<!--{ssr-head}-->", SSRHead);
+
+
     }
-    else {
+
+    function generateJSONLD(product: IProductDocument, owner: IUser): string {
+        const schemaData = {
+            "@context": "https://schema.org/",
+            "@type": "Product",
+            "name": escapeHTML(product.title),
+            "sku": product._id,
+            "description": escapeHTML(product.description.short),
+            "image": escapeHTML(product.pictures.thumbnail[0]),
+            "url": "https://orbital-market.com/product/" + escapeHTML(product.slug),
+            "category": "Unreal Engine Asset",
+            "releaseDate": product.releaseDate.toISOString(),
+            "brand": {
+                "@type": "Brand",
+                "name": owner.name
+            },
+            "offers": {
+                "@type": "Offer",
+                "availability": "https://schema.org/InStock",
+                "url": "https://orbital-market.com/product/" + escapeHTML(product.slug),
+                "priceCurrency": "USD",
+                "price": product.price.value / 100,
+                "seller": {
+                    "@type": "Person",
+                    "name": owner.name
+                }
+            }
+        } as Record<string, any>;
+
+        if (product.computed?.score?.totalRatings || 0 > 0) {
+            schemaData.aggregateRating = {
+                "@type": "AggregateRating",
+                "ratingValue": (product.computed?.score?.meanRating || 0) * 5,
+                "bestRating": 5,
+                "worstRating": 1,
+                "ratingCount": product.computed?.score?.totalRatings
+            };
+        }
+
+        return JSON.stringify(schemaData);
+    }
+
+    function generateMainHead(): void {
         template = template
             .replace("{ssr-og}", "og: https://ogp.me/ns/website#")
             .replace("{ssr-title}", "Orbital Market");
@@ -89,6 +150,4 @@ async function generateSSRPage(template: string, url: string): Promise<string> {
     <meta name="twitter:creator" content="@hugoattal">`;
         template = template.replace("<!--{ssr-head}-->", SSRHead);
     }
-
-    return template;
 }
