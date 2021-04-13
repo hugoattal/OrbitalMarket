@@ -45,7 +45,7 @@ export interface IProduct {
         },
         engine: Record<string, any>
     };
-    meta?: Record<string,any>;
+    meta?: Record<string, any>;
 }
 
 export interface IProductDocument extends IProduct, Mongo.Document {
@@ -132,6 +132,21 @@ const productSchema: Mongo.Schema = new Mongo.Schema({
     meta: Object
 });
 
-productSchema.index({ title: "text", "description.short": "text" }, { "weights": { title: 3, "description.short": 2 } });
+productSchema.index(
+    {
+        title: "text",
+        "description.short": "text",
+        "description.long": "text",
+        "description.technical": "text"
+    },
+    {
+        "weights": {
+            title: 4,
+            "description.short": 2,
+            "description.long": 1,
+            "description.technical": 1
+        }
+    }
+);
 
 export default Mongo.model<IProductDocument>("product", productSchema);

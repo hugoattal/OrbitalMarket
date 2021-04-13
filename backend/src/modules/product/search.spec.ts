@@ -27,7 +27,6 @@ describe("product/search", () => {
         expect(results[0]._id).not.toStrictEqual(productB._id);
     });
     test("it should return everything sorted by name", async () => {
-        await ProductModel.ensureIndexes();
         const productA = await Fake.generate(ProductModel, { title: "A" });
         const productB = await Fake.generate(ProductModel, { title: "B" });
 
