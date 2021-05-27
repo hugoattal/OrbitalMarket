@@ -9,7 +9,17 @@ export async function updateProducts(): Promise<void> {
 
     for (let startProduct = 0; startProduct < productsCount; startProduct += step) {
         console.log(startProduct + " / " + productsCount);
-        const productPage = await getProductPage(startProduct, 100);
+        let tryFetch = 5;
+        let productPage;
+        while (tryFetch--) {
+            try {
+                productPage = await getProductPage(startProduct, 100);
+                tryFetch = 0;
+            }
+            catch (error) {
+                console.error("Error fetching the page (try " + tryFetch + ")");
+            }
+        }
 
         for (const element of productPage.elements) {
             await processProductData(element);
