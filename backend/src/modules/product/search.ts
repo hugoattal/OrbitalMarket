@@ -2,6 +2,7 @@ import { ESortDirection, ESortField, ISearch } from "@/modules/product/handler/s
 import ProductModel, { IProductDocument } from "@/modules/product/model";
 import { has } from "lodash";
 import * as mongoUtils from "@/utils/mongo";
+import { PipelineStage } from "mongoose";
 
 export async function search(params: ISearch): Promise<Array<IProductDocument>> {
     if (!has(params, "skip")) {
@@ -20,7 +21,7 @@ export async function search(params: ISearch): Promise<Array<IProductDocument>> 
         params.sortField = ESortField.popularity;
     }
 
-    const sortArgument = {} as Record<string, number | { $meta: string }>;
+    const sortArgument = {} as Record<string, 1 | -1 | { $meta: "textScore" }>;
     const sortDirection = (params.sortDirection === ESortDirection.asc) ? 1 : -1;
 
     switch (params.sortField) {
@@ -48,7 +49,7 @@ export async function search(params: ISearch): Promise<Array<IProductDocument>> 
         sortArgument["_id"] = sortDirection;
     }
 
-    const aggregationStages = [];
+    const aggregationStages: Array<PipelineStage> = [];
 
     const matchStage = [];
 
@@ -124,11 +125,11 @@ export async function search(params: ISearch): Promise<Array<IProductDocument>> 
     });
 
     aggregationStages.push({
-        $skip: params.skip
+        $skip: params.skip || 0
     });
 
     aggregationStages.push({
-        $limit: params.limit
+        $limit: params.limit || 0
     });
 
     return ProductModel.aggregate(aggregationStages).exec();

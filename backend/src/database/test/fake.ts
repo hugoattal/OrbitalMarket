@@ -10,7 +10,7 @@ jsf.extend("faker", () => {
 });
 
 jsf.format("objectId", () => {
-    return Mongo.Types.ObjectId();
+    return new Mongo.Types.ObjectId();
 });
 
 jsf.option({
