@@ -26,3 +26,7 @@ If you do so, you'll get a score boost of 20%, a higher search result, and a hig
 Contribution will be greatly appreciated once the project is in a more advanced stage. (For now, I'm just committing to the main branch without any proper PR...).
 
 **Orbital Market** is unlicensed for now (all rights are reserved).
+
+## Thank you
+
+Thank you to [Russ Treadwell](https://twitter.com/trdwll), creator of UnrealTraker, for redirecting his domain to Orbital Market.
