@@ -13,17 +13,17 @@
             </div>
             <div
                 class="option"
+                :class="{selected:(engineRange===EngineRange.V427)}"
+                @click="engineRange=EngineRange.V427"
+            >
+                4.27
+            </div>
+            <div
+                class="option"
                 :class="{selected:(engineRange===EngineRange.V426)}"
                 @click="engineRange=EngineRange.V426"
             >
                 4.26
-            </div>
-            <div
-                class="option"
-                :class="{selected:(engineRange===EngineRange.V425)}"
-                @click="engineRange=EngineRange.V425"
-            >
-                4.25
             </div>
             <div
                 ref="range"
@@ -41,19 +41,19 @@
                 >
                     <UISlider
                         v-model="min"
-                        with-input
-                        prepend="4."
                         class="slider"
                         :max="MAX_ENGINE"
+                        prepend="4."
+                        with-input
                     >
                         <span class="label">Min:</span>
                     </UISlider>
                     <UISlider
                         v-model="max"
-                        with-input
-                        prepend="4."
                         class="slider"
                         :max="MAX_ENGINE"
+                        prepend="4."
+                        with-input
                     >
                         <span class="label">Max:</span>
                     </UISlider>
@@ -65,15 +65,15 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import UISlider from "@/components/ui/Slider.vue";
 import { debounce } from "lodash";
+import UISlider from "@/components/ui/Slider.vue";
 
-const MAX_ENGINE = 26;
+const MAX_ENGINE = 27;
 
 enum EngineRange {
     All,
+    V427,
     V426,
-    V425,
     Range
 }
 
@@ -83,24 +83,24 @@ export default defineComponent({
     emits: ["update:modelValue"],
     data () {
         return {
-            min: 0,
-            max: MAX_ENGINE,
+            debounceUpdate: debounce(this.updateValue, 500),
+            deploySelector: false,
             engineRange: EngineRange.All as EngineRange,
             EngineRange,
+            max: MAX_ENGINE,
             MAX_ENGINE,
-            deploySelector: false,
-            debounceUpdate: debounce(this.updateValue, 500)
+            min: 0
         };
     },
     computed: {
         value () {
             switch (this.engineRange) {
+            case EngineRange.V427:
+                return { max: [4, 27], min: [4, 27] };
             case EngineRange.V426:
-                return { min: [4, 26], max: [4, 26] };
-            case EngineRange.V425:
-                return { min: [4, 25], max: [4, 25] };
+                return { max: [4, 26], min: [4, 26] };
             case EngineRange.Range:
-                return { min: [4, this.min], max: [4, this.max] };
+                return { max: [4, this.max], min: [4, this.min] };
             }
             return {};
         }
@@ -109,14 +109,14 @@ export default defineComponent({
         engineRange () {
             this.updateValue();
         },
-        min () {
-            this.min = this.validateInput(this.min);
-            this.max = Math.max(this.min, this.max);
-            this.debounceUpdate();
-        },
         max () {
             this.max = this.validateInput(this.max);
             this.min = Math.min(this.min, this.max);
+            this.debounceUpdate();
+        },
+        min () {
+            this.min = this.validateInput(this.min);
+            this.max = Math.max(this.min, this.max);
             this.debounceUpdate();
         }
     },
@@ -129,14 +129,14 @@ export default defineComponent({
                 this.deploySelector = false;
             }
         },
+        updateValue () {
+            this.$emit("update:modelValue", this.value);
+        },
         validateInput (engineVersion) {
             if (isNaN(engineVersion)) {
                 engineVersion = 0;
             }
             return Math.min(Math.max(engineVersion, 0), MAX_ENGINE);
-        },
-        updateValue () {
-            this.$emit("update:modelValue", this.value);
         }
     }
 });
