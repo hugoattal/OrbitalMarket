@@ -128,21 +128,21 @@ function addComputed(product: IProduct, data: any) {
                 const url = match[1].replace("&#61;", "=");
 
                 if (url.includes("youtube.com/watch")) {
-                    const match = url.match(/v=([a-zA-Z0-9]+)/);
+                    const match = url.match(/v=([a-zA-Z0-9_]+)/);
                     if (match) {
                         return "youtubeVideo:" + match[1];
                     }
                 }
 
                 if (url.includes("youtube.com/playlist")) {
-                    const match = url.match(/list=([a-zA-Z0-9]+)/);
+                    const match = url.match(/list=([a-zA-Z0-9_]+)/);
                     if (match) {
                         return "youtubePlaylist:" + match[1];
                     }
                 }
 
                 if (url.includes("sketchfab.com/models/")) {
-                    const match = url.match(/models\/([a-zA-Z0-9]+)/);
+                    const match = url.match(/models\/([a-zA-Z0-9_]+)/);
                     if (match) {
                         return "sketchfab:" + match[1];
                     }
