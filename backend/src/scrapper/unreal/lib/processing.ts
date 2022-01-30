@@ -134,6 +134,13 @@ function addComputed(product: IProduct, data: any) {
                     }
                 }
 
+                if (url.includes("youtu.be/")) {
+                    const match = url.match(/youtu\.be\/([a-zA-Z0-9_-]+)/);
+                    if (match) {
+                        return "youtubeVideo:" + match[1];
+                    }
+                }
+
                 if (url.includes("youtube.com/playlist")) {
                     const match = url.match(/list=([a-zA-Z0-9_-]+)/);
                     if (match) {
