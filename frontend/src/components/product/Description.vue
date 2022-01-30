@@ -182,6 +182,7 @@ h1 {
         flex-grow: 0;
         flex-shrink: 0;
         width: 380px;
+        max-width: 100%;
     }
 
     .rating-wrapper {
