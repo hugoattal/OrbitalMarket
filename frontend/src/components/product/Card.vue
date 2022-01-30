@@ -108,8 +108,8 @@ export default defineComponent({
     props: {
         displayType: {
             type: String,
-            default: "box",
-            validator: (value) => ["box", "square", "list"].includes(value)
+            default: "square",
+            validator: (value: string) => ["box", "square", "list"].includes(value)
         },
         product: {
             type: Object as PropType<ISearchProduct>,

@@ -46,17 +46,22 @@ import UIEngineRange from "@/components/ui/EngineRange.vue";
 import UIRadioButton from "@/components/ui/RadioButton.vue";
 
 export default defineComponent({
-    components: { UIRadioButton, UIEngineRange, UIPriceRange, UIRadioElement, UIRadioList },
+    components: { UIEngineRange, UIPriceRange, UIRadioButton, UIRadioElement, UIRadioList },
     emits: ["update:modelValue"],
     data () {
         return {
-            displayType: StorageModule.getElement("displayType", "box"),
-            priceRange: {},
+            discounted: false,
+            displayType: StorageModule.getElement("displayType", "square"),
             engineRange: {},
-            discounted: false
+            priceRange: {}
         };
     },
     watch: {
+        discounted: {
+            handler () {
+                this.updateValue();
+            }
+        },
         displayType: {
             handler () {
                 StorageModule.setElement("displayType", this.displayType);
@@ -64,17 +69,12 @@ export default defineComponent({
             },
             immediate: true
         },
-        priceRange: {
-            handler () {
-                this.updateValue();
-            }
-        },
         engineRange: {
             handler () {
                 this.updateValue();
             }
         },
-        discounted: {
+        priceRange: {
             handler () {
                 this.updateValue();
             }
