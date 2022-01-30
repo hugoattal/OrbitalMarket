@@ -1,22 +1,30 @@
 <template>
-    <div class="slideshow">
+    <div
+        ref="slideshow"
+        class="slideshow"
+        @click="toggleFullScreen"
+    >
         <div class="viewer">
-            <img
+            <UISlideshowContent
                 :key="currentIndex"
-                :src="slides[currentIndex]"
-                alt="screenshot"
-            >
-            <div
-                class="left"
-                @click="previous"
-            >
-                <i class="las la-chevron-left" />
+                class="content"
+                :url="slides[currentIndex]"
+            />
+            <div class="left">
+                <div
+                    class="arrow"
+                    @click.stop="previous"
+                >
+                    <i class="las la-chevron-left" />
+                </div>
             </div>
-            <div
-                class="right"
-                @click="next"
-            >
-                <i class="las la-chevron-right" />
+            <div class="right">
+                <div
+                    class="arrow"
+                    @click.stop="next"
+                >
+                    <i class="las la-chevron-right" />
+                </div>
             </div>
             <div class="counter">
                 {{ currentIndex + 1 }} / {{ slides.length }}
@@ -24,6 +32,25 @@
         </div>
     </div>
 </template>
+
+<script setup lang="ts">
+import { ref } from "vue";
+import UISlideshowContent from "@/components/ui/SlideshowContent.vue";
+
+const slideshow = ref(null);
+
+function toggleFullScreen() {
+    if (!document.fullscreenElement) {
+        slideshow.value.requestFullscreen();
+    }
+    else {
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        }
+    }
+}
+
+</script>
 
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
@@ -72,24 +99,22 @@ export default defineComponent({
         background: rgba(0, 0, 0, 0.1);
     }
 
-    img {
-        width: 100%;
-        height: 100%;
-        object-fit: contain;
-        display: flex;
-    }
-
     .left, .right {
-        opacity: 0;
+        pointer-events: none;
         display: flex;
         justify-content: center;
         align-items: center;
         position: absolute;
-        padding: var(--length-padding-l);
         top: 0;
         bottom: 0;
-        background: rgba(0, 0, 0, 0.5);
-        cursor: pointer;
+
+        .arrow {
+            pointer-events: auto;
+            cursor: pointer;
+            padding: var(--length-padding-l);
+            background: rgba(0, 0, 0, 0.5);
+            opacity: 0;
+        }
     }
 
     .left {
@@ -114,8 +139,13 @@ export default defineComponent({
         opacity: 0;
     }
 
-    &:hover .left, &:hover .right, &:hover .counter {
+    &:hover .arrow, &:hover .counter {
         opacity: 1;
+    }
+
+    .content {
+        position: absolute;
+        inset: 0;
     }
 }
 </style>

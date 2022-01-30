@@ -43,7 +43,8 @@ export const PartialProduct = {
                 engine: {
                     min: { type: "array", items: { type: "number" } },
                     max: { type: "array", items: { type: "number" } }
-                }
+                },
+                embeddedContent: { type: "array", items: { type: "string" } }
             },
             additionalProperties: false
         }

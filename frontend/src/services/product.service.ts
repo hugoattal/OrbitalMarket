@@ -1,32 +1,33 @@
 import ApiService from "@/services/api.service";
 
 export interface IProduct {
-    _id: string;
     title: string;
-    slug: string;
-    owner: string;
-    releaseDate: string;
-    price: { value: number };
-    discount: { value: number };
+    _id: string;
+    computed: {
+        embeddedContent?: Array<string>;
+        isBoosted: boolean;
+        score: {
+            meanRating: number;
+            totalRatings: number;
+            value: number;
+        };
+    };
     description: {
-        short: string;
         long: string;
+        short: string;
         technical: string;
     };
-    pictures: { thumbnail: Array<string>, screenshot: Array<string> };
-    computed: {
-        score: {
-            value: number;
-            totalRatings: number;
-            meanRating: number;
-        },
-        isBoosted: boolean
-    }
+    discount: { value: number };
+    owner: string;
+    pictures: { screenshot: Array<string>; thumbnail: Array<string> };
+    price: { value: number };
+    releaseDate: string;
+    slug: string;
 }
 
 export default {
     async getById (id: string | number): Promise<IProduct> {
-        const result = await ApiService.get(`/products/product/${id}`);
+        const result = await ApiService.get(`/products/product/${ id }`);
         return result.data;
     }
 };

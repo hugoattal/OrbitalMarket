@@ -3,14 +3,17 @@
         <h1>{{ product.title }}</h1>
         <div class="product-header">
             <div class="screen-panel">
-                <UISlideshow :slides="product.pictures.screenshot" />
+                <UISlideshow
+                    class="slideshow"
+                    :slides="slides"
+                />
             </div>
             <div class="description-panel">
                 <div class="rating-wrapper">
                     <UIRating
                         class="stars"
-                        :rating="parseFloat(product.computed.score.meanRating)"
                         :has-ratings="!!product.computed.score.totalRatings"
+                        :rating="parseFloat(product.computed.score.meanRating)"
                     />
                     <div class="total">
                         ({{ product.computed.score.totalRatings || 0 }})
@@ -38,19 +41,21 @@
                 </p>
                 <div class="info">
                     <p><span class="category">Released:</span> {{ displayDate(product.releaseDate) }}</p>
-                    <p><span class="category">Engine Version:</span> {{ displayEngineVersion(product.computed.engine) }}</p>
+                    <p>
+                        <span class="category">Engine Version:</span> {{ displayEngineVersion(product.computed.engine) }}
+                    </p>
                 </div>
                 <UIButton
+                    class="link"
                     :href="marketplaceLink"
                     target="_blank"
-                    class="link"
                 >
                     Unreal Marketplace <i class="las la-external-link-alt" />
                 </UIButton>
                 <UIButton
+                    class="link"
                     :href="launcherLink"
                     target="_blank"
-                    class="link"
                 >
                     Epic Launcher <i class="las la-external-link-alt" />
                 </UIButton>
@@ -91,39 +96,48 @@ import UITab from "@/components/ui/Tab.vue";
 
 export default defineComponent({
     name: "ProductDescription",
-    components: { UITab, UITabs, UIRating, UISlideshow, UIButton },
+    components: { UIButton, UIRating, UISlideshow, UITab, UITabs },
     props: {
         productId: {
             type: String,
             required: true
         }
     },
-    async setup (props) {
+    async setup(props) {
         const product = await ProductService.getById(props.productId) as IProduct;
 
-        return { displayDate, displayPrice, displayEngineVersion, product };
+        return { displayDate, displayEngineVersion, displayPrice, product };
     },
-    data () {
+    data() {
         return {
             savedPageTitle: ""
         };
     },
     computed: {
-        marketplaceLink (): string {
-            return `https://www.unrealengine.com/marketplace/product/${this.product.slug}`;
-        },
-        launcherLink (): string {
-            return `com.epicgames.launcher://ue/marketplace/product/${this.product.slug}`;
-        },
-        isDiscounted () {
+        isDiscounted() {
             return this.product.discount.value > 0 && this.product.price.value > 0;
+        },
+        launcherLink(): string {
+            return `com.epicgames.launcher://ue/marketplace/product/${ this.product.slug }`;
+        },
+        marketplaceLink(): string {
+            return `https://www.unrealengine.com/marketplace/product/${ this.product.slug }`;
+        },
+        slides(): Array<string> {
+            if (this.product.computed.embeddedContent) {
+                return [...this.product.computed.embeddedContent, ...this.product.pictures.screenshot];
+            }
+            else {
+                return this.product.pictures.screenshot;
+            }
+
         }
     },
-    mounted () {
+    mounted() {
         this.savedPageTitle = document.title;
         document.title = this.product.title;
     },
-    unmounted () {
+    unmounted() {
         document.title = this.savedPageTitle;
     }
 });
@@ -134,11 +148,14 @@ export default defineComponent({
 h1 {
     font-size: 200%;
     margin: 0;
-    padding-bottom: var(--length-padding-l);
 }
 
 .product-description {
     padding: 0 var(--length-padding-xl);
+    display: flex;
+    flex-direction: column;
+    gap: var(--length-gap-l);
+
 }
 
 .product-header {
@@ -150,11 +167,21 @@ h1 {
     }
 
     .screen-panel {
-        flex-basis: 50%;
+        flex-grow: 1;
+        flex-shrink: 1;
+        min-width: 0;
+
+        .slideshow {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
     }
 
     .description-panel {
-        flex-basis: 50%;
+        flex-grow: 0;
+        flex-shrink: 0;
+        width: 380px;
     }
 
     .rating-wrapper {

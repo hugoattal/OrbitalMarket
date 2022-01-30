@@ -43,6 +43,7 @@ export interface IProduct {
             totalRatings: number,
             meanRating: number
         },
+        embeddedContent?: Array<string>,
         engine: Record<string, any>
     };
     meta?: Record<string, any>;

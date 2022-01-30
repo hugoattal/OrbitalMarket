@@ -18,4 +18,11 @@ describe("scrapper/unreal", () => {
 
         expect(product?.computed?.isBoosted).toBeTruthy();
     });
+    test("it should extract no content", async () => {
+        await processProductData(rawProduct);
+
+        const product = await ProductModel.findOne();
+
+        expect(product?.computed?.embeddedContent?.length).toBe(1);
+    });
 });

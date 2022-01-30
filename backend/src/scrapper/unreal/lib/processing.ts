@@ -96,6 +96,7 @@ function convertEURtoUSD(priceInEuro: number): number {
 function addComputed(product: IProduct, data: any) {
     const isBoosted = getIsBoosted();
     const score = computeScore(product.ratings, product.releaseDate, product.price.value === 0);
+    const embeddedContent = getEmbeddedContent();
 
     if (isBoosted) {
         score.value *= 1.2;
@@ -111,11 +112,45 @@ function addComputed(product: IProduct, data: any) {
     product.computed = {
         isBoosted,
         score,
-        engine
+        engine,
+        embeddedContent
     };
 
     function getIsBoosted(): boolean {
         const orbitalString = "<a href=\"https://orbital-market.com/";
         return product.description.long.indexOf(orbitalString) >= 0;
+    }
+
+    function getEmbeddedContent(): Array<string> {
+        const matches = product.description.long.matchAll(/href="(.+?)"/g);
+        return [...matches]
+            .map((match) => {
+                const url = match[1].replace("&#61;", "=");
+
+                if (url.includes("youtube.com/watch")) {
+                    const match = url.match(/v=([a-zA-Z0-9]+)/);
+                    if (match) {
+                        return "youtubeVideo:" + match[1];
+                    }
+                }
+
+                if (url.includes("youtube.com/playlist")) {
+                    const match = url.match(/list=([a-zA-Z0-9]+)/);
+                    if (match) {
+                        return "youtubePlaylist:" + match[1];
+                    }
+                }
+
+                if (url.includes("sketchfab.com/models/")) {
+                    const match = url.match(/models\/([a-zA-Z0-9]+)/);
+                    if (match) {
+                        return "sketchfab:" + match[1];
+                    }
+                }
+
+                return "";
+            }
+            )
+            .filter((url) => !!url);
     }
 }

@@ -5,8 +5,8 @@
                 <div class="product-container">
                     <div class="icons">
                         <a
-                            target="_blank"
                             :href="`/product/${productSlug}`"
+                            target="_blank"
                             @click.stop.prevent="$emit('expand')"
                         >
                             <i class="las la-expand" />
@@ -17,8 +17,8 @@
                         />
                     </div>
                     <ProductDescription
-                        :product-id="productId"
                         class="product-description"
+                        :product-id="productId"
                     />
                 </div>
             </template>
@@ -36,7 +36,7 @@ import Spinner from "@/components/ui/Spinner.vue";
 
 export default defineComponent({
     name: "ProductModal",
-    components: { Spinner, ProductDescription },
+    components: { ProductDescription, Spinner },
     props: {
         productId: {
             type: String,
@@ -56,7 +56,7 @@ export default defineComponent({
     height: calc(100vh - 100px);
     max-height: 600px;
     width: calc(100vw - 100px);
-    max-width: 900px;
+    max-width: 1200px;
     overflow: auto;
 
     .product-container {
