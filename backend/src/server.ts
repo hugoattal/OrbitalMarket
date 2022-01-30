@@ -11,13 +11,15 @@ import APIHandler from "@/api";
 import PageHandler from "@/page";
 import NotFoundHandler from "@/notFound";
 
+const environment: string = process.env.NODE_ENV || "development";
+const isDevEnvironment = (environment === "development");
+
 async function init() {
-    const isDevelopment = (process.env.NODE_ENV === "development");
     await connectDatabase();
 
     Crons.register();
 
-    const server: Fastify.FastifyInstance = Fastify.fastify({ logger: isDevelopment });
+    const server: Fastify.FastifyInstance = Fastify.fastify({ logger: isDevEnvironment });
 
     await server.register(Middie);
 
@@ -35,7 +37,14 @@ async function init() {
 }
 
 init().then((server) => {
-    server.listen(Number(process.env.BACKEND_PORT), (error: Error) => {
+    server.listen(Number(process.env.BACKEND_PORT), (error: Error | null) => {
+        server.ready(() => {
+            if (isDevEnvironment) {
+                console.log(server.printRoutes());
+            }
+            console.log("Server ready");
+        });
+
         if (error) {
             server.log.error({ error });
             process.exit(1);

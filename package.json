@@ -1,0 +1,10 @@
+{
+    "name": "orbital-market",
+    "version": "1.0.0",
+    "dependencies": {
+    },
+    "scripts": {
+        "dev": "pnpm run dev --recursive --parallel",
+        "build": "pnpm run build --recursive"
+    }
+}

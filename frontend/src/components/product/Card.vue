@@ -1,7 +1,7 @@
 <template>
     <a
-        :href="`/product/${product.slug}`"
         class="card-link"
+        :href="`/product/${product.slug}`"
         @click.prevent="showModal = true"
     >
         <article
@@ -15,15 +15,15 @@
             />
             <img
                 v-else
+                alt="thumbnail"
                 class="thumbnail"
                 :src="product.pictures.thumbnail[0]"
-                alt="thumbnail"
             >
             <div class="icons">
                 <div class="expand-link">
                     <a
-                        target="_blank"
                         :href="`/product/${product.slug}`"
+                        target="_blank"
                         @click.stop.prevent="goToProductPage"
                     >
                         <i class="las la-expand" />
@@ -50,8 +50,8 @@
                 <div class="rating-wrapper">
                     <UIRating
                         class="stars"
-                        :rating="parseFloat(product.computed.score.meanRating)"
                         :has-ratings="!!product.computed.score.totalRatings"
+                        :rating="parseFloat(product.computed.score.meanRating)"
                     />
                     <div class="total">
                         ({{ product.computed.score.totalRatings || 0 }})
@@ -86,8 +86,8 @@
         <ProductModal
             :product-id="product._id"
             :product-slug="product.slug"
-            @expand="goToProductPage"
             @close="showModal = false"
+            @expand="goToProductPage"
         />
     </UIModal>
 </template>
@@ -104,20 +104,20 @@ import router from "@/router";
 
 export default defineComponent({
     name: "ProductCard",
-    components: { ProductModal, UIModal, Box3D, UIRating },
+    components: { Box3D, ProductModal, UIModal, UIRating },
     props: {
+        displayType: {
+            type: String,
+            default: "box",
+            validator: (value) => ["box", "square", "list"].includes(value)
+        },
         product: {
             type: Object as PropType<ISearchProduct>,
             required: true
-        },
-        displayType: {
-            type: String,
-            validator: (value) => ["box", "square", "list"].includes(value),
-            default: "box"
         }
     },
     setup () {
-        return { displayDate, displayPrice, displayEngineVersion };
+        return { displayDate, displayEngineVersion, displayPrice };
     },
     data () {
         return {
@@ -125,11 +125,11 @@ export default defineComponent({
         };
     },
     computed: {
-        marketplaceLink () {
-            return `https://www.unrealengine.com/marketplace/product/${this.product.slug}`;
-        },
         isDiscounted () {
             return this.product.discount.value > 0 && this.product.price.value > 0;
+        },
+        marketplaceLink () {
+            return `https://www.unrealengine.com/marketplace/product/${ this.product.slug }`;
         }
     },
     methods: {
