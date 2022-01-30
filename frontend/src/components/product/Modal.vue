@@ -55,6 +55,8 @@ export default defineComponent({
 .product-modal {
     height: calc(100vh - 100px);
     max-height: 600px;
+    min-width: 55vw;
+    min-height: 60vh;
     width: calc(100vw - 100px);
     max-width: 1200px;
     overflow: auto;

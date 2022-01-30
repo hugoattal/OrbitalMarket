@@ -30,7 +30,7 @@ import Footer from "@/components/theme/Footer.vue";
 
 export default defineComponent({
     name: "ProductLayout",
-    components: { Footer, Spinner, ButtonsBar, SearchBar, ProductDescription, Logo }
+    components: { ButtonsBar, Footer, Logo, ProductDescription, SearchBar, Spinner }
 });
 </script>
 
@@ -57,6 +57,7 @@ export default defineComponent({
     .description {
         padding: var(--length-padding-l);
         max-width: 1200px;
+        min-width: 55vw;
         margin: auto;
     }
 
