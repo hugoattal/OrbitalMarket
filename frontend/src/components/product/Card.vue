@@ -75,8 +75,9 @@
                     {{ displayPrice(product.price.value) }}
                 </div>
                 <div class="info">
-                    <p><span class="category">Released:</span> {{ displayDate(product.releaseDate) }}</p>
-                    <p><span class="category">Engine version:</span> {{ displayEngineVersion(product.computed.engine) }}
+                    <p><span class="type">Released:</span> {{ displayDate(product.releaseDate) }}</p>
+                    <p><span class="type">Engine version:</span> {{ displayEngineVersion(product.computed.engine) }}
+                    </p><p><span class="type">Category:</span> <span class="category">{{ category }}</span>
                     </p>
                 </div>
             </div>
@@ -99,7 +100,7 @@ import UIRating from "@/components/ui/Rating.vue";
 import Box3D from "@/components/ui/Box3D.vue";
 import UIModal from "@/components/ui/Modal.vue";
 import ProductModal from "@/components/product/Modal.vue";
-import { displayDate, displayPrice, displayEngineVersion } from "@/components/product/product";
+import { displayDate, displayPrice, displayEngineVersion, displayCategory } from "@/components/product/product";
 import router from "@/router";
 
 export default defineComponent({
@@ -125,6 +126,10 @@ export default defineComponent({
         };
     },
     computed: {
+        category() {
+            const categoryPath = this.product.category?.path[1];
+            return displayCategory(categoryPath || "Unknown");
+        },
         isDiscounted () {
             return this.product.discount.value > 0 && this.product.price.value > 0;
         },
@@ -405,8 +410,12 @@ export default defineComponent({
             padding: var(--length-padding-xs) 0;
         }
 
-        .category {
+        .type {
             opacity: 0.5;
+        }
+
+        .category {
+            text-transform: capitalize;
         }
     }
 }

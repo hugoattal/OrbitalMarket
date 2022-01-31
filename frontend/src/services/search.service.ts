@@ -1,22 +1,25 @@
 import ApiService from "@/services/api.service";
 
 export interface ISearchProduct {
-    _id: string;
     title: string;
-    slug: string;
-    owner: string;
-    releaseDate: string;
-    price: { value: number };
-    discount: { value: number };
-    pictures: { thumbnail: Array<string> };
+    _id: string;
+    category: {
+        path: Array<string>;
+    };
     computed: {
+        isBoosted: boolean;
         score: {
-            value: number;
-            totalRatings: number;
             meanRating: number;
-        },
-        isBoosted: boolean
-    }
+            totalRatings: number;
+            value: number;
+        };
+    };
+    discount: { value: number };
+    owner: string;
+    pictures: { thumbnail: Array<string> };
+    price: { value: number };
+    releaseDate: string;
+    slug: string;
 }
 
 export default {

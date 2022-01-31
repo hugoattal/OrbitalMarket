@@ -100,6 +100,7 @@ export async function search(params: ISearch): Promise<Array<IProductDocument>> 
         price: 1,
         releaseDate: 1,
         discount: 1,
+        "category.path": 1,
         "pictures.thumbnail": 1,
         computed: 1
     } as Record<string, any>;

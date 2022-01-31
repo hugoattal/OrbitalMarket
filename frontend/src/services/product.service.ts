@@ -3,6 +3,9 @@ import ApiService from "@/services/api.service";
 export interface IProduct {
     title: string;
     _id: string;
+    category?: {
+        path: Array<string>;
+    };
     computed: {
         embeddedContent?: Array<string>;
         isBoosted: boolean;

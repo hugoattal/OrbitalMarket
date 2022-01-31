@@ -7,6 +7,17 @@ export const PartialProduct = {
         title: { type: "string" },
         slug: { type: "string" },
         owner: { type: "string" },
+        category: {
+            type: "object",
+            properties: {
+                path: {
+                    type: "array",
+                    items: {
+                        type: "string"
+                    }
+                }
+            }
+        },
         releaseDate: { type: "string", format: "date-time" },
         price: {
             type: "object",

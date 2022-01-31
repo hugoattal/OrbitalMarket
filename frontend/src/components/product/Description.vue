@@ -40,9 +40,12 @@
                     {{ product.description.short }}
                 </p>
                 <div class="info">
-                    <p><span class="category">Released:</span> {{ displayDate(product.releaseDate) }}</p>
+                    <p><span class="type">Released:</span> {{ displayDate(product.releaseDate) }}</p>
                     <p>
-                        <span class="category">Engine Version:</span> {{ displayEngineVersion(product.computed.engine) }}
+                        <span class="type">Engine Version:</span> {{ displayEngineVersion(product.computed.engine) }}
+                    </p>
+                    <p>
+                        <span class="type">Engine Version:</span> <span class="category">{{ category }}</span>
                     </p>
                 </div>
                 <UIButton
@@ -90,7 +93,7 @@ import ProductService, { IProduct } from "@/services/product.service";
 import UIButton from "@/components/ui/Button.vue";
 import UISlideshow from "@/components/ui/Slideshow.vue";
 import UIRating from "@/components/ui/Rating.vue";
-import { displayDate, displayPrice, displayEngineVersion } from "@/components/product/product";
+import { displayDate, displayPrice, displayEngineVersion, displayCategory } from "@/components/product/product";
 import UITabs from "@/components/ui/Tabs.vue";
 import UITab from "@/components/ui/Tab.vue";
 
@@ -114,6 +117,10 @@ export default defineComponent({
         };
     },
     computed: {
+        category() {
+            const categoryPath = this.product.category?.path[1];
+            return displayCategory(categoryPath || "Unknown");
+        },
         isDiscounted() {
             return this.product.discount.value > 0 && this.product.price.value > 0;
         },
@@ -243,8 +250,12 @@ h1 {
             padding: var(--length-padding-xs) 0;
         }
 
-        .category {
+        .type {
             opacity: 0.5;
+        }
+
+        .category {
+            text-transform: capitalize;
         }
     }
 

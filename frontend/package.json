@@ -10,8 +10,8 @@
     },
     "scripts": {
         "dev": "vite",
-        "build": "vuedx-typecheck . && vite build",
-        "build:force": "vite build"
+        "build:check": "vuedx-typecheck . && vite build",
+        "build": "vite build"
     },
     "dependencies": {
         "axios": "^0.21.1",
