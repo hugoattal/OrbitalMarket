@@ -86,6 +86,7 @@ export default defineComponent({
     grid-template-columns: 1fr;
     background: black;
     position: relative;
+    color: white;
 
     &::before {
         content: '';
@@ -119,10 +120,20 @@ export default defineComponent({
 
     .left {
         left: 0;
+
+        .arrow {
+            border-top-right-radius: var(--length-radius-base);
+            border-bottom-right-radius: var(--length-radius-base);
+        }
     }
 
     .right {
         right: 0;
+
+        .arrow {
+            border-top-left-radius: var(--length-radius-base);
+            border-bottom-left-radius: var(--length-radius-base);
+        }
     }
 
     .counter {
