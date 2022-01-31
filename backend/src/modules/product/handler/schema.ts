@@ -113,6 +113,7 @@ export interface ISearch {
         min: number,
         max: number
     },
+    categories?: Array<string>,
     discounted?: boolean;
 }
 
@@ -141,6 +142,9 @@ export const Search = {
                 type: "string",
                 enum: ["popularity", "releaseDate", "reviews", "name"],
                 default: "popularity"
+            },
+            categories: {
+                type: "array", items: { type: "string" }
             },
             engine: {
                 min: { type: "array", items: { type: "number" } },

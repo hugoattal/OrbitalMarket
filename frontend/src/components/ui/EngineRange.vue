@@ -1,5 +1,5 @@
 <template>
-    <div class="price-range">
+    <div class="engine-range">
         <div class="label">
             <slot name="label" />
         </div>
@@ -132,7 +132,7 @@ export default defineComponent({
         updateValue () {
             this.$emit("update:modelValue", this.value);
         },
-        validateInput (engineVersion) {
+        validateInput (engineVersion: number) {
             if (isNaN(engineVersion)) {
                 engineVersion = 0;
             }
@@ -143,7 +143,7 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
-.price-range {
+.engine-range {
     display: flex;
     border: 2px solid var(--color-primary);
     border-radius: var(--length-radius-base);

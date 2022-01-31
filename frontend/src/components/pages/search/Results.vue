@@ -12,8 +12,8 @@
             :key="product._id"
         >
             <ProductCard
-                :product="product"
                 :display-type="options.displayType"
+                :product="product"
             />
         </li>
         <li v-if="isMoreProducts">
@@ -40,14 +40,14 @@ const PRODUCT_PER_PAGE = 24;
 
 export default defineComponent({
     name: "SearchResults",
-    components: { OptionsBar, Spinner, Observer, ProductCard },
+    components: { Observer, OptionsBar, ProductCard, Spinner },
     data () {
         return {
-            products: [] as Array<ISearchProduct>,
             isLoading: true,
             isMoreProducts: false,
+            options: {},
             page: 0,
-            options: {}
+            products: [] as Array<ISearchProduct>
         };
     },
     computed: {
@@ -77,17 +77,29 @@ export default defineComponent({
                 delete params.discounted;
             }
 
+            if (this.options?.categories) {
+                params.categories = this.options.categories;
+            }
+            else {
+                delete params.categories;
+            }
+
             return params;
         }
     },
     watch: {
         "$route.query": {
-            immediate: true,
+            async handler () {
+                await this.sendQuery();
+            },
+            immediate: true
+        },
+        "options.categories": {
             async handler () {
                 await this.sendQuery();
             }
         },
-        "options.priceRange": {
+        "options.discounted": {
             async handler () {
                 await this.sendQuery();
             }
@@ -97,7 +109,7 @@ export default defineComponent({
                 await this.sendQuery();
             }
         },
-        "options.discounted": {
+        "options.priceRange": {
             async handler () {
                 await this.sendQuery();
             }

@@ -33,6 +33,7 @@
                 Engine:
             </template>
         </UIEngineRange>
+        <UICategorySelect v-model="categories" />
     </div>
 </template>
 
@@ -44,12 +45,14 @@ import UIRadioElement from "@/components/ui/RadioElement.vue";
 import UIPriceRange from "@/components/ui/PriceRange.vue";
 import UIEngineRange from "@/components/ui/EngineRange.vue";
 import UIRadioButton from "@/components/ui/RadioButton.vue";
+import UICategorySelect from "@/components/ui/CategorySelect.vue";
 
 export default defineComponent({
-    components: { UIEngineRange, UIPriceRange, UIRadioButton, UIRadioElement, UIRadioList },
+    components: { UICategorySelect, UIEngineRange, UIPriceRange, UIRadioButton, UIRadioElement, UIRadioList },
     emits: ["update:modelValue"],
     data () {
         return {
+            categories: [],
             discounted: false,
             displayType: StorageModule.getElement("displayType", "square"),
             engineRange: {},
@@ -57,6 +60,11 @@ export default defineComponent({
         };
     },
     watch: {
+        categories: {
+            handler () {
+                this.updateValue();
+            }
+        },
         discounted: {
             handler () {
                 this.updateValue();
@@ -82,7 +90,7 @@ export default defineComponent({
     },
     methods: {
         updateValue () {
-            const options = {};
+            const options = {} as Record<string, any>;
 
             options.displayType = this.displayType;
 
@@ -97,6 +105,8 @@ export default defineComponent({
             if (this.discounted) {
                 options.discounted = this.discounted;
             }
+
+            options.categories = this.categories;
 
             this.$emit("update:modelValue", options);
         }

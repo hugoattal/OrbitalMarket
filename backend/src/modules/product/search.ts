@@ -68,6 +68,12 @@ export async function search(params: ISearch): Promise<Array<IProductDocument>> 
         );
     }
 
+    if (params.categories && params.categories.length > 0) {
+        matchStage.push({
+            "category.path.1": { $in: params.categories }
+        });
+    }
+
     if (params.searchText) {
         matchStage.push({
             $text: {
