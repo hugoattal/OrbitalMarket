@@ -20,20 +20,25 @@
                 </div>
             </UIRadioElement>
         </UIRadioList>
+        <UIRadioButton v-model="discounted">
+            Discounted
+        </UIRadioButton>
+        <UICategorySelect v-model="categories" />
         <UIPriceRange v-model="priceRange">
             <template #label>
                 Price:
             </template>
         </UIPriceRange>
-        <UIRadioButton v-model="discounted">
-            Discounted
-        </UIRadioButton>
         <UIEngineRange v-model="engineRange">
             <template #label>
                 Engine:
             </template>
         </UIEngineRange>
-        <UICategorySelect v-model="categories" />
+        <UITimeRange v-model="timeRange">
+            <template #label>
+                Released:
+            </template>
+        </UITimeRange>
     </div>
 </template>
 
@@ -42,13 +47,14 @@ import { defineComponent } from "vue";
 import StorageModule from "@/modules/storage.module";
 import UIRadioList from "@/components/ui/RadioList.vue";
 import UIRadioElement from "@/components/ui/RadioElement.vue";
-import UIPriceRange from "@/components/ui/PriceRange.vue";
-import UIEngineRange from "@/components/ui/EngineRange.vue";
+import UIPriceRange from "@/components/ui/range/PriceRange.vue";
+import UIEngineRange from "@/components/ui/range/EngineRange.vue";
 import UIRadioButton from "@/components/ui/RadioButton.vue";
 import UICategorySelect from "@/components/ui/CategorySelect.vue";
+import UITimeRange from "@/components/ui/range/TimeRange.vue";
 
 export default defineComponent({
-    components: { UICategorySelect, UIEngineRange, UIPriceRange, UIRadioButton, UIRadioElement, UIRadioList },
+    components: { UICategorySelect, UIEngineRange, UIPriceRange, UIRadioButton, UIRadioElement, UIRadioList, UITimeRange },
     emits: ["update:modelValue"],
     data () {
         return {
@@ -56,7 +62,8 @@ export default defineComponent({
             discounted: false,
             displayType: StorageModule.getElement("displayType", "square"),
             engineRange: {},
-            priceRange: {}
+            priceRange: {},
+            timeRange: {}
         };
     },
     watch: {
@@ -86,6 +93,11 @@ export default defineComponent({
             handler () {
                 this.updateValue();
             }
+        },
+        timeRange: {
+            handler () {
+                this.updateValue();
+            }
         }
     },
     methods: {
@@ -100,6 +112,10 @@ export default defineComponent({
 
             if (Object.keys(this.engineRange).length) {
                 options.engineRange = this.engineRange;
+            }
+
+            if (Object.keys(this.timeRange).length) {
+                options.timeRange = this.timeRange;
             }
 
             if (this.discounted) {

@@ -68,6 +68,14 @@ export async function search(params: ISearch): Promise<Array<IProductDocument>> 
         );
     }
 
+    if (params.time) {
+        const now = new Date();
+        now.setMonth(now.getMonth() - params.time.max);
+        matchStage.push(
+            { "releaseDate": { $gte: now } }
+        );
+    }
+
     if (params.categories && params.categories.length > 0) {
         matchStage.push({
             "category.path.1": { $in: params.categories }

@@ -6,11 +6,11 @@
         <div class="slider">
             <div class="line" />
             <input
-                :value="value"
-                type="range"
-                :min="min"
-                :max="max"
                 class="slider"
+                :max="max"
+                :min="min"
+                type="range"
+                :value="value"
                 @input="updateValue"
             >
         </div>
@@ -19,14 +19,17 @@
                 {{ prepend }}
             </span>
             <input
-                :value="value"
-                type="number"
-                :min="min"
-                :max="max"
                 class="input"
-                @input="updateValue"
+                :max="max"
+                :min="min"
+                type="number"
+                :value="value"
                 @focus="$event.target.select()"
+                @input="updateValue"
             >
+            <span v-if="append">
+                {{ append }}
+            </span>
         </div>
     </div>
 </template>
@@ -37,16 +40,17 @@ import { defineComponent } from "vue";
 export default defineComponent({
     name: "UISlider",
     props: {
-        min: {
-            type: Number,
-            default: 0
+        append: {
+            type: String,
+            default: ""
         },
         max: {
             type: Number,
             default: 100
         },
-        withInput: {
-            type: Boolean
+        min: {
+            type: Number,
+            default: 0
         },
         modelValue: {
             type: Number,
@@ -55,6 +59,9 @@ export default defineComponent({
         prepend: {
             type: String,
             default: ""
+        },
+        withInput: {
+            type: Boolean
         }
     },
     emits: ["update:modelValue"],
@@ -65,11 +72,11 @@ export default defineComponent({
     },
     watch: {
         modelValue: {
-            immediate: true,
             async handler () {
                 await this.$nextTick();
                 this.value = this.modelValue;
-            }
+            },
+            immediate: true
         },
         value () {
             this.$emit("update:modelValue", this.value);

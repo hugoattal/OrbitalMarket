@@ -70,6 +70,13 @@ export default defineComponent({
                 delete params.engine;
             }
 
+            if (this.options?.timeRange) {
+                params.time = this.options.timeRange;
+            }
+            else {
+                delete params.time;
+            }
+
             if (this.options?.discounted) {
                 params.discounted = this.options.discounted;
             }
@@ -110,6 +117,11 @@ export default defineComponent({
             }
         },
         "options.priceRange": {
+            async handler () {
+                await this.sendQuery();
+            }
+        },
+        "options.timeRange": {
             async handler () {
                 await this.sendQuery();
             }

@@ -113,6 +113,10 @@ export interface ISearch {
         min: number,
         max: number
     },
+    time?: {
+        min: number,
+        max: number
+    },
     categories?: Array<string>,
     discounted?: boolean;
 }
@@ -151,6 +155,10 @@ export const Search = {
                 max: { type: "array", items: { type: "number" } }
             },
             price: {
+                min: { type: "number" },
+                max: { type: "number" }
+            },
+            time: {
                 min: { type: "number" },
                 max: { type: "number" }
             },
