@@ -56,8 +56,8 @@ export async function search(params: ISearch): Promise<Array<IProductDocument>> 
     if (params.engine) {
         matchStage.push(
             mongoUtils.isRangeInRange(
-                "computed.engine.min.1", "computed.engine.max.1",
-                params.engine.min[1], params.engine.max[1]
+                "computed.engine.min", "computed.engine.max",
+                params.engine.min, params.engine.max
             )
         );
     }

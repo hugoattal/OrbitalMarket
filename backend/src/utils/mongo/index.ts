@@ -4,7 +4,7 @@ export function isInRange(field: string, min: number, max: number): Record<strin
     };
 }
 
-export function isRangeInRange(fieldMin: string, fieldMax: string, min: number, max: number): Record<string, any> {
+export function isRangeInRange(fieldMin: string, fieldMax: string, min: number | string, max: number | string): Record<string, any> {
     return {
         [fieldMin]: { $lte: max },
         [fieldMax]: { $gte: min }

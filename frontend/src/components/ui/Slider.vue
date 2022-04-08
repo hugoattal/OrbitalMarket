@@ -14,6 +14,12 @@
                 @input="updateValue"
             >
         </div>
+        <div
+            v-if="withDisplay"
+            class="display"
+        >
+            {{ displayFunction(value) }}
+        </div>
         <div v-if="withInput">
             <span v-if="prepend">
                 {{ prepend }}
@@ -44,6 +50,10 @@ export default defineComponent({
             type: String,
             default: ""
         },
+        displayFunction: {
+            type: Function,
+            default: (value: string) => value
+        },
         max: {
             type: Number,
             default: 100
@@ -60,30 +70,33 @@ export default defineComponent({
             type: String,
             default: ""
         },
+        withDisplay: {
+            type: Boolean
+        },
         withInput: {
             type: Boolean
         }
     },
     emits: ["update:modelValue"],
-    data () {
+    data() {
         return {
             value: 0
         };
     },
     watch: {
         modelValue: {
-            async handler () {
+            async handler() {
                 await this.$nextTick();
                 this.value = this.modelValue;
             },
             immediate: true
         },
-        value () {
+        value() {
             this.$emit("update:modelValue", this.value);
         }
     },
     methods: {
-        updateValue (event) {
+        updateValue(event) {
             this.value = event.target.value;
         }
     }
@@ -148,6 +161,10 @@ export default defineComponent({
                 }
             }
         }
+    }
+
+    .display {
+        width: 48px;
     }
 
     .input {

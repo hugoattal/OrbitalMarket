@@ -106,8 +106,8 @@ export interface ISearch {
     sortDirection?: ESortDirection;
     sortField?: ESortField;
     engine?: {
-        min: Array<number>;
-        max: Array<number>;
+        min: string;
+        max: string;
     },
     price?: {
         min: number,
@@ -151,8 +151,8 @@ export const Search = {
                 type: "array", items: { type: "string" }
             },
             engine: {
-                min: { type: "array", items: { type: "number" } },
-                max: { type: "array", items: { type: "number" } }
+                min: { type: "string" },
+                max: { type: "string" }
             },
             price: {
                 min: { type: "number" },

@@ -20,10 +20,10 @@
             </div>
             <div
                 class="option"
-                :class="{selected:(engineRange===EngineRange.V426)}"
-                @click="engineRange=EngineRange.V426"
+                :class="{selected:(engineRange===EngineRange.V500)}"
+                @click="engineRange=EngineRange.V500"
             >
-                4.26
+                5.00
             </div>
             <div
                 ref="range"
@@ -42,18 +42,18 @@
                     <UISlider
                         v-model="min"
                         class="slider"
+                        :display-function="displayEngine"
                         :max="MAX_ENGINE"
-                        prepend="4."
-                        with-input
+                        with-display
                     >
                         <span class="label">Min:</span>
                     </UISlider>
                     <UISlider
                         v-model="max"
                         class="slider"
+                        :display-function="displayEngine"
                         :max="MAX_ENGINE"
-                        prepend="4."
-                        with-input
+                        with-display
                     >
                         <span class="label">Max:</span>
                     </UISlider>
@@ -68,12 +68,12 @@ import { defineComponent } from "vue";
 import { debounce } from "lodash";
 import UISlider from "@/components/ui/Slider.vue";
 
-const MAX_ENGINE = 27;
+const MAX_ENGINE = 28;
 
 enum EngineRange {
     All,
+    V500,
     V427,
-    V426,
     Range
 }
 
@@ -81,7 +81,7 @@ export default defineComponent({
     name: "UIEngineRange",
     components: { UISlider },
     emits: ["update:modelValue"],
-    data () {
+    data() {
         return {
             debounceUpdate: debounce(this.updateValue, 500),
             deploySelector: false,
@@ -93,46 +93,53 @@ export default defineComponent({
         };
     },
     computed: {
-        value () {
+        value() {
             switch (this.engineRange) {
             case EngineRange.V427:
-                return { max: [4, 27], min: [4, 27] };
-            case EngineRange.V426:
-                return { max: [4, 26], min: [4, 26] };
+                return { max: "4.27", min: "4.27" };
+            case EngineRange.V500:
+                return { max: "5.00", min: "5.00" };
             case EngineRange.Range:
-                return { max: [4, this.max], min: [4, this.min] };
+                return { max: this.displayEngine(this.max), min: this.displayEngine(this.min) };
             }
             return {};
         }
     },
     watch: {
-        engineRange () {
+        engineRange() {
             this.updateValue();
         },
-        max () {
+        max() {
             this.max = this.validateInput(this.max);
             this.min = Math.min(this.min, this.max);
             this.debounceUpdate();
         },
-        min () {
+        min() {
             this.min = this.validateInput(this.min);
             this.max = Math.max(this.min, this.max);
             this.debounceUpdate();
         }
     },
     methods: {
-        focusRange () {
+        displayEngine(value: number) {
+            const engine = this.getEngineFromValue(value);
+            return `${ engine[0] }.${ engine[1].toString().padStart(2, "0") }`;
+        },
+        focusRange() {
             this.deploySelector = true;
         },
-        unFocusRange (event: FocusEvent) {
+        getEngineFromValue(value: number) {
+            return value <= 27 ? [4, value] : [5, 28 - value];
+        },
+        unFocusRange(event: FocusEvent) {
             if (!this.$refs.range.contains(event.relatedTarget)) {
                 this.deploySelector = false;
             }
         },
-        updateValue () {
+        updateValue() {
             this.$emit("update:modelValue", this.value);
         },
-        validateInput (engineVersion: number) {
+        validateInput(engineVersion: number) {
             if (isNaN(engineVersion)) {
                 engineVersion = 0;
             }

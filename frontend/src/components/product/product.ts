@@ -8,9 +8,9 @@ export function displayDate (date: string): string {
     return format(new Date(date), "dd/MM/yy");
 }
 
-export function displayEngineVersion (engine: {max?: [number, number]; min?: [number, number]}): string {
+export function displayEngineVersion (engine: {max?: string; min?: string}): string {
     if (engine && engine.min && engine.max) {
-        return `${ engine.min[0] }.${ engine.min[1] }-${ engine.max[0] }.${ engine.max[1] }`;
+        return `${ engine.min }-${ engine.max }`;
     }
     else {
         return "None";

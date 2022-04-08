@@ -72,7 +72,7 @@ export async function processProductData(data: any): Promise<void> {
             return {
                 platforms: release.platform,
                 apps: release.compatibleApps,
-                updateDate: new Date(release.dateAdded)
+                ...(release.dateAdded && { updateDate: new Date(release.dateAdded) })
             };
         }),
         tags: [], //TODO: Tags
@@ -99,14 +99,14 @@ function addComputed(product: IProduct, data: any) {
     const embeddedContent = getEmbeddedContent();
 
     if (isBoosted) {
-        score.value *= 1.2;
+        score.value *= 1.33;
     }
 
     const engine = {} as any;
 
     if (data.compatibleApps.length > 0) {
-        engine.min = (_.first(data.compatibleApps) as string).split(".").map(element => parseInt(element));
-        engine.max = (_.last(data.compatibleApps) as string).split(".").map(element => parseInt(element));
+        engine.min = sanitizeEngineVersion(_.first(data.compatibleApps) as string);
+        engine.max = sanitizeEngineVersion(_.last(data.compatibleApps) as string);
     }
 
     product.computed = {
@@ -115,6 +115,13 @@ function addComputed(product: IProduct, data: any) {
         engine,
         embeddedContent
     };
+
+    function sanitizeEngineVersion(value: string) {
+        const engineVersion = value.split(".")
+            .map(element => parseInt(element).toString());
+        engineVersion[1] = engineVersion[1].padStart(2, "0");
+        return engineVersion.join(".");
+    }
 
     function getIsBoosted(): boolean {
         const orbitalString = "<a href=\"https://orbital-market.com/";
