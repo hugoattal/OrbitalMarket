@@ -48,20 +48,38 @@
                         <span class="type">Engine Version:</span> <span class="category">{{ category }}</span>
                     </p>
                 </div>
-                <UIButton
-                    class="link"
-                    :href="marketplaceLink"
-                    target="_blank"
-                >
-                    Unreal Marketplace <i class="las la-external-link-alt" />
-                </UIButton>
-                <UIButton
-                    class="link"
-                    :href="launcherLink"
-                    target="_blank"
-                >
-                    Epic Launcher <i class="las la-external-link-alt" />
-                </UIButton>
+                <div class="links">
+                    <UIButton
+                        class="link"
+                        :href="marketplaceLink"
+                        target="_blank"
+                    >
+                        <span>Unreal Marketplace <i class="las la-external-link-alt" /></span>
+                    </UIButton>
+                    <UIButton
+                        class="link"
+                        :href="launcherLink"
+                        target="_blank"
+                    >
+                        <span>Epic Launcher <i class="las la-external-link-alt" /></span>
+                    </UIButton>
+                    <div class="group">
+                        <UIButton
+                            class="link"
+                            :href="marketplaceLink + '/reviews'"
+                            target="_blank"
+                        >
+                            <span>Reviews <i class="las la-external-link-alt" /></span>
+                        </UIButton>
+                        <UIButton
+                            class="link"
+                            :href="marketplaceLink + '/questions'"
+                            target="_blank"
+                        >
+                            <span>Questions <i class="las la-external-link-alt" /></span>
+                        </UIButton>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="product-details">
@@ -239,15 +257,36 @@ h1 {
         }
     }
 
-    .description-short, .link {
+    .description-short {
         margin: var(--length-margin-base) 0;
     }
 
-    .link {
-        padding-left: var(--length-padding-xl);
+    .links {
+        margin: var(--length-margin-base) 0;
+        display: flex;
+        flex-direction: column;
+        gap: var(--length-gap-m);
+        align-items: stretch;
+    }
+
+    .group {
+        display: flex;
+        gap: var(--length-gap-m);
+
+        .link {
+            flex-basis: 50%;
+        }
+    }
+
+    .link span {
+        position: relative;
 
         .las {
+            font-size: 1rem;
             opacity: 0.5;
+            position: absolute;
+            right: -20px;
+            top: 2px;
         }
     }
 
@@ -269,7 +308,7 @@ h1 {
     }
 
     .la-external-link-alt {
-        padding-left: var(--length-padding-base);
+        padding-left: var(--length-padding-s);
     }
 }
 
