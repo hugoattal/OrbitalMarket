@@ -91,7 +91,7 @@
 import { defineComponent } from "vue";
 import ProductService, { IProduct } from "@/services/product.service";
 import UIButton from "@/components/ui/Button.vue";
-import UISlideshow from "@/components/ui/Slideshow.vue";
+import UISlideshow from "@/components/ui/slideshow/Slideshow.vue";
 import UIRating from "@/components/ui/Rating.vue";
 import { displayDate, displayPrice, displayEngineVersion, displayCategory } from "@/components/product/product";
 import UITabs from "@/components/ui/Tabs.vue";

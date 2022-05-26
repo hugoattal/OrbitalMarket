@@ -31,13 +31,40 @@
             </div>
         </div>
     </div>
+    <div
+        ref="previewElement"
+        class="slides"
+        @wheel.prevent="scrollPreviews">
+        <UISlideshowPreview
+            v-for="(slide, key) of slides"
+            :key="key"
+            class="slide"
+            :selected="currentIndex === key"
+            :url="slide"
+            @click="currentIndex = key"
+        />
+    </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
-import UISlideshowContent from "@/components/ui/SlideshowContent.vue";
+import { ref, computed } from "vue";
+import UISlideshowContent from "@/components/ui/slideshow/SlideshowContent.vue";
+import UISlideshowPreview from "@/components/ui/slideshow/SlideshowPreview.vue";
+
+const props = defineProps<{
+    slides: Array<string>;
+}>();
 
 const slideshow = ref(null);
+const previewElement = ref(null);
+const currentIndex = ref(0);
+
+function next () {
+    currentIndex.value = (currentIndex.value + 1) % props.slides.length;
+}
+function previous () {
+    currentIndex.value = (currentIndex.value - 1 + props.slides.length) % props.slides.length;
+}
 
 function toggleFullScreen() {
     if (!document.fullscreenElement) {
@@ -50,32 +77,20 @@ function toggleFullScreen() {
     }
 }
 
+function scrollPreviews(event: WheelEvent) {
+    previewElement.value.scrollLeft += event.deltaY;
+}
+
+const imageSlides = computed(() => {
+    return props.slides.filter;
+});
 </script>
 
 <script lang="ts">
-import { defineComponent, PropType } from "vue";
+import { defineComponent } from "vue";
 
 export default defineComponent({
     name: "UISlideshow",
-    props: {
-        slides: {
-            type: Array as PropType<Array<string>>,
-            required: true
-        }
-    },
-    data () {
-        return {
-            currentIndex: 0
-        };
-    },
-    methods: {
-        next () {
-            this.currentIndex = (this.currentIndex + 1) % this.slides.length;
-        },
-        previous () {
-            this.currentIndex = (this.currentIndex - 1 + this.slides.length) % this.slides.length;
-        }
-    }
 });
 </script>
 
@@ -157,6 +172,19 @@ export default defineComponent({
     .content {
         position: absolute;
         inset: 0;
+    }
+}
+
+.slides {
+    display: flex;
+    gap: var(--length-gap-s);
+    margin: var(--length-margin-s);
+    overflow-x: scroll;
+    overflow-y: hidden;
+
+    .slide {
+        cursor: pointer;
+        flex-shrink: 0;
     }
 }
 </style>

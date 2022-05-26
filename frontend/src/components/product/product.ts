@@ -1,6 +1,9 @@
 import { format } from "date-fns";
 
 export function displayPrice (price: number): string {
+    if (price === 0) {
+        return "Free";
+    }
     return `$${ (price / 100).toFixed(2) }`;
 }
 
