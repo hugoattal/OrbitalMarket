@@ -82,6 +82,14 @@
                         <div v-html="product.description.technical" />
                     </template>
                 </UITab>
+                <UITab>
+                    <template #title>
+                        Price history
+                    </template>
+                    <template #content>
+                        <ProductHistory :history="product.price.history"/>
+                    </template>
+                </UITab>
             </UITabs>
         </div>
     </div>
@@ -96,10 +104,11 @@ import UIRating from "@/components/ui/Rating.vue";
 import { displayDate, displayPrice, displayEngineVersion, displayCategory } from "@/components/product/product";
 import UITabs from "@/components/ui/Tabs.vue";
 import UITab from "@/components/ui/Tab.vue";
+import ProductHistory from "@/components/product/History.vue";
 
 export default defineComponent({
     name: "ProductDescription",
-    components: { UIButton, UIRating, UISlideshow, UITab, UITabs },
+    components: { ProductHistory, UIButton, UIRating, UISlideshow, UITab, UITabs },
     props: {
         productId: {
             type: String,

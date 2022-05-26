@@ -18,6 +18,7 @@ export interface IProduct {
             date: Date;
         }>;
     };
+    lastUpdate: Date;
     ratings: Array<number>;
     releaseDate: Date;
     description: {

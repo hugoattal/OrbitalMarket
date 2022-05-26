@@ -23,7 +23,16 @@ export const PartialProduct = {
             type: "object",
             properties: {
                 value: { type: "number" },
-                discount: { type: "number" }
+                history: {
+                    type: "array",
+                    items: {
+                        type: "object",
+                        properties: {
+                            value: { type: "number" },
+                            date: { type: "string", format: "date-time" }
+                        }
+                    }
+                }
             },
             additionalProperties: false
         },
