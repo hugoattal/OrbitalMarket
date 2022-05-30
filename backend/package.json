@@ -15,7 +15,8 @@
         "start": "cross-env NODE_ENV=production ts-node src/server.ts",
         "api:unreal": "cross-env NODE_ENV=production ts-node src/scrapper/unreal",
         "manual:update-score": "cross-env NODE_ENV=production ts-node src/scripts/updateScore",
-        "test": "cross-env NODE_ENV=test jest --runInBand"
+        "test": "cross-env NODE_ENV=test vitest",
+        "dev:test": "cross-env NODE_ENV=test vitest --ui"
     },
     "_moduleAliases": {
         "@": "./src"
@@ -39,30 +40,31 @@
         "uuid": "^8.3.2"
     },
     "devDependencies": {
+        "@faker-js/faker": "7.1.0",
         "@types/bcryptjs": "^2.4.2",
         "@types/cors": "^2.8.12",
         "@types/dotenv-safe": "^8.1.2",
         "@types/escape-html": "^1.0.2",
         "@types/http-errors": "^1.8.2",
         "@types/jest": "^27.5.1",
-        "@types/json-schema-faker": "^0.5.1",
         "@types/lodash": "^4.14.182",
-        "@types/node": "^17.0.35",
+        "@types/node": "^17.0.36",
         "@types/node-cron": "^3.0.1",
         "@types/uuid": "^8.3.4",
         "@typescript-eslint/eslint-plugin": "^5.26.0",
         "@typescript-eslint/parser": "^5.26.0",
+        "@vitest/ui": "^0.13.0",
         "cross-env": "^7.0.3",
         "eslint": "^8.16.0",
-        "jest": "^28.1.0",
         "json-schema-faker": "^0.5.0-rcv.42",
         "module-alias": "^2.2.2",
         "mongodb-memory-server": "^8.6.0",
         "nodemon": "^2.0.16",
         "sinon": "^14.0.0",
-        "ts-jest": "^28.0.3",
         "ts-node": "^10.8.0",
         "type-fest": "^2.13.0",
-        "typescript": "^4.7.2"
+        "typescript": "^4.7.2",
+        "vite": "^2.9.9",
+        "vitest": "^0.13.0"
     }
 }

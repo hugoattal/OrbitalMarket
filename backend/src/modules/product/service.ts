@@ -5,12 +5,12 @@ export * as utils from "./utils";
 
 export async function getById(id: string): Promise<IProductDocument | null> {
     if (isValidObjectId(id)) {
-        const product = await ProductModel.findById(id);
+        const product = await ProductModel.findById(id).populate("owner");
         if (product) {
             return product;
         }
     }
 
-    return ProductModel.findOne({ slug: id }).exec();
+    return ProductModel.findOne({ slug: id }).populate("owner").exec();
 }
 

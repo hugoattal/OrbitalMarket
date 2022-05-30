@@ -8,7 +8,7 @@ describe("database/test/fake", () => {
 
         const foundProduct = await ProductModel.findOne();
 
-        expect(product._id).toStrictEqual(foundProduct._id);
-        expect(product.title).toBe(foundProduct.title);
+        expect(product._id).toStrictEqual(foundProduct?._id);
+        expect(product.title).toBe(foundProduct?.title);
     });
 });

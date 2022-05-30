@@ -1,9 +1,8 @@
-import Mongo from "@/database";
 import _ from "lodash";
-import * as jsf from "json-schema-faker";
-import faker from "faker/locale/fr";
-
+import jsf from "json-schema-faker";
+import { faker } from "@faker-js/faker/locale/fr";
 import { PartialDeep } from "type-fest";
+import Mongo from "@/database";
 
 jsf.extend("faker", () => {
     return faker;
@@ -30,7 +29,7 @@ function makeJsonSchema(model: Mongo.Schema): any {
     const properties = {};
 
     model.eachPath((path, schemaType) => {
-        if (!(schemaType as any).isRequired) {
+        if (!(schemaType as any).isRequired && !(schemaType as any).options.faker) {
             return;
         }
         const options = (schemaType as any).options;

@@ -82,10 +82,6 @@ export async function processProductData(data: any): Promise<void> {
         }
     };
 
-    if (data.id === "fb89bca2541d4a8d84249cd3b536dd67") {
-        console.log(JSON.stringify(data, null, 2));
-    }
-
     addComputed(product, data);
 
     await Upsert.product(product);

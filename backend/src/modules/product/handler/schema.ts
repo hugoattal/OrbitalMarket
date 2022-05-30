@@ -6,7 +6,13 @@ export const PartialProduct = {
         _id: { type: "string" },
         title: { type: "string" },
         slug: { type: "string" },
-        owner: { type: "string" },
+        owner: {
+            type: "object",
+            properties: {
+                _id: { type: "string" },
+                name: { type: "string" }
+            }
+        },
         category: {
             type: "object",
             properties: {

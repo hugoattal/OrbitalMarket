@@ -14,7 +14,7 @@ describe("Migrations", () => {
     describe("doesConfigExist()", () => {
         beforeEach(async() => {
             await db.dropDatabase();
-        })
+        });
 
         test("should return false is there's no config collection", async () => {
             const doesConfigExist = await Migrate.getCurrentMigrationId();
@@ -32,6 +32,6 @@ describe("Migrations", () => {
 
         afterAll(async() => {
             await Migrate.migrateToLatest();
-        })
+        });
     });
 });

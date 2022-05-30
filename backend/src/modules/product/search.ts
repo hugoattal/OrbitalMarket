@@ -147,5 +147,14 @@ export async function search(params: ISearch): Promise<Array<IProductDocument>> 
         $limit: params.limit || 0
     });
 
+    aggregationStages.push({
+        $lookup: {
+            from: "users",
+            localField: "owner",
+            foreignField: "_id",
+            as: "owner"
+        }
+    });
+
     return ProductModel.aggregate(aggregationStages).exec();
 }

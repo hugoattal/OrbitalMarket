@@ -1,6 +1,6 @@
 <template>
     <div class="product-description">
-        <h1>{{ product.title }}</h1>
+        <h1>{{ product.title }} - <a :href="authorLink">{{ product.owner.name }}</a></h1>
         <div class="product-header">
             <div class="screen-panel">
                 <UISlideshow
@@ -105,7 +105,7 @@
                         Price history
                     </template>
                     <template #content>
-                        <ProductHistory :history="product.price.history"/>
+                        <ProductHistory :history="product.price.history" />
                     </template>
                 </UITab>
             </UITabs>
@@ -114,7 +114,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+export default {
+    name: "ProductDescription"
+};
+</script>
+
+<script setup lang="ts">
+import { computed, onMounted, onUnmounted, ref } from "vue";
 import ProductService, { IProduct } from "@/services/product.service";
 import UIButton from "@/components/ui/Button.vue";
 import UISlideshow from "@/components/ui/slideshow/Slideshow.vue";
@@ -124,55 +130,45 @@ import UITabs from "@/components/ui/Tabs.vue";
 import UITab from "@/components/ui/Tab.vue";
 import ProductHistory from "@/components/product/History.vue";
 
-export default defineComponent({
-    name: "ProductDescription",
-    components: { ProductHistory, UIButton, UIRating, UISlideshow, UITab, UITabs },
-    props: {
-        productId: {
-            type: String,
-            required: true
-        }
-    },
-    async setup(props) {
-        const product = await ProductService.getById(props.productId) as IProduct;
+const props = defineProps<{
+    productId: string;
+}>();
 
-        return { displayDate, displayEngineVersion, displayPrice, product };
-    },
-    data() {
-        return {
-            savedPageTitle: ""
-        };
-    },
-    computed: {
-        category() {
-            const categoryPath = this.product.category?.path[1];
-            return displayCategory(categoryPath || "Unknown");
-        },
-        isDiscounted() {
-            return this.product.discount.value > 0 && this.product.price.value > 0;
-        },
-        launcherLink(): string {
-            return `com.epicgames.launcher://ue/marketplace/product/${ this.product.slug }`;
-        },
-        marketplaceLink(): string {
-            return `https://www.unrealengine.com/marketplace/product/${ this.product.slug }`;
-        },
-        slides(): Array<string> {
-            if (this.product.computed.embeddedContent) {
-                return [...this.product.computed.embeddedContent, ...this.product.pictures.screenshot];
-            }
-            else {
-                return this.product.pictures.screenshot;
-            }
+const product = await ProductService.getById(props.productId) as IProduct;
+const savedPageTitle = ref("");
 
-        }
-    },
-    mounted() {
-        this.savedPageTitle = document.title;
-        document.title = this.product.title;
-    },
-    unmounted() {
-        document.title = this.savedPageTitle;
+onMounted(() => {
+    savedPageTitle.value = document.title;
+    document.title = product.title;
+});
+
+onUnmounted(() => {
+    document.title = savedPageTitle.value;
+});
+
+const category = computed(() => {
+    const categoryPath = product.category?.path[1];
+    return displayCategory(categoryPath || "Unknown");
+});
+
+const isDiscounted = computed(() => product.discount.value > 0 && product.price.value > 0);
+const launcherLink = computed(() => `com.epicgames.launcher://ue/marketplace/product/${ product.slug }`);
+const marketplaceLink = computed(() => `https://www.unrealengine.com/marketplace/product/${ product.slug }`);
+const authorLink = computed(() => {
+    const url = new URL(window.location);
+
+    const author = product.owner.name.includes(" ") ? `"${ product.owner.name }"` : product.owner.name;
+
+    url.searchParams.set("searchText", `author:${ author }`);
+    return url;
+});
+
+const slides = computed<Array<string>>(() => {
+    if (product.computed.embeddedContent) {
+        return [...product.computed.embeddedContent, ...product.pictures.screenshot];
+    }
+    else {
+        return product.pictures.screenshot;
     }
 });
 </script>
@@ -182,6 +178,14 @@ export default defineComponent({
 h1 {
     font-size: 200%;
     margin: 0;
+
+    a {
+        color: var(--color-primary);
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
 }
 
 .product-description {

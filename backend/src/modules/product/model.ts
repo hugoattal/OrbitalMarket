@@ -86,7 +86,7 @@ const productSchema: Mongo.Schema = new Mongo.Schema({
         value: {
             type: Number,
             required: true,
-            faker: { "random.number": [{ min: 0, max: 50 }] }
+            faker: { "datatype.number": [{ min: 0, max: 50 }] }
         },
         history: [
             {
@@ -130,7 +130,34 @@ const productSchema: Mongo.Schema = new Mongo.Schema({
         type: Mongo.Schema.Types.ObjectId,
         ref: "tag"
     }],
-    computed: Object,
+    computed: {
+        isBoosted: Boolean,
+        score: {
+            value: {
+                type: Number,
+                faker: { "datatype.number": [{ min: 0, max: 1000 }] }
+            },
+            totalRating: {
+                type: Number,
+                faker: { "datatype.number": [{ min: 0, max: 200 }] }
+            },
+            meanRating: {
+                type: Number,
+                faker: { "datatype.number": [{ min: 0, max: 5 }] }
+            }
+        },
+        engine: {
+            min: {
+                type: String,
+                faker: "4.20"
+            },
+            max: {
+                type: String,
+                faker: "5.00"
+            }
+        },
+        embeddedContent: [String]
+    },
     meta: Object
 });
 

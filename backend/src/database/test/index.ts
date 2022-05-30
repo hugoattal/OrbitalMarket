@@ -1,4 +1,4 @@
-import { connectDatabase, closeDatabase } from "../utils/connection";
+import { connectDatabase, closeDatabase } from "@/database";
 import { MongoMemoryServer } from "mongodb-memory-server";
 import mongoose from "mongoose";
 import * as Migrate from "@/database/migration/utils/migrate";
@@ -13,8 +13,8 @@ beforeAll(async () => {
         throw new Error("You must be in test environment to execute the tests");
     }
 
-    mongoServer = new MongoMemoryServer();
-    process.env.DB_URI = await mongoServer.getUri();
+    mongoServer = await MongoMemoryServer.create();
+    process.env.DB_URI = mongoServer.getUri();
     await connectDatabase();
 });
 

@@ -4,3 +4,7 @@ export function makeSlug(text: string) {
         .replace(/\s+/g, "-")
         .replace(/-+/g, "-");
 }
+
+export function getAuthor(_text: string) {
+    return "";
+}
