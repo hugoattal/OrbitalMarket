@@ -6,7 +6,7 @@
     >
         <article
             class="product"
-            :class="{boost: product.computed.isBoosted, [configStore.displayType]: true}"
+            :class="{boost: boostedClass, [configStore.displayType]: true}"
         >
             <Box3D
                 v-if="configStore.displayType === 'box'"
@@ -21,20 +21,20 @@
             >
             <div class="icons">
                 <div class="left">
-                    <div class="expand-link icon">
-                        <a
-                            :href="`/product/${product.slug}`"
-                            target="_blank"
-                            @click.stop.prevent="goToProductPage"
-                        >
-                            <i class="las la-expand" />
-                        </a>
-                    </div>
+                    <a
+                        class="expand-link icon"
+                        :href="`/product/${product.slug}`"
+                        target="_blank"
+                        @click.stop.prevent="goToProductPage"
+                    >
+                        <i class="las la-expand" />
+                    </a>
                 </div>
                 <div class="right">
-                    <div class="wishlist icon">
-                        <i class="lar la-star" />
-                    </div>
+                    <ProductCardWish
+                        class="wishlist icon"
+                        :product-id="product._id"
+                    />
                     <div
                         v-if="product.computed.isBoosted"
                         class="boost icon"
@@ -122,6 +122,7 @@ import {
 } from "@/components/product/product";
 import router from "@/router";
 import { useConfigStore } from "@/stores/config";
+import ProductCardWish from "@/components/product/CardWish.vue";
 
 const props = defineProps<{
     product: ISearchProduct;
@@ -130,6 +131,10 @@ const props = defineProps<{
 const configStore = useConfigStore();
 
 const showModal = ref(false);
+
+const boostedClass = computed(() => {
+    return configStore.wishMap.has(props.product._id) || props.product.computed.isBoosted;
+});
 
 const category = computed(() => {
     const categoryPath = props.product.category?.path[1];
@@ -316,13 +321,11 @@ function goToProductPage() {
     }
 
     .expand-link {
-        a {
-            display: inline-block;
-            color: var(--color-content-50);
+        display: inline-block;
+        color: var(--color-content-50);
 
-            &:hover {
-                color: var(--color-primary);
-            }
+        &:hover {
+            color: var(--color-primary);
         }
     }
 
