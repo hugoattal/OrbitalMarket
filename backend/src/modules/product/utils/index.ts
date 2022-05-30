@@ -6,8 +6,6 @@ export function makeSlug(text: string) {
 }
 
 export function getAuthor(text: string) {
-    console.log({ text });
-
     let author;
 
     text = text.replaceAll(/author:"(.+)"/g, (_substring, matchedAuthor) => {
