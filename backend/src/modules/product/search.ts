@@ -1,8 +1,10 @@
 import { ESortDirection, ESortField, ISearch } from "@/modules/product/handler/schema";
 import ProductModel, { IProductDocument } from "@/modules/product/model";
+import UserModel from "@/modules/user/model";
 import { has } from "lodash";
 import * as mongoUtils from "@/utils/mongo";
 import { PipelineStage } from "mongoose";
+import { getAuthor } from "@/modules/product/utils";
 
 export async function search(params: ISearch): Promise<Array<IProductDocument>> {
     if (!has(params, "skip")) {
@@ -19,6 +21,17 @@ export async function search(params: ISearch): Promise<Array<IProductDocument>> 
 
     if (!has(params, "sortField")) {
         params.sortField = ESortField.popularity;
+    }
+
+    const authors:Array<string> = [];
+
+    if (params.searchText) {
+        const { text, author } = getAuthor(params.searchText);
+        params.searchText = text;
+
+        if (author) {
+            authors.push(author);
+        }
     }
 
     const sortArgument = {} as Record<string, 1 | -1 | { $meta: "textScore" }>;
@@ -52,6 +65,16 @@ export async function search(params: ISearch): Promise<Array<IProductDocument>> 
     const aggregationStages: Array<PipelineStage> = [];
 
     const matchStage = [];
+
+    if (authors.length) {
+        const author = await UserModel.findOne({
+            name: authors[0]
+        });
+
+        matchStage.push({
+            owner: author?._id
+        });
+    }
 
     if (params.engine) {
         matchStage.push(
@@ -153,6 +176,12 @@ export async function search(params: ISearch): Promise<Array<IProductDocument>> 
             localField: "owner",
             foreignField: "_id",
             as: "owner"
+        }
+    });
+
+    aggregationStages.push({
+        $addFields: {
+            owner: { $first: "$owner" }
         }
     });
 

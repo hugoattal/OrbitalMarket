@@ -6,10 +6,10 @@
     >
         <article
             class="product"
-            :class="{boost: product.computed.isBoosted, [displayType]: true}"
+            :class="{boost: product.computed.isBoosted, [configStore.displayType]: true}"
         >
             <Box3D
-                v-if="displayType === 'box'"
+                v-if="configStore.displayType === 'box'"
                 :background="product.pictures.thumbnail[0]"
                 class="box"
             />
@@ -20,23 +20,30 @@
                 :src="product.pictures.thumbnail[0]"
             >
             <div class="icons">
-                <div class="expand-link">
-                    <a
-                        :href="`/product/${product.slug}`"
-                        target="_blank"
-                        @click.stop.prevent="goToProductPage"
-                    >
-                        <i class="las la-expand" />
-                    </a>
+                <div class="left">
+                    <div class="expand-link icon">
+                        <a
+                            :href="`/product/${product.slug}`"
+                            target="_blank"
+                            @click.stop.prevent="goToProductPage"
+                        >
+                            <i class="las la-expand" />
+                        </a>
+                    </div>
                 </div>
-                <div
-                    v-if="product.computed.isBoosted"
-                    class="boost-icon"
-                    @click.stop
-                >
-                    <i class="las la-meteor" />
-                    <div class="tooltip">
-                        This product support the <b>Orbital Market</b> by adding a link in his description.
+                <div class="right">
+                    <div class="wishlist icon">
+                        <i class="lar la-star" />
+                    </div>
+                    <div
+                        v-if="product.computed.isBoosted"
+                        class="boost icon"
+                        @click.stop
+                    >
+                        <i class="las la-meteor" />
+                        <div class="tooltip">
+                            This product support the <b>Orbital Market</b> by adding a link in his description.
+                        </div>
                     </div>
                 </div>
             </div>
@@ -77,7 +84,8 @@
                 <div class="info">
                     <p><span class="type">Released:</span> {{ displayDate(product.releaseDate) }}</p>
                     <p><span class="type">Engine version:</span> {{ displayEngineVersion(product.computed.engine) }}
-                    </p><p><span class="type">Category:</span> <span class="category">{{ category }}</span>
+                    </p>
+                    <p><span class="type">Category:</span> <span class="category">{{ category }}</span>
                     </p>
                 </div>
             </div>
@@ -94,55 +102,51 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from "vue";
+export default {
+    name: "ProductCard"
+};
+</script>
+
+<script setup lang="ts">
+import { computed, ref } from "vue";
 import { ISearchProduct } from "@/services/search.service";
 import UIRating from "@/components/ui/Rating.vue";
 import Box3D from "@/components/ui/Box3D.vue";
 import UIModal from "@/components/ui/Modal.vue";
 import ProductModal from "@/components/product/Modal.vue";
-import { displayDate, displayPrice, displayEngineVersion, displayCategory } from "@/components/product/product";
+import {
+    displayDate,
+    displayPrice,
+    displayEngineVersion,
+    displayCategory
+} from "@/components/product/product";
 import router from "@/router";
+import { useConfigStore } from "@/stores/config";
 
-export default defineComponent({
-    name: "ProductCard",
-    components: { Box3D, ProductModal, UIModal, UIRating },
-    props: {
-        displayType: {
-            type: String,
-            default: "square",
-            validator: (value: string) => ["box", "square", "list"].includes(value)
-        },
-        product: {
-            type: Object as PropType<ISearchProduct>,
-            required: true
-        }
-    },
-    setup () {
-        return { displayDate, displayEngineVersion, displayPrice };
-    },
-    data () {
-        return {
-            showModal: false
-        };
-    },
-    computed: {
-        category() {
-            const categoryPath = this.product.category?.path[1];
-            return displayCategory(categoryPath || "Unknown");
-        },
-        isDiscounted () {
-            return this.product.discount.value > 0 && this.product.price.value > 0;
-        },
-        marketplaceLink () {
-            return `https://www.unrealengine.com/marketplace/product/${ this.product.slug }`;
-        }
-    },
-    methods: {
-        goToProductPage () {
-            router.push({ name: "product", params: { slug: this.product.slug } });
-        }
-    }
+const props = defineProps<{
+    product: ISearchProduct;
+}>();
+
+const configStore = useConfigStore();
+
+const showModal = ref(false);
+
+const category = computed(() => {
+    const categoryPath = props.product.category?.path[1];
+    return displayCategory(categoryPath || "Unknown");
 });
+
+const isDiscounted = computed(() => {
+    return props.product.discount.value > 0 && props.product.price.value > 0;
+});
+
+const marketplaceLink = computed(() => {
+    return `https://www.unrealengine.com/marketplace/product/${ props.product.slug }`;
+});
+
+function goToProductPage() {
+    router.push({ name: "product", params: { slug: props.product.slug } });
+}
 </script>
 
 <style scoped lang="scss">
@@ -176,13 +180,13 @@ export default defineComponent({
         .icons {
             opacity: 0;
 
-            .expand-link {
+            .left {
                 border-top-left-radius: var(--length-radius-base);
                 border-bottom-right-radius: var(--length-radius-base);
                 background: var(--color-content-background);
             }
 
-            .boost-icon {
+            .right {
                 border-top-right-radius: var(--length-radius-base);
                 border-bottom-left-radius: var(--length-radius-base);
                 background: var(--color-content-background);
@@ -271,6 +275,7 @@ export default defineComponent({
                 .price {
                     display: flex;
                     gap: var(--length-padding-base);
+
                     .discount {
                         padding-top: 0;
                         padding-bottom: 0;
@@ -307,12 +312,12 @@ export default defineComponent({
         left: 0;
         display: flex;
         justify-content: space-between;
+        align-items: flex-start;
     }
 
     .expand-link {
         a {
             display: inline-block;
-            padding: var(--length-padding-base);
             color: var(--color-content-50);
 
             &:hover {
@@ -321,9 +326,8 @@ export default defineComponent({
         }
     }
 
-    .boost-icon {
+    .boost {
         position: relative;
-        padding: var(--length-padding-base);
         color: var(--color-primary);
 
         &:hover .tooltip {
@@ -345,6 +349,11 @@ export default defineComponent({
             border: 1px solid var(--color-primary);
             box-sizing: border-box;
         }
+    }
+
+    .icon {
+        padding: var(--length-padding-base);
+        color: var(--color-content-50);
     }
 
     .box {

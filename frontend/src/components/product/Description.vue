@@ -1,12 +1,16 @@
 <template>
     <div class="product-description">
-        <h1>{{ product.title }} - <a :href="authorLink">{{ product.owner.name }}</a></h1>
+        <h1>
+            {{ product.title }} - <RouterLink :to="authorLink">
+                {{ product.owner.name }}
+            </RouterLink>
+        </h1>
         <div class="product-header">
             <div class="screen-panel">
                 <UISlideshow
                     class="slideshow"
                     :slides="slides"
-                />
+                />ri
             </div>
             <div class="description-panel">
                 <div class="rating-wrapper">
@@ -155,12 +159,13 @@ const isDiscounted = computed(() => product.discount.value > 0 && product.price.
 const launcherLink = computed(() => `com.epicgames.launcher://ue/marketplace/product/${ product.slug }`);
 const marketplaceLink = computed(() => `https://www.unrealengine.com/marketplace/product/${ product.slug }`);
 const authorLink = computed(() => {
-    const url = new URL(window.location);
+    const urlSearchParams = new URLSearchParams();
 
     const author = product.owner.name.includes(" ") ? `"${ product.owner.name }"` : product.owner.name;
 
-    url.searchParams.set("searchText", `author:${ author }`);
-    return url;
+    urlSearchParams.set("searchText", `author:${ author }`);
+
+    return `/search?${ urlSearchParams.toString() }`;
 });
 
 const slides = computed<Array<string>>(() => {

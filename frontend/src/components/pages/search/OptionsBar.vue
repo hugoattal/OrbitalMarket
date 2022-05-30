@@ -1,6 +1,6 @@
 <template>
     <div class="display-bar">
-        <UIRadioList v-model="displayType">
+        <UIRadioList v-model="configStore.displayType">
             <template #label>
                 Display:
             </template>
@@ -20,21 +20,21 @@
                 </div>
             </UIRadioElement>
         </UIRadioList>
-        <UIRadioButton v-model="discounted">
+        <UIRadioButton v-model="searchStore.discounted">
             Discounted
         </UIRadioButton>
-        <UICategorySelect v-model="categories" />
-        <UIPriceRange v-model="priceRange">
+        <UICategorySelect v-model="searchStore.categories" />
+        <UIPriceRange v-model="searchStore.priceRange">
             <template #label>
                 Price:
             </template>
         </UIPriceRange>
-        <UIEngineRange v-model="engineRange">
+        <UIEngineRange v-model="searchStore.engineRange">
             <template #label>
                 Engine:
             </template>
         </UIEngineRange>
-        <UITimeRange v-model="timeRange">
+        <UITimeRange v-model="searchStore.timeRange">
             <template #label>
                 Released:
             </template>
@@ -42,9 +42,7 @@
     </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
-import StorageModule from "@/modules/storage.module";
+<script setup lang="ts">
 import UIRadioList from "@/components/ui/RadioList.vue";
 import UIRadioElement from "@/components/ui/RadioElement.vue";
 import UIPriceRange from "@/components/ui/range/PriceRange.vue";
@@ -52,82 +50,11 @@ import UIEngineRange from "@/components/ui/range/EngineRange.vue";
 import UIRadioButton from "@/components/ui/RadioButton.vue";
 import UICategorySelect from "@/components/ui/CategorySelect.vue";
 import UITimeRange from "@/components/ui/range/TimeRange.vue";
+import { useConfigStore } from "@/stores/config";
+import { useSearchStore } from "@/stores/search";
 
-export default defineComponent({
-    components: { UICategorySelect, UIEngineRange, UIPriceRange, UIRadioButton, UIRadioElement, UIRadioList, UITimeRange },
-    emits: ["update:modelValue"],
-    data () {
-        return {
-            categories: [],
-            discounted: false,
-            displayType: StorageModule.getElement("displayType", "square"),
-            engineRange: {},
-            priceRange: {},
-            timeRange: {}
-        };
-    },
-    watch: {
-        categories: {
-            handler () {
-                this.updateValue();
-            }
-        },
-        discounted: {
-            handler () {
-                this.updateValue();
-            }
-        },
-        displayType: {
-            handler () {
-                StorageModule.setElement("displayType", this.displayType);
-                this.updateValue();
-            },
-            immediate: true
-        },
-        engineRange: {
-            handler () {
-                this.updateValue();
-            }
-        },
-        priceRange: {
-            handler () {
-                this.updateValue();
-            }
-        },
-        timeRange: {
-            handler () {
-                this.updateValue();
-            }
-        }
-    },
-    methods: {
-        updateValue () {
-            const options = {} as Record<string, any>;
-
-            options.displayType = this.displayType;
-
-            if (Object.keys(this.priceRange).length) {
-                options.priceRange = this.priceRange;
-            }
-
-            if (Object.keys(this.engineRange).length) {
-                options.engineRange = this.engineRange;
-            }
-
-            if (Object.keys(this.timeRange).length) {
-                options.timeRange = this.timeRange;
-            }
-
-            if (this.discounted) {
-                options.discounted = this.discounted;
-            }
-
-            options.categories = this.categories;
-
-            this.$emit("update:modelValue", options);
-        }
-    }
-});
+const configStore = useConfigStore();
+const searchStore = useSearchStore();
 </script>
 
 <style scoped lang="scss">

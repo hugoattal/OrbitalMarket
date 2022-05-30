@@ -5,6 +5,25 @@ export function makeSlug(text: string) {
         .replace(/-+/g, "-");
 }
 
-export function getAuthor(_text: string) {
-    return "";
+export function getAuthor(text: string) {
+    console.log({ text });
+
+    let author;
+
+    text = text.replaceAll(/author:"(.+)"/g, (_substring, matchedAuthor) => {
+        author = matchedAuthor;
+        return "";
+    });
+
+    text = text.replaceAll(/author:(\S+)/g, (_substring, matchedAuthor) => {
+        author = matchedAuthor;
+        return "";
+    });
+
+    text = text.replaceAll(/\s+/g, " ");
+
+    return {
+        text,
+        author
+    };
 }

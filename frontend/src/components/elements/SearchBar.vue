@@ -3,9 +3,9 @@
         <UIInput
             ref="search-input"
             v-model="searchText"
+            autofocus
             class="search-input"
             prefix-icon="la-satellite-dish"
-            autofocus
             @validate="search"
         >
             <template #append>
@@ -22,25 +22,29 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+
+export default {
+    name: "LandingSearchBar"
+};
+</script>
+
+<script setup lang="ts">
+import { useRoute } from "vue-router";
+import { ref, watch } from "vue";
 import ThemeSwitcher from "@/components/theme/Switcher.vue";
 import Button from "@/components/ui/Button.vue";
 import router from "@/router";
 import UIInput from "@/components/ui/Input.vue";
 
-export default defineComponent({
-    name: "LandingSearchBar",
-    components: { UIInput, Button, ThemeSwitcher },
-    data () {
-        return {
-            searchText: this.$route.query.searchText || ""
-        };
-    },
-    methods: {
-        search () {
-            router.push({ name: "search", query: { ...this.$route.query, searchText: this.searchText } });
-        }
-    }
+const route = useRoute();
+const searchText = ref(route.query.searchText || "");
+
+function search () {
+    router.push({ name: "search", query: { ...route.query, searchText: searchText.value } });
+}
+
+watch(() => route.query.searchText, () => {
+    searchText.value = route.query.searchText || "";
 });
 </script>
 
