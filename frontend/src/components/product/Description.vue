@@ -10,7 +10,7 @@
                 <UISlideshow
                     class="slideshow"
                     :slides="slides"
-                />ri
+                />
             </div>
             <div class="description-panel">
                 <div class="rating-wrapper">

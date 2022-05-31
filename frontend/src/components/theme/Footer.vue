@@ -1,12 +1,12 @@
 <template>
     <div class="footer">
-        <a href="https://twitter.com/HugoAttal"><i
-            class="lab la-twitter"
-        /> Hugo Attal</a>
-        <span class="separator">|</span>
         <a href="https://github.com/hugoattal/OrbitalMarket"><i
             class="lab la-github"
         /> GitHub Repo</a>
+        <span class="separator">|</span>
+        <a href="https://twitter.com/HugoAttal"><i
+            class="lab la-twitter"
+        /> Hugo Attal</a>
         <span class="separator">|</span>
         <a href="https://forums.unrealengine.com/unreal-engine/marketplace/1857381-orbital-market-search-engine-for-the-ue-marketplace"><i
             class="las la-comments"

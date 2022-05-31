@@ -12,6 +12,17 @@
                 <SearchBar />
                 <SearchOptions />
             </div>
+            <div class="networks">
+                <a href="https://github.com/hugoattal/OrbitalMarket"><i
+                    class="lab la-github"
+                /> GitHub</a>
+                <a href="https://twitter.com/HugoAttal"><i
+                    class="lab la-twitter"
+                /> Twitter</a>
+                <a href="https://forums.unrealengine.com/unreal-engine/marketplace/1857381-orbital-market-search-engine-for-the-ue-marketplace"><i
+                    class="las la-comments"
+                /> Epic Forum</a>
+            </div>
         </div>
         <SearchResults />
     </div>
@@ -55,6 +66,7 @@ export default defineComponent({
     .search {
         height: 180px;
         padding-bottom: 20px;
+        position: relative;
 
         display: flex;
         justify-content: center;
@@ -65,8 +77,37 @@ export default defineComponent({
         border-bottom: 1px solid var(--color-content-light);
         box-shadow: 0 0 10px var(--color-shadow);
 
+        @media screen and (max-width: 700px) {
+            padding-top: 16px
+        }
+
         @media screen and (max-width: 500px) {
             height: 220px;
+            padding-top: 32px
+        }
+
+        .networks {
+            position: absolute;
+            top: 0;
+            right: 0;
+            display: flex;
+            padding: var(--length-padding-s) var(--length-padding-l);
+            gap: var(--length-gap-m);
+
+            a {
+                display: flex;
+                align-items: center;
+                gap: var(--length-gap-xs);
+                color: var(--color-content-50);
+
+                &:hover {
+                    color: var(--color-primary);
+                }
+            }
+
+            .las, .lab {
+                font-size: 1.55rem;
+            }
         }
     }
 }

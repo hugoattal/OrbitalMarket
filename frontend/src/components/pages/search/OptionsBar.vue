@@ -60,7 +60,7 @@ const searchStore = useSearchStore();
 <style scoped lang="scss">
 .display-bar {
     display: flex;
-    gap: var(--length-margin-l);
+    gap: var(--length-margin-base);
     flex-wrap: wrap;
 }
 </style>
