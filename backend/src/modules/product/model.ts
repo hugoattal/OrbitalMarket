@@ -137,7 +137,7 @@ const productSchema: Mongo.Schema = new Mongo.Schema({
                 type: Number,
                 faker: { "datatype.number": [{ min: 0, max: 1000 }] }
             },
-            totalRating: {
+            totalRatings: {
                 type: Number,
                 faker: { "datatype.number": [{ min: 0, max: 200 }] }
             },
