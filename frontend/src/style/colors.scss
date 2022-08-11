@@ -7,14 +7,15 @@
     --color-landing-content: black;
 
     --color-background: hsl(210, 10%, 98%);
-    --color-primary: hsl(210, 90%, 50%);
+    --color-primary: hsl(210, 90%, 60%);
     --color-primary-transparent: hsla(210, 90%, 50%, 0.1);
     --color-content-background: hsl(210, 25%, 100%);
     --color-content-light: hsl(210, 25%, 90%);
     --color-content-highlight: hsl(210, 25%, 70%);
 
     --color-content: hsl(0, 0%, 08%);
-    --color-content-50: hsla(0, 0%, 08%, 0.3);
+    --color-content-30: hsla(0, 0%, 08%, 0.3);
+    --color-content-50: hsla(0, 0%, 08%, 0.5);
     --color-shadow: rgba(0, 0, 0, 0.05);
     --color-shadow-dark: rgba(0, 0, 0, 0.5);
     --color-light: rgba(255, 255, 255, 0.5);
@@ -32,7 +33,8 @@
     --color-content-highlight: hsl(210, 25%, 35%);
 
     --color-content: hsl(0, 0%, 90%);
-    --color-content-50: hsla(0, 0%, 90%, 0.3);
+    --color-content-30: hsla(0, 0%, 90%, 0.3);
+    --color-content-50: hsla(0, 0%, 90%, 0.5);
     --color-shadow: rgba(0, 0, 0, 0.2);
     --color-shadow-dark: rgba(0, 0, 0, 0.5);
     --color-light: rgba(255, 255, 255, 0.05);

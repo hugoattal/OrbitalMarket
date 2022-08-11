@@ -1,16 +1,17 @@
 <template>
     <div class="page">
-        <div class="support">
-            <span>🇺🇦 Orbital Market stands with Ukraine. <a
-                href="https://www.icrc.org/en/donate/ukraine"
-                target="_blank"
-            >Support the Red Cross</a></span>
-        </div>
+        <SupportBar />
         <div class="search">
             <Logo role="banner" />
             <div role="search">
                 <SearchBar />
                 <SearchOptions />
+            </div>
+            <div class="dashboard">
+                <RouterLink to="dashboard">
+                    <i class="la la-sliders-h" />
+                    Dashboard
+                </RouterLink>
             </div>
             <div class="networks">
                 <a
@@ -43,10 +44,11 @@ import SearchBar from "@/components/elements/SearchBar.vue";
 import SearchResults from "@/components/pages/search/Results.vue";
 import SearchOptions from "@/components/pages/search/Options.vue";
 import Logo from "@/components/pages/search/Logo.vue";
+import SupportBar from "@/components/elements/SupportBar.vue";
 
 export default defineComponent({
     name: "SearchLayout",
-    components: { Logo, SearchBar, SearchOptions, SearchResults }
+    components: { Logo, SearchBar, SearchOptions, SearchResults, SupportBar }
 });
 </script>
 
@@ -55,22 +57,6 @@ export default defineComponent({
     background: var(--color-background);
     color: var(--color-content);
     min-height: 100vh;
-
-    .support {
-        display: flex;
-        justify-content: center;
-        padding: var(--length-padding-base);
-        text-align: center;
-
-        a {
-            color: #ffd500;
-            font-weight: 600;
-
-            &:hover {
-                text-decoration: underline;
-            }
-        }
-    }
 
     .search {
         height: 180px;
@@ -95,12 +81,9 @@ export default defineComponent({
             padding-top: 32px
         }
 
-        .networks {
-            position: absolute;
-            top: 0;
-            right: 0;
+        .dashboard, .networks {
             display: flex;
-            padding: var(--length-padding-s) var(--length-padding-l);
+            padding: var(--length-padding-s) var(--length-padding-base);
             gap: var(--length-gap-m);
 
             a {
@@ -114,9 +97,21 @@ export default defineComponent({
                 }
             }
 
-            .las, .lab {
+            .la, .las, .lab {
                 font-size: 1.55rem;
             }
+        }
+
+        .dashboard {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .networks {
+            position: absolute;
+            top: 0;
+            right: 0;
         }
     }
 }

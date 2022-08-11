@@ -133,7 +133,7 @@ const configStore = useConfigStore();
 const showModal = ref(false);
 
 const boostedClass = computed(() => {
-    return configStore.wishMap.has(props.product._id) || props.product.computed.isBoosted;
+    return configStore.favSet.has(props.product._id) || props.product.computed.isBoosted;
 });
 
 const category = computed(() => {
@@ -322,7 +322,7 @@ function goToProductPage() {
 
     .expand-link {
         display: inline-block;
-        color: var(--color-content-50);
+        color: var(--color-content-30);
 
         &:hover {
             color: var(--color-primary);
@@ -356,7 +356,7 @@ function goToProductPage() {
 
     .icon {
         padding: var(--length-padding-base);
-        color: var(--color-content-50);
+        color: var(--color-content-30);
     }
 
     .box {

@@ -27,15 +27,15 @@ const props = defineProps<{
 const configStore = useConfigStore();
 
 const iconClass = computed(() => {
-    return configStore.wishMap.has(props.productId) ? "las" : "lar";
+    return configStore.favSet.has(props.productId) ? "las" : "lar";
 });
 
 function toggleWish() {
-    if (configStore.wishMap.has(props.productId)) {
-        configStore.wishMap.delete(props.productId);
+    if (configStore.favSet.has(props.productId)) {
+        configStore.favSet.delete(props.productId);
     }
     else {
-        configStore.wishMap.set(props.productId, true);
+        configStore.favSet.add(props.productId);
     }
 }
 </script>

@@ -79,7 +79,7 @@ export default defineComponent({
         .las {
             padding: var(--length-padding-base);
             display: inline-block;
-            color: var(--color-content-50);
+            color: var(--color-content-30);
             cursor: pointer;
 
             &:hover {

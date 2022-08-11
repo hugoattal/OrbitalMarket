@@ -3,39 +3,47 @@ import Landing from "../views/Landing.vue";
 
 const routes: Array<RouteRecordRaw> = [
     {
-        component: Landing,
         name: "landing",
-        path: "/",
+        component: Landing,
         meta: {
-            guest: true,
-            title: "Orbital Market"
-        }
+            title: "Orbital Market",
+            guest: true
+        },
+        path: "/"
     },
     {
-        component: () => import(/* webpackChunkName: "search" */ "../views/Search.vue"),
         name: "search",
-        path: "/search",
+        component: () => import(/* webpackChunkName: "search" */ "../views/Search.vue"),
         meta: {
-            guest: true,
-            title: "Orbital Market Search"
-        }
+            title: "Orbital Market Search",
+            guest: true
+        },
+        path: "/search"
     },
     {
-        component: () => import(/* webpackChunkName: "product" */ "../views/Product.vue"),
         name: "product",
-        path: "/product/:slug",
+        component: () => import(/* webpackChunkName: "product" */ "../views/Product.vue"),
         meta: {
             guest: true
-        }
+        },
+        path: "/product/:slug"
     },
     {
-        component: () => import(/* webpackChunkName: "notFound" */ "../views/NotFound.vue"),
-        name: "notFound",
-        path: "/:pathMatch(.*)*",
+        name: "dashboard",
+        component: () => import(/* webpackChunkName: "product" */ "../views/Dashboard.vue"),
         meta: {
-            guest: true,
-            title: "Orbital Market - Lost in space"
-        }
+            guest: true
+        },
+        path: "/dashboard"
+    },
+    {
+        name: "notFound",
+        component: () => import(/* webpackChunkName: "notFound" */ "../views/NotFound.vue"),
+        meta: {
+            title: "Orbital Market - Lost in space",
+            guest: true
+        },
+        path: "/:pathMatch(.*)*"
     }
 ];
 

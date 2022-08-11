@@ -5,6 +5,6 @@ export const useConfigStore = defineStore({
     id: "config",
     state: () => ({
         displayType: useLocalStorage("displayType", "square"),
-        wishMap: useLocalStorage<Map<string, boolean>>("wishMap", new Map())
+        favSet: useLocalStorage<Set<string>>("favSet", new Set())
     })
 });
