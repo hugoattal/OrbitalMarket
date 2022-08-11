@@ -2,7 +2,7 @@ import "module-alias/register";
 import { connectDatabase } from "@/database";
 import * as Fastify from "fastify";
 import cors from "cors";
-import Middie from "middie";
+import fastifyMiddie from "@fastify/middie";
 
 import * as Crons from "@/crons";
 
@@ -21,7 +21,7 @@ async function init() {
 
     const server: Fastify.FastifyInstance = Fastify.fastify({ logger: isDevEnvironment });
 
-    await server.register(Middie);
+    await server.register(fastifyMiddie);
 
     server.use(cors({
         origin: process.env.CORS_ORIGIN,
@@ -37,7 +37,7 @@ async function init() {
 }
 
 init().then((server) => {
-    server.listen(Number(process.env.BACKEND_PORT), (error: Error | null) => {
+    server.listen({ port: Number(process.env.BACKEND_PORT) }, (error: Error | null) => {
         server.ready(() => {
             if (isDevEnvironment) {
                 console.log(server.printRoutes());

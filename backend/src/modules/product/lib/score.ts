@@ -14,11 +14,11 @@ export async function updateScores() {
     await ProductModel.bulkWrite(
         products.map(product => ({
             updateOne: {
-                filter: { _id: product._id },
+                filter: { _id: product.id },
                 update: {
                     "computed.score": computeScore(product.ratings, product.releaseDate, product.price.value === 0)
                 }
-            }
+            } as any // Fix weird typescript circular reference, probably a bug in mongoose typing
         })
         ));
 }

@@ -166,16 +166,25 @@ export const Search = {
                 type: "array", items: { type: "string" }
             },
             engine: {
-                min: { type: "string" },
-                max: { type: "string" }
+                type: "object",
+                properties: {
+                    min: { type: "string" },
+                    max: { type: "string" }
+                }
             },
             price: {
-                min: { type: "number" },
-                max: { type: "number" }
+                type: "object",
+                properties: {
+                    min: { type: "number" },
+                    max: { type: "number" }
+                }
             },
             time: {
-                min: { type: "number" },
-                max: { type: "number" }
+                type: "object",
+                properties: {
+                    min: { type: "number" },
+                    max: { type: "number" }
+                }
             },
             discounted: { type: "boolean" }
         },
