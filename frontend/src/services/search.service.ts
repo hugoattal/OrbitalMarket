@@ -23,6 +23,10 @@ export interface ISearchProduct {
 }
 
 export default {
+    async list(ids: Array<string>): Promise<Array<ISearchProduct>> {
+        const result = await ApiService.post("/products/list", { ids });
+        return result.data;
+    },
     async query (params: any): Promise<Array<ISearchProduct>> {
         const result = await ApiService.post("/products/search", params);
         return result.data;

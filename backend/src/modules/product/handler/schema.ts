@@ -214,3 +214,29 @@ export const GetById = {
         200: FullProduct
     }
 };
+
+export interface IList {
+    ids: Array<string>
+}
+
+export const List = {
+    body: {
+        type: "object",
+        properties: {
+            ids: {
+                type: "array",
+                items: {
+                    type: "string"
+                }
+            }
+        },
+        required: ["ids"],
+        additionalProperties: false
+    },
+    response: {
+        200: {
+            type: "array",
+            items: PartialProduct
+        }
+    }
+};
