@@ -6,6 +6,7 @@
             <div role="search">
                 <SearchBar />
                 <SearchOptions />
+                <ExternalLink />
             </div>
             <div class="dashboard">
                 <RouterLink to="dashboard">
@@ -45,10 +46,11 @@ import SearchResults from "@/components/pages/search/Results.vue";
 import SearchOptions from "@/components/pages/search/Options.vue";
 import Logo from "@/components/pages/search/Logo.vue";
 import SupportBar from "@/components/elements/SupportBar.vue";
+import ExternalLink from "@/components/elements/ExternalLink.vue";
 
 export default defineComponent({
     name: "SearchLayout",
-    components: { Logo, SearchBar, SearchOptions, SearchResults, SupportBar }
+    components: { ExternalLink, Logo, SearchBar, SearchOptions, SearchResults, SupportBar }
 });
 </script>
 
@@ -59,8 +61,7 @@ export default defineComponent({
     min-height: 100vh;
 
     .search {
-        height: 180px;
-        padding-bottom: 20px;
+        padding: var(--length-padding-l) 0;
         position: relative;
 
         display: flex;
@@ -73,11 +74,6 @@ export default defineComponent({
         box-shadow: 0 0 10px var(--color-shadow);
 
         @media screen and (max-width: 700px) {
-            padding-top: 16px
-        }
-
-        @media screen and (max-width: 500px) {
-            height: 220px;
             padding-top: 32px
         }
 

@@ -3,14 +3,14 @@
         <UISelect
             v-model="sortField"
             class="select"
-            :options="sortOptions"
             label="Sort by"
+            :options="sortOptions"
         />
         <UISelect
             v-model="sortDirection"
             class="select"
-            :options="directionOptions"
             label="Direction"
+            :options="directionOptions"
         />
     </div>
 </template>
@@ -25,31 +25,31 @@ export default defineComponent({
     components: { UISelect },
     data () {
         return {
-            sortOptions: {
-                popularity: "Popularity",
-                releaseDate: "Release Date",
-                reviews: "Reviews",
-                name: "Name"
-            },
             directionOptions: {
                 asc: "Ascending",
                 desc: "Descending"
             },
+            sortDirection: this.$route.query.sortDirection || "desc",
             sortField: this.$route.query.sortField || "popularity",
-            sortDirection: this.$route.query.sortDirection || "desc"
+            sortOptions: {
+                name: "Name",
+                popularity: "Popularity",
+                releaseDate: "Release Date",
+                reviews: "Reviews"
+            }
         };
     },
     watch: {
-        sortField () {
-            router.push({ name: "search", query: { ...this.$route.query, sortField: this.sortField } });
-        },
-        sortDirection () {
-            router.push({ name: "search", query: { ...this.$route.query, sortDirection: this.sortDirection } });
-        },
         "$route.query.sortField": {
             handler () {
                 this.sortField = this.$route.query.sortField || "popularity";
             }
+        },
+        sortDirection () {
+            router.push({ name: "search", query: { ...this.$route.query, sortDirection: this.sortDirection } });
+        },
+        sortField () {
+            router.push({ name: "search", query: { ...this.$route.query, sortField: this.sortField } });
         }
     }
 });
