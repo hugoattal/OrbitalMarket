@@ -13,17 +13,17 @@
             </div>
             <div
                 class="option"
-                :class="{selected:(engineRange===EngineRange.V427)}"
-                @click="engineRange=EngineRange.V427"
-            >
-                4.27
-            </div>
-            <div
-                class="option"
                 :class="{selected:(engineRange===EngineRange.V500)}"
                 @click="engineRange=EngineRange.V500"
             >
                 5.00
+            </div>
+            <div
+                class="option"
+                :class="{selected:(engineRange===EngineRange.V501)}"
+                @click="engineRange=EngineRange.V501"
+            >
+                5.01
             </div>
             <div
                 ref="range"
@@ -68,12 +68,12 @@ import { defineComponent } from "vue";
 import { debounce } from "lodash";
 import UISlider from "@/components/ui/Slider.vue";
 
-const MAX_ENGINE = 28;
+const MAX_ENGINE = 29;
 
 enum EngineRange {
     All,
     V500,
-    V427,
+    V501,
     Range
 }
 
@@ -95,8 +95,8 @@ export default defineComponent({
     computed: {
         value() {
             switch (this.engineRange) {
-            case EngineRange.V427:
-                return { max: "4.27", min: "4.27" };
+            case EngineRange.V501:
+                return { max: "5.01", min: "5.01" };
             case EngineRange.V500:
                 return { max: "5.00", min: "5.00" };
             case EngineRange.Range:
@@ -129,7 +129,7 @@ export default defineComponent({
             this.deploySelector = true;
         },
         getEngineFromValue(value: number) {
-            return value <= 27 ? [4, value] : [5, 28 - value];
+            return value <= 27 ? [4, value] : [5, value - 28];
         },
         unFocusRange(event: FocusEvent) {
             if (!this.$refs.range.contains(event.relatedTarget)) {
