@@ -13,11 +13,18 @@ export function displayDate (date: string): string {
 
 export function displayEngineVersion (engine: {max?: string; min?: string}): string {
     if (engine && engine.min && engine.max) {
-        return `${ engine.min }-${ engine.max }`;
+        return `${ makeSemVer(engine.min) }-${ makeSemVer(engine.max) }`;
     }
     else {
         return "None";
     }
+}
+
+export function makeSemVer(version: string) {
+    return version
+        .split(".")
+        .map((element) => parseInt(element))
+        .join(".");
 }
 
 export function displayCategory (category: string) {

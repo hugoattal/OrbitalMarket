@@ -13,17 +13,17 @@
             </div>
             <div
                 class="option"
-                :class="{selected:(engineRange===EngineRange.V500)}"
-                @click="engineRange=EngineRange.V500"
+                :class="{selected:(engineRange===EngineRange.V5_0)}"
+                @click="engineRange=EngineRange.V5_0"
             >
-                5.00
+                5.0
             </div>
             <div
                 class="option"
-                :class="{selected:(engineRange===EngineRange.V501)}"
-                @click="engineRange=EngineRange.V501"
+                :class="{selected:(engineRange===EngineRange.V5_1)}"
+                @click="engineRange=EngineRange.V5_1"
             >
-                5.01
+                5.1
             </div>
             <div
                 ref="range"
@@ -42,7 +42,7 @@
                     <UISlider
                         v-model="min"
                         class="slider"
-                        :display-function="displayEngine"
+                        :display-function="displaySemVer"
                         :max="MAX_ENGINE"
                         with-display
                     >
@@ -51,7 +51,7 @@
                     <UISlider
                         v-model="max"
                         class="slider"
-                        :display-function="displayEngine"
+                        :display-function="displaySemVer"
                         :max="MAX_ENGINE"
                         with-display
                     >
@@ -72,8 +72,8 @@ const MAX_ENGINE = 29;
 
 enum EngineRange {
     All,
-    V500,
-    V501,
+    V5_0,
+    V5_1,
     Range
 }
 
@@ -95,12 +95,12 @@ export default defineComponent({
     computed: {
         value() {
             switch (this.engineRange) {
-            case EngineRange.V501:
+            case EngineRange.V5_1:
                 return { max: "5.01", min: "5.01" };
-            case EngineRange.V500:
+            case EngineRange.V5_0:
                 return { max: "5.00", min: "5.00" };
             case EngineRange.Range:
-                return { max: this.displayEngine(this.max), min: this.displayEngine(this.min) };
+                return { max: this.getEngineVersion(this.max), min: this.getEngineVersion(this.min) };
             }
             return {};
         }
@@ -121,15 +121,18 @@ export default defineComponent({
         }
     },
     methods: {
-        displayEngine(value: number) {
-            const engine = this.getEngineFromValue(value);
-            return `${ engine[0] }.${ engine[1].toString().padStart(2, "0") }`;
+        displaySemVer(value: number) {
+            return this.getEngineFromValue(value).join(".");
         },
         focusRange() {
             this.deploySelector = true;
         },
         getEngineFromValue(value: number) {
             return value <= 27 ? [4, value] : [5, value - 28];
+        },
+        getEngineVersion(value: number) {
+            const engine = this.getEngineFromValue(value);
+            return `${ engine[0] }.${ engine[1].toString().padStart(2, "0") }`;
         },
         unFocusRange(event: FocusEvent) {
             if (!this.$refs.range.contains(event.relatedTarget)) {
