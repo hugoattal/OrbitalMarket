@@ -82,10 +82,21 @@
                     {{ displayPrice(product.price.value) }}
                 </div>
                 <div class="info">
-                    <p><span class="type">Released:</span> {{ displayDate(product.releaseDate) }}</p>
-                    <p><span class="type">Engine version:</span> {{ displayEngineVersion(product.computed.engine) }}
+                    <p>
+                        <span class="type">Released:</span> {{ displayDate(product.releaseDate) }}</p>
+                    <p>
+                        <span class="type">Engine version:</span> {{ displayEngineVersion(product.computed.engine) }}
                     </p>
-                    <p><span class="type">Category:</span> <span class="category">{{ category }}</span>
+                    <p>
+                        <span class="type">Category:</span> <span class="category">{{ category }}</span>
+                    </p>
+                    <p>
+                        <span class="type">Author:</span> <RouterLink
+                            :to="authorLink"
+                            @click.stop
+                        >
+                            {{ product.owner.name }}
+                        </RouterLink>
                     </p>
                 </div>
             </div>
@@ -143,6 +154,16 @@ const category = computed(() => {
 
 const isDiscounted = computed(() => {
     return props.product.discount.value > 0 && props.product.price.value > 0;
+});
+
+const authorLink = computed(() => {
+    const urlSearchParams = new URLSearchParams();
+
+    const author = props.product.owner.name.includes(" ") ? `"${ props.product.owner.name }"` : props.product.owner.name;
+
+    urlSearchParams.set("searchText", `author:${ author }`);
+
+    return `/search?${ urlSearchParams.toString() }`;
 });
 
 const marketplaceLink = computed(() => {
@@ -205,7 +226,7 @@ function goToProductPage() {
 
     &.list {
         display: flex;
-        height: 60px;
+        height: 80px;
         position: relative;
         right: 0;
         left: 0;
@@ -420,6 +441,17 @@ function goToProductPage() {
         p {
             margin: 0;
             padding: var(--length-padding-xs) 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+
+            a {
+                color: var(--color-primary);
+
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
         }
 
         .type {

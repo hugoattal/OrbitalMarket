@@ -1,9 +1,7 @@
 <template>
     <div class="product-description">
         <h1>
-            {{ product.title }} - <RouterLink :to="authorLink">
-                {{ product.owner.name }}
-            </RouterLink>
+            {{ product.title }}
         </h1>
         <div class="product-header">
             <div class="screen-panel">
