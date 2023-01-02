@@ -19,6 +19,7 @@
                     <ProductDescription
                         class="product-description"
                         :product-id="productId"
+                        @close="$emit('close')"
                     />
                 </div>
             </template>

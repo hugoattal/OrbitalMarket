@@ -49,7 +49,15 @@
                         <span class="type">Engine Version:</span> {{ displayEngineVersion(product.computed.engine) }}
                     </p>
                     <p>
-                        <span class="type">Engine Version:</span> <span class="category">{{ category }}</span>
+                        <span class="type">Category:</span> <span class="category">{{ category }}</span>
+                    </p>
+                    <p>
+                        <span class="type">Author:</span> <RouterLink
+                            :to="authorLink"
+                            @click="emits('close')"
+                        >
+                            {{ product.owner.name }}
+                        </RouterLink>
                     </p>
                 </div>
                 <div class="links">
@@ -136,6 +144,10 @@ import ProductHistory from "@/components/product/History.vue";
 
 const props = defineProps<{
     productId: string;
+}>();
+
+const emits = defineEmits<{
+    (e: "close"): void;
 }>();
 
 const product = await ProductService.getById(props.productId) as IProduct;
@@ -305,6 +317,13 @@ h1 {
         p {
             margin: 0;
             padding: var(--length-padding-xs) 0;
+        }
+
+        a {
+            color: var(--color-primary);
+            &:hover {
+                text-decoration: underline;
+            }
         }
 
         .type {
