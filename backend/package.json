@@ -10,10 +10,11 @@
         "url": "https://github.com/hugoattal/OrbitalMarket.git"
     },
     "scripts": {
-        "dev": "cross-env NODE_ENV=development nodemon src/server.ts",
+        "dev": "cross-env NODE_ENV=development nodemon -T src/server.ts",
         "clean": "tsc --build --clean",
         "start": "cross-env NODE_ENV=production ts-node src/server.ts",
-        "api:unreal": "cross-env NODE_ENV=production ts-node src/scrapper/unreal",
+        "api:unreal": "cross-env NODE_ENV=production ts-node -T src/scrapper/unreal",
+        "api:unreal-review": "cross-env NODE_ENV=production ts-node -T src/scrapper/unreal/saveReviews",
         "manual:update-score": "cross-env NODE_ENV=production ts-node src/scripts/updateScore",
         "test": "cross-env NODE_ENV=test vitest",
         "dev:test": "cross-env NODE_ENV=test vitest --ui"
