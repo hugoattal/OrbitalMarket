@@ -15,6 +15,7 @@
         "start": "cross-env NODE_ENV=production ts-node src/server.ts",
         "api:unreal": "cross-env NODE_ENV=production ts-node -T src/scrapper/unreal",
         "api:unreal-review": "cross-env NODE_ENV=production ts-node -T src/scrapper/unreal/saveReviews",
+        "api:unreal-question": "cross-env NODE_ENV=production ts-node -T src/scrapper/unreal/saveQuestions",
         "manual:update-score": "cross-env NODE_ENV=production ts-node src/scripts/updateScore",
         "test": "cross-env NODE_ENV=test vitest",
         "dev:test": "cross-env NODE_ENV=test vitest --ui"

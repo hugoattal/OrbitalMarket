@@ -44,6 +44,10 @@ export default {
         const result = await ApiService.get(`/products/product/${ id }`);
         return result.data;
     },
+    async getQuestionsById (id: string): Promise<Array<IReview>> {
+        const result = await ApiService.get(`/products/product/${ id }/questions`);
+        return result.data;
+    },
     async getReviewsById (id: string): Promise<Array<IReview>> {
         const result = await ApiService.get(`/products/product/${ id }/reviews`);
         return result.data;

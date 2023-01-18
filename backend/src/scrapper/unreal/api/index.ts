@@ -1,6 +1,6 @@
 import Axios from "axios";
 import { processProductData, updateConversionRate } from "@/scrapper/unreal/lib/processing";
-import { processReviewData } from "@/scrapper/unreal/lib/review";
+import { processCommentData } from "@/scrapper/unreal/lib/review";
 
 export async function updateProducts(): Promise<void> {
     await updateConversionRate();
@@ -28,7 +28,7 @@ export async function updateProducts(): Promise<void> {
     }
 }
 
-export async function saveReviews(productId: string) {
+export async function saveComments(productId: string, type: "reviews" | "questions") {
     let reviewsCount = 40;
     const step = 40;
 
@@ -37,7 +37,7 @@ export async function saveReviews(productId: string) {
         let reviewPage;
         while (tryFetch--) {
             try {
-                reviewPage = await getReviewPage(startReview, step, productId);
+                reviewPage = await getCommentsPage(startReview, step, productId, type);
                 reviewsCount = reviewPage.paging.total;
                 tryFetch = 0;
             }
@@ -47,7 +47,7 @@ export async function saveReviews(productId: string) {
         }
 
         for (const element of reviewPage.elements) {
-            await processReviewData(element);
+            await processCommentData(element, type);
         }
     }
 }
@@ -67,8 +67,8 @@ export async function getProductPage(start: number, count: number) {
 }
 
 // https://www.unrealengine.com/marketplace/api/review/5cb2a394d0c04e73891762be4cbd7216/reviews/list?start=0&count=1&sortBy=CREATEDAT&sortDir=DESC
-export async function getReviewPage(start: number, count: number, productId: string) {
-    const reviewPage = await Axios.get("https://www.unrealengine.com/marketplace/api/review/" + productId + "/reviews/list",
+export async function getCommentsPage(start: number, count: number, productId: string, type: "questions" | "reviews") {
+    const commentPage = await Axios.get("https://www.unrealengine.com/marketplace/api/review/" + productId + "/" + type + "/list",
         {
             params: {
                 start,
@@ -77,7 +77,7 @@ export async function getReviewPage(start: number, count: number, productId: str
                 sortDir: "ASC"
             }
         });
-    return reviewPage.data.data;
+    return commentPage.data.data;
 }
 
 export async function getProduct(productId: string) {
@@ -92,11 +92,6 @@ export async function getRating(productId: string) {
 
 export async function getProductsCount() {
     const productPage = await getProductPage(0, 1);
-    return productPage.paging.total;
-}
-
-export async function getReviewsCount(productId: string) {
-    const productPage = await getReviewPage(0, 1, productId);
     return productPage.paging.total;
 }
 

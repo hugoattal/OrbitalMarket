@@ -1,9 +1,8 @@
 import Mongo from "@/database";
 
-export interface IReview {
+export interface IQuestion {
     title: string;
     name: string;
-    rating: number;
     content: string;
     helpfulNum: number;
     date: Date;
@@ -11,7 +10,7 @@ export interface IReview {
     meta?: Record<string, any>;
 }
 
-export interface IReviewDocument extends IReview, Mongo.Document {
+export interface IQuestionDocument extends IQuestion, Mongo.Document {
 }
 
 const userSchema: Mongo.Schema = new Mongo.Schema({
@@ -21,10 +20,6 @@ const userSchema: Mongo.Schema = new Mongo.Schema({
     },
     name: {
         type: String,
-        required: true
-    },
-    rating: {
-        type: Number,
         required: true
     },
     content: {
@@ -45,4 +40,4 @@ const userSchema: Mongo.Schema = new Mongo.Schema({
     meta: Object
 });
 
-export default Mongo.model<IReviewDocument>("review", userSchema);
+export default Mongo.model<IQuestionDocument>("question", userSchema);

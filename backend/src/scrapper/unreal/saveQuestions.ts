@@ -27,7 +27,7 @@ async function init() {
         }
 
         if (product.meta) {
-            await UnrealAPI.saveComments(product.meta.unrealId, "reviews");
+            await UnrealAPI.saveComments(product.meta.unrealId, "questions");
         }
     }
     await closeDatabase();

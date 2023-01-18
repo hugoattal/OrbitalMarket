@@ -1,4 +1,5 @@
 import ReviewModel from "@/modules/review/model";
+import QuestionModel from "@/modules/question/model";
 
 type TReviewData = {
     id: string;
@@ -14,22 +15,42 @@ type TReviewData = {
     }
 }
 
-export async function processReviewData(data: TReviewData) {
-    await ReviewModel.deleteMany({
-        "meta.unrealId": data.id
-    }).exec();
+export async function processCommentData(data: TReviewData, type: "reviews" | "questions") {
+    if (type === "reviews") {
+        await ReviewModel.deleteMany({
+            "meta.unrealId": data.id
+        }).exec();
 
-    await ReviewModel.create({
-        title: data.title,
-        name: data.identityName || "unknown",
-        rating: data.rating,
-        content: data.content,
-        helpfulNum: data.helpfulNum,
-        date: new Date(data.createdAt),
-        publisherReply: data.publisherReply?.content,
-        meta: {
-            unrealId: data.id,
-            target: data.targetId
-        }
-    });
+        await ReviewModel.create({
+            title: data.title,
+            name: data.identityName || "unknown",
+            rating: data.rating,
+            content: data.content,
+            helpfulNum: data.helpfulNum,
+            date: new Date(data.createdAt),
+            publisherReply: data.publisherReply?.content,
+            meta: {
+                unrealId: data.id,
+                target: data.targetId
+            }
+        });
+    }
+    else {
+        await QuestionModel.deleteMany({
+            "meta.unrealId": data.id
+        }).exec();
+
+        await QuestionModel.create({
+            title: data.title,
+            name: data.identityName || "unknown",
+            content: data.content,
+            helpfulNum: data.helpfulNum,
+            date: new Date(data.createdAt),
+            publisherReply: data.publisherReply?.content,
+            meta: {
+                unrealId: data.id,
+                target: data.targetId
+            }
+        });
+    }
 }

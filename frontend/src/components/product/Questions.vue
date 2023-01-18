@@ -1,36 +1,32 @@
 <template>
-    <div class="reviews">
-        <div v-if="reviews.length === 0">
-            No review found...
+    <div class="questions">
+        <div v-if="questions.length === 0">
+            No question found...
         </div>
         <div
-            v-for="review in reviews"
-            :key="review._id"
-            class="review"
+            v-for="question in questions"
+            :key="question._id"
+            class="question"
         >
             <div class="header">
-                <UIRating
-                    has-ratings
-                    :rating="review.rating / 5"
-                />
-                <span class="title">{{ review.title }}</span>
+                <span class="title">{{ question.title }}</span>
             </div>
             <div class="sub">
-                <span class="date">{{ displayDate(review.date) }}</span>
-                <span class="author">by {{ review.name }}</span>
+                <span class="date">{{ displayDate(question.date) }}</span>
+                <span class="author">by {{ question.name }}</span>
             </div>
             <div
                 class="content"
-                v-html="review.content"
+                v-html="question.content"
             />
             <div
-                v-if="review.publisherReply"
+                v-if="question.publisherReply"
                 class="reply"
             >
                 Response:
                 <div
                     class="content"
-                    v-html="review.publisherReply"
+                    v-html="question.publisherReply"
                 />
             </div>
         </div>
@@ -39,12 +35,11 @@
 
 <script lang="ts">
 export default {
-    name: "ProductReviews"
+    name: "ProductQuestions"
 };
 </script>
 
 <script setup lang="ts">
-import UIRating from "@/components/ui/Rating.vue";
 import ProductService from "@/services/product.service";
 import { displayDate } from "@/components/product/product";
 
@@ -52,17 +47,17 @@ const props = defineProps<{
     productId: string;
 }>();
 
-const reviews = await ProductService.getReviewsById(props.productId);
+const questions = await ProductService.getQuestionsById(props.productId);
 </script>
 
 <style scoped lang="scss">
-.reviews {
+.questions {
     display: flex;
     flex-direction: column;
     gap: var(--length-gap-s);
     padding: var(--length-padding-s) 0;
 
-    .review {
+    .question {
         background: var(--color-background);
         padding: var(--length-padding-base) var(--length-padding-l);
         border-radius: var(--length-radius-base);

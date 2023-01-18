@@ -104,6 +104,14 @@
                 </UITab>
                 <UITab>
                     <template #title>
+                        Questions
+                    </template>
+                    <template #content>
+                        <ProductQuestions :product-id="productId" />
+                    </template>
+                </UITab>
+                <UITab>
+                    <template #title>
                         Price history
                     </template>
                     <template #content>
@@ -132,6 +140,7 @@ import UITabs from "@/components/ui/Tabs.vue";
 import UITab from "@/components/ui/Tab.vue";
 import ProductHistory from "@/components/product/History.vue";
 import ProductReviews from "@/components/product/Reviews.vue";
+import ProductQuestions from "@/components/product/Questions.vue";
 
 const props = defineProps<{
     productId: string;
