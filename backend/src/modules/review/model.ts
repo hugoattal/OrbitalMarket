@@ -11,7 +11,7 @@ export interface IUser {
     meta?: Record<string, any>;
 }
 
-interface IUserDocument extends IUser, Mongo.Document {
+export interface IReviewDocument extends IUser, Mongo.Document {
 }
 
 const userSchema: Mongo.Schema = new Mongo.Schema({
@@ -45,4 +45,4 @@ const userSchema: Mongo.Schema = new Mongo.Schema({
     meta: Object
 });
 
-export default Mongo.model<IUserDocument>("review", userSchema);
+export default Mongo.model<IReviewDocument>("review", userSchema);

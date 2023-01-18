@@ -73,22 +73,6 @@
                     >
                         <span>Epic Launcher <i class="las la-external-link-alt" /></span>
                     </UIButton>
-                    <div class="group">
-                        <UIButton
-                            class="link"
-                            :href="marketplaceLink + '/reviews'"
-                            target="_blank"
-                        >
-                            <span>Reviews <i class="las la-external-link-alt" /></span>
-                        </UIButton>
-                        <UIButton
-                            class="link"
-                            :href="marketplaceLink + '/questions'"
-                            target="_blank"
-                        >
-                            <span>Questions <i class="las la-external-link-alt" /></span>
-                        </UIButton>
-                    </div>
                 </div>
             </div>
         </div>
@@ -108,6 +92,14 @@
                     </template>
                     <template #content>
                         <div v-html="product.description.technical" />
+                    </template>
+                </UITab>
+                <UITab>
+                    <template #title>
+                        Reviews
+                    </template>
+                    <template #content>
+                        <ProductReviews :product-id="productId" />
                     </template>
                 </UITab>
                 <UITab>
@@ -139,6 +131,7 @@ import { displayDate, displayPrice, displayEngineVersion, displayCategory } from
 import UITabs from "@/components/ui/Tabs.vue";
 import UITab from "@/components/ui/Tab.vue";
 import ProductHistory from "@/components/product/History.vue";
+import ProductReviews from "@/components/product/Reviews.vue";
 
 const props = defineProps<{
     productId: string;
@@ -286,15 +279,6 @@ h1 {
         flex-direction: column;
         gap: var(--length-gap-m);
         align-items: stretch;
-    }
-
-    .group {
-        display: flex;
-        gap: var(--length-gap-m);
-
-        .link {
-            flex-basis: 50%;
-        }
     }
 
     .link span {

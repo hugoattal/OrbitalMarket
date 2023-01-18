@@ -100,7 +100,7 @@ function addComputed(product: IProduct, data: any) {
     const embeddedContent = getEmbeddedContent();
 
     if (isBoosted) {
-        score.value *= 1.33;
+        score.value *= 1.5;
     }
 
     const engine = {} as any;

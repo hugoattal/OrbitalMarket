@@ -33,7 +33,6 @@ export async function saveReviews(productId: string) {
     const step = 40;
 
     for (let startReview = 0; startReview < reviewsCount; startReview += step) {
-        //console.log(startReview + " / " + reviewsCount);
         let tryFetch = 5;
         let reviewPage;
         while (tryFetch--) {
