@@ -96,12 +96,8 @@ function convertEURtoUSD(priceInEuro: number): number {
 
 function addComputed(product: IProduct, data: any) {
     const isBoosted = getIsBoosted();
-    const score = computeScore(product.ratings, product.releaseDate, product.price.value === 0);
+    const score = computeScore(product.ratings, product.releaseDate, product.price.value === 0, isBoosted);
     const embeddedContent = getEmbeddedContent();
-
-    if (isBoosted) {
-        score.value *= 1.5;
-    }
 
     const engine = {} as any;
 

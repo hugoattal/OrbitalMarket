@@ -47,7 +47,7 @@ export interface IProduct {
         embeddedContent?: Array<string>,
         engine: Record<string, any>
     };
-    meta?: Record<string, any>;
+    meta: Record<string, any>;
 }
 
 export interface IProductDocument extends IProduct, Mongo.Document {
