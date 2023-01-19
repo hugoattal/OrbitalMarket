@@ -15,7 +15,7 @@ import ProductModel from "@/modules/product/model";
 
 async function init() {
     await connectDatabase();
-    const products = await ProductModel.find({}).select("meta.unrealId").exec();
+    const products = await ProductModel.find({}).select({ "meta.unrealId": 1, "ratings": 1 }).exec();
     const totalProducts = products.length;
     let productNum = 0;
     let previousPercentage = "";
@@ -24,6 +24,10 @@ async function init() {
         if (currentPercentage !== previousPercentage) {
             previousPercentage = currentPercentage;
             console.log(currentPercentage);
+        }
+
+        if (product.ratings.reduce((a, b) => a + b, 0) === 0) {
+            continue;
         }
 
         if (product.meta) {
