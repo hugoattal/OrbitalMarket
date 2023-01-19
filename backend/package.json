@@ -12,7 +12,7 @@
     "scripts": {
         "dev": "cross-env NODE_ENV=development nodemon -T src/server.ts",
         "clean": "tsc --build --clean",
-        "start": "cross-env NODE_ENV=production ts-node src/server.ts",
+        "start": "cross-env NODE_ENV=production ts-node -T src/server.ts",
         "api:unreal": "cross-env NODE_ENV=production ts-node -T src/scrapper/unreal",
         "api:unreal-review": "cross-env NODE_ENV=production ts-node -T src/scrapper/unreal/saveReviews",
         "api:unreal-question": "cross-env NODE_ENV=production ts-node -T src/scrapper/unreal/saveQuestions",

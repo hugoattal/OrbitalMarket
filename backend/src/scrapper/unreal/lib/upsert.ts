@@ -37,7 +37,7 @@ export async function product(data: IProduct): Promise<void> {
         await ProductModel.create(data);
     }
     else {
-        data.computed.score = computeScore(data.ratings, data.releaseDate, data.price.value === 0, data.computed?.isBoosted, product.meta.verificationReviews);
+        data.computed.score = computeScore(data.ratings, data.releaseDate, data.price.value === 0, !!data.computed?.isBoosted, product.meta.verificationReviews);
 
         data.meta = { product.meta, ...data.meta };
         data.price.history = product.price.history || [];

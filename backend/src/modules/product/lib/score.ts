@@ -32,12 +32,12 @@ export function computeScore(ratings: Array<number>, releaseDate: Date, isFree: 
         return { value: 0, totalRatings: 0, meanRating: 0 };
     }
 
-    const verificationMalus = verificationReviews * 0.8;
+    const verificationPenalty = verificationReviews * 0.8;
 
     const meanRating = getMeanRating(ratings);
     const elapsedDays = differenceInDays(Date.now(), releaseDate);
     const starsDivider = isFree ? 10 : 1;
-    let value = Math.pow(meanRating, 2) * Math.sqrt(((totalRatings - verificationMalus) / starsDivider) / (elapsedDays + 30)) * 1000 + 1 / (elapsedDays + 30) + 1;
+    let value = Math.pow(meanRating, 2) * Math.sqrt(((totalRatings - verificationPenalty) / starsDivider) / (elapsedDays + 30)) * 1000 + 1 / (elapsedDays + 30) + 1;
 
     if (isBoosted) {
         value *= 1.5;
