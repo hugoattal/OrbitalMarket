@@ -18,7 +18,7 @@ export async function updateScores() {
             updateOne: {
                 filter: { _id: product._id },
                 update: {
-                    "computed.score": computeScore(product.ratings, product.releaseDate, product.price.value === 0, product.computed.isBoosted, product.meta?.verificationReviews)
+                    "computed.score": computeScore(product.ratings, product.releaseDate, product.price.value === 0, product.computed.isBoosted, product.meta?.verificationReviews) || 0
                 }
             } as any // Fix weird typescript circular reference, probably a bug in mongoose typing
         })
