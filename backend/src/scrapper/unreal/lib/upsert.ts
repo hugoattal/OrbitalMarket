@@ -39,7 +39,7 @@ export async function product(data: IProduct): Promise<void> {
     else {
         data.computed.score = computeScore(data.ratings, data.releaseDate, data.price.value === 0, !!data.computed?.isBoosted, product.meta.verificationReviews);
 
-        data.meta = { product.meta, ...data.meta };
+        data.meta = { ...product.meta, ...data.meta };
         data.price.history = product.price.history || [];
         data.discount.history = product.discount.history || [];
 
