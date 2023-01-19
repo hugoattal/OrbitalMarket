@@ -16,6 +16,12 @@
             </div>
             <div class="networks">
                 <a
+                    href="https://github.com/sponsors/hugoattal"
+                    target="_blank"
+                ><i
+                    class="las la-hand-holding-heart"
+                /> Sponsor me</a>
+                <a
                     href="https://github.com/hugoattal/OrbitalMarket"
                     target="_blank"
                 ><i
@@ -27,12 +33,6 @@
                 ><i
                     class="lab la-twitter"
                 /> Twitter</a>
-                <a
-                    href="https://forums.unrealengine.com/unreal-engine/marketplace/1857381-orbital-market-search-engine-for-the-ue-marketplace"
-                    target="_blank"
-                ><i
-                    class="las la-comments"
-                /> Epic Forum</a>
             </div>
         </div>
         <SearchResults />
@@ -95,6 +95,10 @@ export default defineComponent({
 
             .la, .las, .lab {
                 font-size: 1.55rem;
+            }
+
+            .la-hand-holding-heart {
+                color: #da5a5a
             }
         }
 
