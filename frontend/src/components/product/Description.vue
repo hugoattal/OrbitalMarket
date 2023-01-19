@@ -50,7 +50,8 @@
                         <span class="type">Category:</span> <span class="category">{{ category }}</span>
                     </p>
                     <p>
-                        <span class="type">Author:</span> <RouterLink
+                        <span class="type">Author:</span>
+                        <RouterLink
                             :to="authorLink"
                             @click="emits('close')"
                         >
@@ -99,7 +100,12 @@
                         Reviews
                     </template>
                     <template #content>
-                        <ProductReviews :product-id="productId" />
+                        <Suspense>
+                            <ProductReviews :product-id="productId" />
+                            <template #fallback>
+                                <Spinner class="spinner" />
+                            </template>
+                        </Suspense>
                     </template>
                 </UITab>
                 <UITab>
@@ -107,7 +113,12 @@
                         Questions
                     </template>
                     <template #content>
-                        <ProductQuestions :product-id="productId" />
+                        <Suspense>
+                            <ProductQuestions :product-id="productId" />
+                            <template #fallback>
+                                <Spinner class="spinner" />
+                            </template>
+                        </Suspense>
                     </template>
                 </UITab>
                 <UITab>
@@ -141,6 +152,7 @@ import UITab from "@/components/ui/Tab.vue";
 import ProductHistory from "@/components/product/History.vue";
 import ProductReviews from "@/components/product/Reviews.vue";
 import ProductQuestions from "@/components/product/Questions.vue";
+import Spinner from "@/components/ui/Spinner.vue";
 
 const props = defineProps<{
     productId: string;
@@ -312,6 +324,7 @@ h1 {
 
         a {
             color: var(--color-primary);
+
             &:hover {
                 text-decoration: underline;
             }
@@ -345,6 +358,14 @@ h1 {
         &:hover {
             text-decoration: underline;
         }
+    }
+
+    .spinner {
+        padding: var(--length-padding-xl);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 50px;
     }
 }
 </style>
