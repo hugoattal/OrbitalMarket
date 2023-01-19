@@ -23,7 +23,7 @@ export async function updateScores() {
         ));
 }
 
-export function computeScore(ratings: Array<number>, releaseDate: Date, isFree: boolean): {value: number, totalRatings: number, meanRating: number} {
+export function computeScore(ratings: Array<number>, releaseDate: Date, isFree: boolean): { value: number, totalRatings: number, meanRating: number } {
     const totalRatings = _.sum(ratings);
 
     if (totalRatings === 0) {
