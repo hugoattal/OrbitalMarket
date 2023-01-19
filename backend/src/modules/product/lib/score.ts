@@ -18,7 +18,7 @@ export async function updateScores() {
             updateOne: {
                 filter: { _id: product._id },
                 update: {
-                    "computed.score": computeScore(product.ratings, product.releaseDate, product.price.value === 0, product.computed.isBoosted, product.meta?.verificationReviews) || 0
+                    "computed.score": computeScore(product.ratings, product.releaseDate, product.price.value === 0, product.computed.isBoosted, product.meta?.verificationReviews)
                 }
             } as any // Fix weird typescript circular reference, probably a bug in mongoose typing
         })
@@ -37,7 +37,7 @@ export function computeScore(ratings: Array<number>, releaseDate: Date, isFree: 
     const meanRating = getMeanRating(ratings);
     const elapsedDays = differenceInDays(Date.now(), releaseDate);
     const starsDivider = isFree ? 10 : 1;
-    let value = Math.pow(meanRating, 2) * Math.sqrt(((totalRatings - verificationPenalty) / starsDivider) / (elapsedDays + 30)) * 1000 + 1 / (elapsedDays + 30) + 1;
+    let value = Math.pow(meanRating, 2) * Math.sqrt(((totalRatings - verificationPenalty) / starsDivider) / (elapsedDays + 30)) * 1000 + 1 / (elapsedDays + 30) + 1 || 0;
 
     if (isBoosted) {
         value *= 1.5;
