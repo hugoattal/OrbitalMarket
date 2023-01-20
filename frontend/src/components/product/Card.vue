@@ -42,7 +42,7 @@
                     >
                         <i class="las la-meteor" />
                         <div class="tooltip">
-                            This product support the <b>Orbital Market</b> by adding a link in his description.
+                            This product support the <b>Orbital Market</b> by adding a link in its description.
                         </div>
                     </div>
                 </div>
