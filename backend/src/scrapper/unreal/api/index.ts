@@ -23,6 +23,9 @@ export async function updateProducts(): Promise<void> {
         }
 
         for (const element of productPage.elements) {
+            if (!element.catalogItemId) {
+                continue;
+            }
             await processProductData(element);
         }
     }
