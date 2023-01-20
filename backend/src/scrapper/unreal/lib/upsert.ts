@@ -55,8 +55,6 @@ export async function product(data: IProduct): Promise<void> {
             });
         }
 
-        await ProductModel.updateOne(
-            { meta: { unrealId: data.meta.unrealId } }, data
-        ).exec();
+        await ProductModel.updateOne({ "meta.unrealId": data.meta.unrealId }, data).exec();
     }
 }

@@ -50,8 +50,7 @@
                         <span class="type">Category:</span> <span class="category">{{ category }}</span>
                     </p>
                     <p>
-                        <span class="type">Author:</span>
-                        <RouterLink
+                        <span class="type">Author:</span> <RouterLink
                             :to="authorLink"
                             @click="emits('close')"
                         >
