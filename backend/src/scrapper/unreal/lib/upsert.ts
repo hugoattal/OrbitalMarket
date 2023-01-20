@@ -29,9 +29,7 @@ export async function product(data: IProduct): Promise<void> {
         return;
     }
 
-    const product = await ProductModel.findOne({
-        meta: { unrealId: data.meta.unrealId }
-    }).exec();
+    const product = await ProductModel.findOne({ "meta.unrealId": data.meta.unrealId }).exec();
 
     if (!product) {
         await ProductModel.create(data);
