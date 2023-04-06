@@ -1,7 +1,7 @@
 <template>
     <Button
         class="button"
-        @click="switchTheme"
+        @click="toggleDarkMode"
     >
         <div
             class="theme-switcher"
@@ -16,37 +16,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watch } from "vue";
+
+export default {
+    name: "ThemeSwitcher"
+};
+</script>
+
+<script setup lang="ts">
 import Button from "@/components/ui/Button.vue";
-
-import Theme from "./theme";
-
-export default defineComponent({
-    name: "ThemeSwitcher",
-    components: {
-        Button
-    },
-    setup () {
-        const isDarkMode = ref(Theme.isDarkMode());
-
-        const switchTheme = () => {
-            isDarkMode.value = !isDarkMode.value;
-        };
-
-        watch(
-            () => isDarkMode.value,
-            (darkModeValue) => {
-                Theme.update(darkModeValue);
-            },
-            { lazy: true }
-        );
-
-        return {
-            switchTheme,
-            isDarkMode
-        };
-    }
-});
+import { isDarkMode, toggleDarkMode } from "@/components/theme/theme";
 </script>
 
 <style scoped lang="scss">

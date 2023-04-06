@@ -1,15 +1,10 @@
-import StorageModule from "@/modules/storage.module";
+import { useDark, useToggle } from "@vueuse/core";
 
-export default {
-    isDarkMode () {
-        const isDefaultDark = !!window?.matchMedia("(prefers-color-scheme: dark)").matches;
-        const defaultTheme = isDefaultDark ? "dark" : "light";
+export const isDarkMode = useDark({
+    attribute: "data-theme",
+    selector: "html",
+    valueDark: "dark",
+    valueLight: "light"
+});
 
-        return StorageModule.getElement("theme", defaultTheme) === "dark";
-    },
-    update (isDarkMode: boolean) {
-        const theme = isDarkMode ? "dark" : "light";
-        document.documentElement.setAttribute("data-theme", theme);
-        StorageModule.setElement("theme", theme);
-    }
-};
+export const toggleDarkMode = useToggle(isDarkMode);

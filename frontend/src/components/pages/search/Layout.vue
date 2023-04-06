@@ -7,6 +7,7 @@
                 <SearchBar />
                 <SearchOptions />
                 <ExternalLink />
+                <OSponsors class="sponsors" />
             </div>
             <div class="dashboard">
                 <RouterLink to="dashboard">
@@ -47,10 +48,11 @@ import SearchOptions from "@/components/pages/search/Options.vue";
 import Logo from "@/components/pages/search/Logo.vue";
 import SupportBar from "@/components/elements/SupportBar.vue";
 import ExternalLink from "@/components/elements/ExternalLink.vue";
+import OSponsors from "@/components/pages/search/OSponsors.vue";
 
 export default defineComponent({
     name: "SearchLayout",
-    components: { ExternalLink, Logo, SearchBar, SearchOptions, SearchResults, SupportBar }
+    components: { ExternalLink, Logo, OSponsors, SearchBar, SearchOptions, SearchResults, SupportBar }
 });
 </script>
 
@@ -73,8 +75,9 @@ export default defineComponent({
         border-bottom: 1px solid var(--color-content-light);
         box-shadow: 0 0 10px var(--color-shadow);
 
-        @media screen and (max-width: 700px) {
-            padding-top: 32px
+        @media screen and (max-width: 800px) {
+            padding-top: 48px;
+            padding-bottom: 48px
         }
 
         .dashboard, .networks {
@@ -111,6 +114,12 @@ export default defineComponent({
         .networks {
             position: absolute;
             top: 0;
+            right: 0;
+        }
+
+        .sponsors {
+            position: absolute;
+            bottom: 0;
             right: 0;
         }
     }
