@@ -15,5 +15,5 @@ export async function getById(id: string): Promise<IProductDocument | null> {
 }
 
 export async function listByIds(ids: Array<string>) {
-    return ProductModel.find({ "_id": { $in: ids } });
+    return ProductModel.find({ "_id": { $in: ids } }).populate("owner").exec();
 }
