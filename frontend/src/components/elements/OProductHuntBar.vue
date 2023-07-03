@@ -5,7 +5,7 @@
     >
         <div class="text">
             <span class="logo">Luna Park</span>, a product I'm working on, is live on <span class="logo">Product Hunt! 🚀</span> - [<a
-                href="https://www.producthunt.com/posts/luna-park-no-code-challenge?utm_source=header"
+                href="https://www.producthunt.com/posts/luna-park-no-code-challenge?utm_source=orbital"
                 target="_blank"
             >Check it out here <i class="las la-external-link-alt icon" /></a>]
         </div>

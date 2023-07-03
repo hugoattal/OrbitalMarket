@@ -1,6 +1,5 @@
 <template>
     <div class="page">
-        <OProductHuntBar />
         <SupportBar />
         <div class="search">
             <Logo role="banner" />
@@ -54,7 +53,7 @@ import OProductHuntBar from "@/components/elements/OProductHuntBar.vue";
 
 export default defineComponent({
     name: "SearchLayout",
-    components: {OProductHuntBar, ExternalLink, Logo, OSponsors, SearchBar, SearchOptions, SearchResults, SupportBar }
+    components: { ExternalLink, Logo, OProductHuntBar, OSponsors, SearchBar, SearchOptions, SearchResults, SupportBar }
 });
 </script>
 
