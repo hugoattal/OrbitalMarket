@@ -41,6 +41,9 @@ export async function search(params: ISearch): Promise<Array<IProductDocument>> 
     case ESortField.name:
         sortArgument["title"] = sortDirection;
         break;
+    case ESortField.price:
+        sortArgument["price.value"] = sortDirection;
+        break;
     case ESortField.popularity:
         if (params.searchText) {
             sortArgument["score"] = sortDirection;

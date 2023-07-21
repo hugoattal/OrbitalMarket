@@ -34,6 +34,7 @@ export default defineComponent({
             sortOptions: {
                 name: "Name",
                 popularity: "Popularity",
+                price: "Price",
                 releaseDate: "Release Date",
                 reviews: "Reviews"
             }

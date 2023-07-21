@@ -111,7 +111,8 @@ export enum ESortField {
     popularity = "popularity",
     releaseDate = "releaseDate",
     reviews = "reviews",
-    name = "name"
+    name = "name",
+    price = "price"
 }
 
 export interface ISearch {
@@ -159,7 +160,7 @@ export const Search = {
             },
             sortField: {
                 type: "string",
-                enum: ["popularity", "releaseDate", "reviews", "name"],
+                enum: ["popularity", "releaseDate", "reviews", "name", "price"],
                 default: "popularity"
             },
             categories: {
