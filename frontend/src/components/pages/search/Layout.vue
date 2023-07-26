@@ -49,11 +49,10 @@ import Logo from "@/components/pages/search/Logo.vue";
 import SupportBar from "@/components/elements/SupportBar.vue";
 import ExternalLink from "@/components/elements/ExternalLink.vue";
 import OSponsors from "@/components/pages/search/OSponsors.vue";
-import OProductHuntBar from "@/components/elements/OProductHuntBar.vue";
 
 export default defineComponent({
     name: "SearchLayout",
-    components: { ExternalLink, Logo, OProductHuntBar, OSponsors, SearchBar, SearchOptions, SearchResults, SupportBar }
+    components: { ExternalLink, Logo, OSponsors, SearchBar, SearchOptions, SearchResults, SupportBar }
 });
 </script>
 

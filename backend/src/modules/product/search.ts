@@ -70,12 +70,14 @@ export async function search(params: ISearch): Promise<Array<IProductDocument>> 
     const matchStage = [];
 
     if (authors.length) {
-        const author = await UserModel.findOne({
+        const authorsIds = await UserModel.find({
             name: authors[0]
         });
 
         matchStage.push({
-            owner: author?._id
+            owner: {
+                $in: authorsIds.map((author) => author._id)
+            }
         });
     }
 
