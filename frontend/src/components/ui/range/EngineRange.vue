@@ -13,17 +13,17 @@
             </div>
             <div
                 class="option"
-                :class="{selected:(engineRange===EngineRange.V5_0)}"
-                @click="engineRange=EngineRange.V5_0"
+                :class="{selected:(engineRange===EngineRange.V5_2)}"
+                @click="engineRange=EngineRange.V5_2"
             >
-                5.0
+                5.2
             </div>
             <div
                 class="option"
-                :class="{selected:(engineRange===EngineRange.V5_1)}"
-                @click="engineRange=EngineRange.V5_1"
+                :class="{selected:(engineRange===EngineRange.V5_3)}"
+                @click="engineRange=EngineRange.V5_3"
             >
-                5.1
+                5.3
             </div>
             <div
                 ref="range"
@@ -68,12 +68,12 @@ import { defineComponent } from "vue";
 import { debounce } from "lodash";
 import UISlider from "@/components/ui/Slider.vue";
 
-const MAX_ENGINE = 29;
+const MAX_ENGINE = 28 + 3;
 
 enum EngineRange {
     All,
-    V5_0,
-    V5_1,
+    V5_2,
+    V5_3,
     Range
 }
 
@@ -95,10 +95,10 @@ export default defineComponent({
     computed: {
         value() {
             switch (this.engineRange) {
-            case EngineRange.V5_1:
-                return { max: "5.01", min: "5.01" };
-            case EngineRange.V5_0:
-                return { max: "5.00", min: "5.00" };
+            case EngineRange.V5_3:
+                return { max: "5.03", min: "5.03" };
+            case EngineRange.V5_2:
+                return { max: "5.02", min: "5.02" };
             case EngineRange.Range:
                 return { max: this.getEngineVersion(this.max), min: this.getEngineVersion(this.min) };
             }
