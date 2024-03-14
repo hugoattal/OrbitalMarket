@@ -64,6 +64,9 @@ export async function getProductPage(start: number, count: number) {
                 count,
                 sortBy: "effectiveDate",
                 sortDir: "ASC"
+            },
+            headers: {
+                "Accept-Encoding": "*"
             }
         });
     return productPage.data.data;
@@ -78,18 +81,29 @@ export async function getCommentsPage(start: number, count: number, productId: s
                 count,
                 sortBy: "CREATEDAT",
                 sortDir: "ASC"
+            },
+            headers: {
+                "Accept-Encoding": "*"
             }
         });
     return commentPage.data.data;
 }
 
 export async function getProduct(productId: string) {
-    const product = await Axios.get(`https://www.unrealengine.com/marketplace/api/assets/asset/${productId}`);
+    const product = await Axios.get(`https://www.unrealengine.com/marketplace/api/assets/asset/${productId}`, {
+        headers: {
+            "Accept-Encoding": "*"
+        }
+    });
     return product.data.data;
 }
 
 export async function getRating(productId: string) {
-    const product = await Axios.get(`https://www.unrealengine.com/marketplace/api/review/${productId}/ratings`);
+    const product = await Axios.get(`https://www.unrealengine.com/marketplace/api/review/${productId}/ratings`, {
+        headers: {
+            "Accept-Encoding": "*"
+        }
+    });
     return product.data.data;
 }
 
