@@ -1,6 +1,6 @@
-import Axios from "axios";
 import { processProductData, updateConversionRate } from "@/scrapper/unreal/lib/processing";
 import { processCommentData } from "@/scrapper/unreal/lib/review";
+import { makeRequest } from "@/scrapper/unreal/browser";
 
 export async function updateProducts(): Promise<void> {
     await updateConversionRate();
@@ -57,54 +57,38 @@ export async function saveComments(productId: string, type: "reviews" | "questio
 
 // https://www.unrealengine.com/marketplace/api/assets?start=0&count=1&sortBy=effectiveDate&sortDir=ASC
 export async function getProductPage(start: number, count: number) {
-    const productPage = await Axios.get("https://www.unrealengine.com/marketplace/api/assets",
-        {
-            params: {
-                start,
-                count,
-                sortBy: "effectiveDate",
-                sortDir: "ASC"
-            },
-            headers: {
-                "Accept-Encoding": "*"
-            }
-        });
-    return productPage.data.data;
+    const productUrl = new URL("https://www.unrealengine.com/marketplace/api/assets");
+    productUrl.searchParams.append("start", start.toString());
+    productUrl.searchParams.append("count", count.toString());
+    productUrl.searchParams.append("sortBy", "effectiveDate");
+    productUrl.searchParams.append("sortDir", "ASC");
+
+    const productPage = await makeRequest(productUrl.toString());
+
+    return productPage.data;
 }
 
 // https://www.unrealengine.com/marketplace/api/review/5cb2a394d0c04e73891762be4cbd7216/reviews/list?start=0&count=1&sortBy=CREATEDAT&sortDir=DESC
 export async function getCommentsPage(start: number, count: number, productId: string, type: "questions" | "reviews") {
-    const commentPage = await Axios.get("https://www.unrealengine.com/marketplace/api/review/" + productId + "/" + type + "/list",
-        {
-            params: {
-                start,
-                count,
-                sortBy: "CREATEDAT",
-                sortDir: "ASC"
-            },
-            headers: {
-                "Accept-Encoding": "*"
-            }
-        });
-    return commentPage.data.data;
+    const commentsUrl = new URL(`https://www.unrealengine.com/marketplace/api/review/${productId}/${type}/list`);
+    commentsUrl.searchParams.append("start", start.toString());
+    commentsUrl.searchParams.append("count", count.toString());
+    commentsUrl.searchParams.append("sortBy", "CREATEDAT");
+    commentsUrl.searchParams.append("sortDir", "ASC");
+
+    const commentPage = await makeRequest(commentsUrl.toString());
+
+    return commentPage.data;
 }
 
 export async function getProduct(productId: string) {
-    const product = await Axios.get(`https://www.unrealengine.com/marketplace/api/assets/asset/${productId}`, {
-        headers: {
-            "Accept-Encoding": "*"
-        }
-    });
+    const product = await makeRequest(`https://www.unrealengine.com/marketplace/api/assets/asset/${productId}`);
     return product.data.data;
 }
 
 export async function getRating(productId: string) {
-    const product = await Axios.get(`https://www.unrealengine.com/marketplace/api/review/${productId}/ratings`, {
-        headers: {
-            "Accept-Encoding": "*"
-        }
-    });
-    return product.data.data;
+    const rating = await makeRequest(`https://www.unrealengine.com/marketplace/api/review/${productId}/ratings`);
+    return rating.data.data;
 }
 
 export async function getProductsCount() {
@@ -114,7 +98,7 @@ export async function getProductsCount() {
 
 export async function getConversionRate() {
     const VoxelPlugin = await getProduct("b08e5581837e4bbca486b61cdf2751bb");
-    const VoxelPluginPriceInEuro = VoxelPlugin.data.priceValue;
+    const VoxelPluginPriceInEuro = VoxelPlugin.priceValue;
     const VoxelPluginPriceInUSD = 34999;
     return VoxelPluginPriceInUSD / VoxelPluginPriceInEuro;
 }
