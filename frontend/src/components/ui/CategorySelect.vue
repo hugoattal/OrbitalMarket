@@ -52,13 +52,13 @@ function unFocusRange() {
 }
 
 type TCategory = {
-    name: string,
-    selected: boolean
+    name: string;
+    selected: boolean;
 };
 type TCategories = Array<TCategory>;
 
 const emits = defineEmits<{
-    (e: "update:modelValue", categories: Array<string>): void
+    (e: "update:modelValue", categories: Array<string>): void;
 }>();
 
 const categories = reactive([
@@ -93,9 +93,11 @@ function toggleAll() {
 
 watch(categories, () => {
     emits("update:modelValue", categories
-        .filter((category)=>category.selected)
-        .map((category)=>category.name)
+        .filter((category) => category.selected)
+        .map((category) => category.name)
     );
+}, {
+    immediate: true
 });
 </script>
 
