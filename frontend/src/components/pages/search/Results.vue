@@ -57,7 +57,7 @@ const products = ref<Array<ISearchProduct>>([]);
 const options = computed(() => searchStore.options);
 
 const params = computed(() => {
-    const params = { ...route.query } as Record<string, string | number>;
+    const params = { ...route.query } as Record<string, unknown>;
     params.limit = PRODUCT_PER_PAGE;
     params.skip = PRODUCT_PER_PAGE * page.value;
 
@@ -94,6 +94,14 @@ const params = computed(() => {
     }
     else {
         delete params.categories;
+    }
+
+    if (options.value.favorites) {
+        const configStore = useConfigStore();
+        params.favlist = [...configStore.favSet];
+    }
+    else {
+        delete params.favlist;
     }
 
     return params;

@@ -23,6 +23,9 @@
         <UIRadioButton v-model="searchStore.discounted">
             Discounted
         </UIRadioButton>
+        <UIRadioButton v-model="searchStore.favorites">
+            Favorites
+        </UIRadioButton>
         <UICategorySelect v-model="searchStore.categories" />
         <UIPriceRange v-model="searchStore.priceRange">
             <template #label>

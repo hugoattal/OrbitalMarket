@@ -135,6 +135,7 @@ export interface ISearch {
     },
     categories?: Array<string>,
     discounted?: boolean;
+    favlist?: Array<string>;
 }
 
 export const Search = {
@@ -187,7 +188,11 @@ export const Search = {
                     max: { type: "number" }
                 }
             },
-            discounted: { type: "boolean" }
+            discounted: { type: "boolean" },
+            favlist: {
+                type: "array",
+                items: { type: "string" }
+            }
         },
         additionalProperties: false
     },

@@ -9,6 +9,7 @@
     --color-background: hsl(210, 10%, 98%);
     --color-primary: hsl(210, 90%, 60%);
     --color-primary-transparent: hsla(210, 90%, 50%, 0.1);
+    --color-gold-transparent: oklch(100% 50% 80deg / 0.1);
     --color-content-background: hsl(210, 25%, 100%);
     --color-content-light: hsl(210, 25%, 90%);
     --color-content-highlight: hsl(210, 25%, 70%);
@@ -29,6 +30,7 @@
     --color-background: hsl(210, 30%, 10%);
     --color-primary: hsl(210, 90%, 50%);
     --color-primary-transparent: hsla(210, 90%, 50%, 0.25);
+    --color-gold-transparent: oklch(100% 50% 80deg / 0.25);
     --color-content-background: hsl(210, 25%, 15%);
     --color-content-light: hsl(210, 25%, 20%);
     --color-content-highlight: hsl(210, 25%, 35%);

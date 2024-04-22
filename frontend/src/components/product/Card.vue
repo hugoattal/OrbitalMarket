@@ -6,7 +6,7 @@
     >
         <article
             class="product"
-            :class="{boost: boostedClass, [configStore.displayType]: true}"
+            :class="{boost: props.product.computed.isBoosted, favorite: configStore.favSet.has(props.product._id), [configStore.displayType]: true}"
         >
             <Box3D
                 v-if="configStore.displayType === 'box'"
@@ -142,10 +142,6 @@ const props = defineProps<{
 const configStore = useConfigStore();
 
 const showModal = ref(false);
-
-const boostedClass = computed(() => {
-    return configStore.favSet.has(props.product._id) || props.product.computed.isBoosted;
-});
 
 const category = computed(() => {
     const categoryPath = props.product.category?.path[1];
@@ -318,6 +314,11 @@ function goToProductPage() {
     &.boost {
         border-color: var(--color-content-highlight);
         box-shadow: inset 0 0 64px var(--color-primary-transparent);
+    }
+
+    &.favorite {
+        border-color: var(--color-content-highlight);
+        box-shadow: inset 0 0 64px var(--color-gold-transparent);
     }
 
     &:hover {

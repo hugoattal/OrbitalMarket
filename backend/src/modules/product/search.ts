@@ -5,6 +5,7 @@ import { has } from "lodash";
 import * as mongoUtils from "@/utils/mongo";
 import { PipelineStage } from "mongoose";
 import { getAuthor } from "@/modules/product/utils";
+import { ObjectId } from "mongodb";
 
 export async function search(params: ISearch): Promise<Array<IProductDocument>> {
     if (!has(params, "skip")) {
@@ -68,6 +69,14 @@ export async function search(params: ISearch): Promise<Array<IProductDocument>> 
     const aggregationStages: Array<PipelineStage> = [];
 
     const matchStage = [];
+
+    if (params.favlist) {
+        matchStage.push({
+            "_id": {
+                $in: params.favlist.map((id) => new ObjectId(id))
+            }
+        });
+    }
 
     if (authors.length) {
         const authorsIds = await UserModel.find({
