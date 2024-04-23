@@ -13,17 +13,17 @@
             </div>
             <div
                 class="option"
-                :class="{selected:(engineRange===EngineRange.V5_2)}"
-                @click="engineRange=EngineRange.V5_2"
-            >
-                5.2
-            </div>
-            <div
-                class="option"
                 :class="{selected:(engineRange===EngineRange.V5_3)}"
                 @click="engineRange=EngineRange.V5_3"
             >
                 5.3
+            </div>
+            <div
+                class="option"
+                :class="{selected:(engineRange===EngineRange.V5_4)}"
+                @click="engineRange=EngineRange.V5_4"
+            >
+                5.4
             </div>
             <div
                 ref="range"
@@ -72,8 +72,8 @@ const MAX_ENGINE = 28 + 3;
 
 enum EngineRange {
     All,
-    V5_2,
     V5_3,
+    V5_4,
     Range
 }
 
@@ -95,10 +95,10 @@ export default defineComponent({
     computed: {
         value() {
             switch (this.engineRange) {
+            case EngineRange.V5_4:
+                return { max: "5.04", min: "5.04" };
             case EngineRange.V5_3:
                 return { max: "5.03", min: "5.03" };
-            case EngineRange.V5_2:
-                return { max: "5.02", min: "5.02" };
             case EngineRange.Range:
                 return { max: this.getEngineVersion(this.max), min: this.getEngineVersion(this.min) };
             }
