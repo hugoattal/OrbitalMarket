@@ -82,11 +82,11 @@ const params = computed(() => {
         delete params.time;
     }
 
-    if (options.value?.discounted) {
-        params.discounted = options.value.discounted;
+    if (options.value?.discountRange) {
+        params.discount = options.value.discountRange;
     }
     else {
-        delete params.discounted;
+        delete params.discount;
     }
 
     if (options.value?.categories) {

@@ -113,6 +113,16 @@ export async function search(params: ISearch): Promise<Array<IProductDocument>> 
         );
     }
 
+    if (params.discount) {
+        matchStage.push(
+            mongoUtils.isInRange("discount.value", params.discount.min, params.discount.max)
+        );
+
+        matchStage.push(
+            { "price.value": { $gt: 0 } }
+        );
+    }
+
     if (params.categories && params.categories.length > 0) {
         matchStage.push({
             "category.path.1": { $in: params.categories }
@@ -124,15 +134,6 @@ export async function search(params: ISearch): Promise<Array<IProductDocument>> 
             $text: {
                 $search: params.searchText
             }
-        });
-    }
-
-    if (params.discounted) {
-        matchStage.push({
-            $and: [
-                { "discount.value": { $gt: 0 } },
-                { "price.value": { $gt: 0 } }
-            ]
         });
     }
 

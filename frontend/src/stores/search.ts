@@ -1,5 +1,4 @@
 import { defineStore } from "pinia";
-import { useConfigStore } from "@/stores/config";
 
 export const useSearchStore = defineStore({
     id: "search",
@@ -19,8 +18,8 @@ export const useSearchStore = defineStore({
                 options.timeRange = this.timeRange;
             }
 
-            if (this.discounted) {
-                options.discounted = this.discounted;
+            if (Object.keys(this.discountRange).length) {
+                options.discountRange = this.discountRange;
             }
 
             if (this.favorites) {
@@ -34,7 +33,7 @@ export const useSearchStore = defineStore({
     },
     state: () => ({
         categories: [],
-        discounted: false,
+        discountRange: {},
         engineRange: {},
         favorites: false,
         priceRange: {},

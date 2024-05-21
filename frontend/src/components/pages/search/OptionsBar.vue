@@ -20,9 +20,11 @@
                 </div>
             </UIRadioElement>
         </UIRadioList>
-        <UIRadioButton v-model="searchStore.discounted">
-            Discounted
-        </UIRadioButton>
+        <UIDiscountRange v-model="searchStore.discountRange">
+            <template #label>
+                Discount:
+            </template>
+        </UIDiscountRange>
         <UIRadioButton v-model="searchStore.favorites">
             Favorites
         </UIRadioButton>
@@ -55,6 +57,7 @@ import UICategorySelect from "@/components/ui/CategorySelect.vue";
 import UITimeRange from "@/components/ui/range/TimeRange.vue";
 import { useConfigStore } from "@/stores/config";
 import { useSearchStore } from "@/stores/search";
+import UIDiscountRange from "@/components/ui/range/DiscountRange.vue";
 
 const configStore = useConfigStore();
 const searchStore = useSearchStore();
