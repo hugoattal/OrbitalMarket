@@ -68,7 +68,7 @@ import { defineComponent } from "vue";
 import { debounce } from "lodash";
 import UISlider from "@/components/ui/Slider.vue";
 
-const MAX_ENGINE = 28 + 3;
+const MAX_ENGINE = 28 + 4; // 5.4
 
 enum EngineRange {
     All,
