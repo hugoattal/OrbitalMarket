@@ -2,14 +2,13 @@
     <div class="sponsors">
         Sponsored by
         <a
-            href="https://welevel.com/"
+            href="https://luna-park.app/"
             target="_blank"
         >
             <img
-                alt="WeLevel"
+                alt="Luna Park"
                 class="logo"
-                :class="{light: !isDarkMode}"
-                :src="WeLevelLogo"
+                :src="logoUrl"
             >
         </a>
     </div>
@@ -22,8 +21,12 @@ export default {
 </script>
 
 <script setup lang="ts">
-import WeLevelLogo from "@/assets/brands/welevel.svg";
+import { computed } from "vue";
+import LunaParkLogo from "@/assets/brands/lunapark.svg";
+import LunaParkLogoLight from "@/assets/brands/lunapark-light.svg";
 import { isDarkMode } from "@/components/theme/theme";
+
+const logoUrl = computed(() => isDarkMode.value ? LunaParkLogo : LunaParkLogoLight);
 </script>
 
 <style scoped lang="scss">
@@ -36,7 +39,7 @@ import { isDarkMode } from "@/components/theme/theme";
 
     .logo {
         color: var(--color-content);
-        width: 120px;
+        width: 180px;
         opacity: 0.5;
         cursor: pointer;
         transition: filter var(--duration-fast), opacity var(--duration-fast);
