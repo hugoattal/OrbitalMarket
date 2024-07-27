@@ -3,16 +3,16 @@ import QuestionModel from "@/modules/question/model";
 
 type TReviewData = {
     id: string;
-    targetId: string;
     title: string;
-    identityName: string;
-    rating: number;
     content: string;
-    helpfulNum: number;
     createdAt: string;
+    helpfulNum: number;
+    identityName: string;
     publisherReply?: {
         content: string;
-    }
+    };
+    rating: number;
+    targetId: string;
 }
 
 export async function processCommentData(data: TReviewData, type: "reviews" | "questions") {
@@ -26,17 +26,17 @@ export async function processCommentData(data: TReviewData, type: "reviews" | "q
         }).exec();
 
         await ReviewModel.create({
-            title: data.title,
             name: data.identityName || "unknown",
-            rating: data.rating,
+            title: data.title,
             content: data.content,
-            helpfulNum: data.helpfulNum,
             date: new Date(data.createdAt),
-            publisherReply: data.publisherReply?.content,
+            helpfulNum: data.helpfulNum,
             meta: {
-                unrealId: data.id,
-                target: data.targetId
-            }
+                target: data.targetId,
+                unrealId: data.id
+            },
+            publisherReply: data.publisherReply?.content,
+            rating: data.rating
         });
     }
     else {
@@ -45,16 +45,16 @@ export async function processCommentData(data: TReviewData, type: "reviews" | "q
         }).exec();
 
         await QuestionModel.create({
-            title: data.title,
             name: data.identityName || "unknown",
+            title: data.title,
             content: data.content,
-            helpfulNum: data.helpfulNum,
             date: new Date(data.createdAt),
-            publisherReply: data.publisherReply?.content,
+            helpfulNum: data.helpfulNum,
             meta: {
-                unrealId: data.id,
-                target: data.targetId
-            }
+                target: data.targetId,
+                unrealId: data.id
+            },
+            publisherReply: data.publisherReply?.content
         });
     }
 }

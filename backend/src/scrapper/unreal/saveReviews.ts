@@ -14,7 +14,7 @@ async function init() {
         const currentPercentage = `${ Math.round(productNum++ / totalProducts * 100 * 100) / 100 }%`;
         if (currentPercentage !== previousPercentage) {
             previousPercentage = currentPercentage;
-            console.log(currentPercentage);
+            console.log(`${ currentPercentage } (${ productNum })`);
         }
 
         if (product.ratings.reduce((a, b) => a + b, 0) === 0) {

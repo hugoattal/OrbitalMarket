@@ -9,7 +9,7 @@ export async function updateProducts(): Promise<void> {
     const step = 100;
 
     for (let startProduct = 0; startProduct < productsCount; startProduct += step) {
-        console.log(startProduct + " / " + productsCount);
+        console.log(`${ startProduct } / ${ productsCount }`);
         let tryFetch = 5;
         let productPage;
         while (tryFetch--) {
@@ -18,7 +18,7 @@ export async function updateProducts(): Promise<void> {
                 tryFetch = 0;
             }
             catch (error) {
-                console.error("Error fetching the page (try " + tryFetch + ")");
+                console.error(`Error fetching the page (try ${ tryFetch })`);
             }
         }
 
@@ -42,15 +42,17 @@ export async function saveComments(productId: string, type: "reviews" | "questio
             try {
                 reviewPage = await getCommentsPage(startReview, step, productId, type);
                 reviewsCount = reviewPage.paging.total;
+
+                for (const element of reviewPage.elements) {
+                    await processCommentData(element, type);
+                }
+
                 tryFetch = 0;
             }
             catch (error) {
-                console.error("Error fetching the page (try " + tryFetch + ")");
+                console.error(error);
+                console.error(`Error fetching the page (try ${ tryFetch })`);
             }
-        }
-
-        for (const element of reviewPage.elements) {
-            await processCommentData(element, type);
         }
     }
 }
@@ -70,7 +72,7 @@ export async function getProductPage(start: number, count: number) {
 
 // https://www.unrealengine.com/marketplace/api/review/5cb2a394d0c04e73891762be4cbd7216/reviews/list?start=0&count=1&sortBy=CREATEDAT&sortDir=DESC
 export async function getCommentsPage(start: number, count: number, productId: string, type: "questions" | "reviews") {
-    const commentsUrl = new URL(`https://www.unrealengine.com/marketplace/api/review/${productId}/${type}/list`);
+    const commentsUrl = new URL(`https://www.unrealengine.com/marketplace/api/review/${ productId }/${ type }/list`);
     commentsUrl.searchParams.append("start", start.toString());
     commentsUrl.searchParams.append("count", count.toString());
     commentsUrl.searchParams.append("sortBy", "CREATEDAT");
@@ -82,12 +84,12 @@ export async function getCommentsPage(start: number, count: number, productId: s
 }
 
 export async function getProduct(productId: string) {
-    const product = await makeRequest(`https://www.unrealengine.com/marketplace/api/assets/asset/${productId}`);
+    const product = await makeRequest(`https://www.unrealengine.com/marketplace/api/assets/asset/${ productId }`);
     return product.data.data;
 }
 
 export async function getRating(productId: string) {
-    const rating = await makeRequest(`https://www.unrealengine.com/marketplace/api/review/${productId}/ratings`);
+    const rating = await makeRequest(`https://www.unrealengine.com/marketplace/api/review/${ productId }/ratings`);
     return rating.data.data;
 }
 
