@@ -24,7 +24,6 @@ const userSchema: Mongo.Schema = new Mongo.Schema({
         type: String
     },
     content: {
-        required: true,
         type: String
     },
     date: {

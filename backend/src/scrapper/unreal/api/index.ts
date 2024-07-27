@@ -41,11 +41,6 @@ export async function saveComments(productId: string, type: "reviews" | "questio
         while (tryFetch--) {
             try {
                 reviewPage = await getCommentsPage(startReview, step, productId, type);
-
-                for (const element of reviewPage.elements) {
-                    await processCommentData(element, type);
-                }
-
                 reviewsCount = reviewPage.paging.total;
                 tryFetch = 0;
             }
@@ -53,6 +48,10 @@ export async function saveComments(productId: string, type: "reviews" | "questio
                 console.error(error);
                 console.error(`Error fetching the page (try ${ tryFetch })`);
             }
+        }
+
+        for (const element of reviewPage.elements) {
+            await processCommentData(element, type);
         }
     }
 }
