@@ -41,12 +41,12 @@ export async function saveComments(productId: string, type: "reviews" | "questio
         while (tryFetch--) {
             try {
                 reviewPage = await getCommentsPage(startReview, step, productId, type);
-                reviewsCount = reviewPage.paging.total;
 
                 for (const element of reviewPage.elements) {
                     await processCommentData(element, type);
                 }
 
+                reviewsCount = reviewPage.paging.total;
                 tryFetch = 0;
             }
             catch (error) {
