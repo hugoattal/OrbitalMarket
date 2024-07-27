@@ -5,6 +5,7 @@
     },
     "scripts": {
         "dev": "pnpm --recursive --parallel run dev",
-        "build": "pnpm --recursive run build"
+        "build": "pnpm --recursive run build",
+        "update": "pnpm --recursive update --latest"
     }
 }
