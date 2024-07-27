@@ -2,52 +2,52 @@ import Mongo from "@/database";
 
 export interface IProduct {
     title: string;
-    slug: string;
-    owner: Mongo.Types.ObjectId;
-    price: {
-        value: number;
-        history?: Array<{
-            value: number;
-            date: Date;
-        }>;
-    };
-    discount: {
-        value: number;
-        history?: Array<{
-            value: number;
-            date: Date;
-        }>;
-    };
-    lastUpdate: Date;
-    ratings: Array<number>;
-    releaseDate: Date;
-    description: {
-        short: string;
-        long: string;
-        technical: string;
-    };
-    pictures: Record<string, Array<string>>;
     category: {
         main: string;
-        path: Array<string>
+        path: Array<string>;
     };
-    releases: Array<{
-        platforms: Array<string>;
-        apps: Array<string>;
-        updateDate: Date
-    }>;
-    tags: Array<Mongo.Types.ObjectId>;
     computed?: {
-        isBoosted?: boolean,
+        embeddedContent?: Array<string>;
+        engine: Record<string, any>;
+        isBoosted?: boolean;
         score?: {
-            value: number,
-            totalRatings: number,
-            meanRating: number
-        },
-        embeddedContent?: Array<string>,
-        engine: Record<string, any>
+            meanRating: number;
+            totalRatings: number;
+            value: number;
+        };
     };
+    description: {
+        long: string;
+        short: string;
+        technical: string;
+    };
+    discount: {
+        history?: Array<{
+            date: Date;
+            value: number;
+        }>;
+        value: number;
+    };
+    lastUpdate: Date;
     meta: Record<string, any>;
+    owner: Mongo.Types.ObjectId;
+    pictures: Record<string, Array<string>>;
+    price: {
+        history?: Array<{
+            date: Date;
+            value: number;
+        }>;
+        value: number;
+    };
+    ratings: Array<number>;
+    releaseDate: Date;
+    releases: Array<{
+        apps: Array<string>;
+        platforms: Array<string>;
+        updateDate: Date;
+    }>;
+    slug: string;
+    tags: Array<Mongo.Types.ObjectId>;
 }
 
 export interface IProductDocument extends IProduct, Mongo.Document {
@@ -55,124 +55,124 @@ export interface IProductDocument extends IProduct, Mongo.Document {
 
 const productSchema: Mongo.Schema = new Mongo.Schema({
     title: {
-        type: String,
+        faker: "commerce.productName",
         required: true,
-        faker: "commerce.productName"
+        type: String
     },
-    slug: {
-        type: String,
-        required: true,
-        faker: "internet.domainWord"
-    },
-    owner: {
-        type: Mongo.Schema.Types.ObjectId,
-        ref: "user",
-        required: true
-    },
-    price: {
-        value: {
-            type: Number,
-            required: true,
-            faker: "commerce.price"
-        },
-        history: [
-            {
-                value: Number,
-                date: Date
-            }
-        ]
-    },
-    discount: {
-        value: {
-            type: Number,
-            required: true,
-            faker: { "datatype.number": [{ min: 0, max: 50 }] }
-        },
-        history: [
-            {
-                value: Number,
-                date: Date
-            }
-        ]
-    },
-    ratings: [Number],
-    releaseDate: {
-        type: Date,
-        required: true,
-        default: Date.now,
-        faker: { "date.recent": 500 }
-    },
-    description: {
-        short: String,
-        long: {
-            type: String,
-            required: true,
-            faker: "commerce.productDescription"
-        },
-        technical: String
-    },
-    pictures: Object,
     category: {
         main: {
-            type: String,
-            enum: ["default", "unreal"],
             default: "default",
-            required: true
+            enum: ["default", "unreal"],
+            required: true,
+            type: String
         },
         path: [String]
     },
-    releases: [{
-        platforms: [String],
-        apps: [String],
-        updateDate: Date
-    }],
-    tags: [{
-        type: Mongo.Schema.Types.ObjectId,
-        ref: "tag"
-    }],
     computed: {
+        embeddedContent: [String],
+        engine: {
+            max: {
+                faker: "5.00",
+                type: String
+            },
+            min: {
+                faker: "4.20",
+                type: String
+            }
+        },
         isBoosted: Boolean,
         score: {
-            value: {
-                type: Number,
-                faker: { "datatype.number": [{ min: 0, max: 1000 }] }
+            meanRating: {
+                faker: { "datatype.number": [{ max: 5, min: 0 }] },
+                type: Number
             },
             totalRatings: {
-                type: Number,
-                faker: { "datatype.number": [{ min: 0, max: 200 }] }
+                faker: { "datatype.number": [{ max: 200, min: 0 }] },
+                type: Number
             },
-            meanRating: {
-                type: Number,
-                faker: { "datatype.number": [{ min: 0, max: 5 }] }
+            value: {
+                faker: { "datatype.number": [{ max: 1000, min: 0 }] },
+                type: Number
             }
-        },
-        engine: {
-            min: {
-                type: String,
-                faker: "4.20"
-            },
-            max: {
-                type: String,
-                faker: "5.00"
-            }
-        },
-        embeddedContent: [String]
+        }
     },
-    meta: Object
+    description: {
+        long: {
+            faker: "commerce.productDescription",
+            required: true,
+            type: String
+        },
+        short: String,
+        technical: String
+    },
+    discount: {
+        history: [
+            {
+                date: Date,
+                value: Number
+            }
+        ],
+        value: {
+            faker: { "datatype.number": [{ max: 50, min: 0 }] },
+            required: true,
+            type: Number
+        }
+    },
+    meta: Object,
+    owner: {
+        ref: "user",
+        required: true,
+        type: Mongo.Schema.Types.ObjectId
+    },
+    pictures: Object,
+    price: {
+        history: [
+            {
+                date: Date,
+                value: Number
+            }
+        ],
+        value: {
+            faker: "commerce.price",
+            required: true,
+            type: Number
+        }
+    },
+    ratings: [Number],
+    releaseDate: {
+        default: Date.now,
+        faker: { "date.recent": 500 },
+        required: true,
+        type: Date
+    },
+    releases: [{
+        apps: [String],
+        platforms: [String],
+        updateDate: Date
+    }],
+    slug: {
+        faker: "internet.domainWord",
+        required: true,
+        type: String
+    },
+    tags: [{
+        ref: "tag",
+        type: Mongo.Schema.Types.ObjectId
+    }]
 });
 
 productSchema.index(
     {
         title: "text",
-        "description.short": "text",
         "description.long": "text",
+        "description.short": "text",
         "description.technical": "text"
     },
     {
         "weights": {
             title: 4,
-            "description.short": 2,
             "description.long": 1,
+            "description.short": 2,
             "description.technical": 1
         }
     }

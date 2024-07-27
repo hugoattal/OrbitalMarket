@@ -1,48 +1,48 @@
 import Mongo from "@/database";
 
 export interface IReview {
-    title: string;
     name: string;
-    rating: number;
+    title: string;
     content: string;
-    helpfulNum: number;
     date: Date;
-    publisherReply?: string;
+    helpfulNum: number;
     meta?: Record<string, any>;
+    publisherReply?: string;
+    rating: number;
 }
 
 export interface IReviewDocument extends IReview, Mongo.Document {
 }
 
 const userSchema: Mongo.Schema = new Mongo.Schema({
-    title: {
-        type: String,
-        required: true
-    },
     name: {
-        type: String,
-        required: true
+        required: true,
+        type: String
     },
-    rating: {
-        type: Number,
-        required: true
+    title: {
+        required: true,
+        type: String
     },
     content: {
-        type: String,
-        required: true
-    },
-    helpfulNum: {
-        type: Number,
-        required: true
+        required: true,
+        type: String
     },
     date: {
-        type: Date,
-        required: true
+        required: true,
+        type: Date
     },
+    helpfulNum: {
+        required: true,
+        type: Number
+    },
+    meta: Object,
     publisherReply: {
         type: String
     },
-    meta: Object
+    rating: {
+        required: true,
+        type: Number
+    }
 });
 
 export default Mongo.model<IReviewDocument>("review", userSchema);

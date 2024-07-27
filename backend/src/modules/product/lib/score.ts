@@ -5,11 +5,11 @@ import { differenceInDays } from "date-fns";
 export async function updateScores() {
     const products = await ProductModel.aggregate([{
         $project: {
-            releaseDate: true,
-            ratings: true,
-            "price.value": true,
             "computed.isBoosted": true,
-            "meta.verificationReviews": true
+            "meta.verificationRatio": true,
+            "price.value": true,
+            ratings: true,
+            releaseDate: true
         }
     }]);
 
@@ -18,35 +18,43 @@ export async function updateScores() {
             updateOne: {
                 filter: { _id: product._id },
                 update: {
-                    "computed.score": computeScore(product.ratings, product.releaseDate, product.price.value === 0, product.computed.isBoosted, product.meta?.verificationReviews)
+                    "computed.score": computeScore(
+                        product.ratings,
+                        product.releaseDate,
+                        product.price.value === 0,
+                        product.computed.isBoosted,
+                        product.meta?.verificationRatio
+                    )
                 }
             }
         }))
     );
 }
 
-export function computeScore(ratings: Array<number>, releaseDate: Date, isFree: boolean, isBoosted: boolean, verificationReviews = 0): { value: number, totalRatings: number, meanRating: number } {
+export function computeScore(ratings: Array<number>, releaseDate: Date, isFree: boolean, isBoosted: boolean, verificationRatio: number):
+    { meanRating: number; totalRatings: number; value: number } {
     const totalRatings = _.sum(ratings);
 
     if (totalRatings === 0) {
-        return { value: 0, totalRatings: 0, meanRating: 0 };
+        return { meanRating: 0, totalRatings: 0, value: 0 };
     }
 
-    const verificationPenalty = verificationReviews * 0.8;
+    verificationRatio ??= 1;
+    verificationRatio = verificationRatio * 0.9 + 0.1;
 
     const meanRating = getMeanRating(ratings);
     const elapsedDays = differenceInDays(Date.now(), releaseDate);
     const starsDivider = isFree ? 10 : 1;
-    let value = Math.pow(meanRating, 2) * Math.sqrt(((totalRatings - verificationPenalty) / starsDivider) / (elapsedDays + 30)) * 1000 + 1 / (elapsedDays + 30) + 1 || 0;
+    let value = Math.pow(meanRating, 2) * Math.sqrt(((totalRatings * verificationRatio) / starsDivider) / (elapsedDays + 30)) * 1000 + 1 / (elapsedDays + 30) + 1 || 0;
 
     if (isBoosted) {
         value *= 1.5;
     }
 
     return {
-        value,
+        meanRating,
         totalRatings,
-        meanRating
+        value
     };
 }
 

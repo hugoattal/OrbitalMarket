@@ -1,14 +1,5 @@
-
-//
-//https://www.unrealengine.com/marketplace/api/review/5cb2a394d0c04e73891762be4cbd7216/questions/list?start=0&count=10&sortBy=CREATEDAT&sortDir=DESC
-//https://www.unrealengine.com/marketplace/api/review/5cb2a394d0c04e73891762be4cbd7216/reviews/list?start=0&count=10&sortBy=CREATEDAT&sortDir=DESC
-
-
-//https://www.unrealengine.com/marketplace/api/review/5cb2a394d0c04e73891762be4cbd7216/reviews/list?start=50&count=40&sortBy=CREATEDAT&sortDir=DESC
-
-
 import "module-alias/register";
-import { connectDatabase, closeDatabase } from "@/database";
+import { closeDatabase, connectDatabase } from "@/database";
 import * as UnrealAPI from "./api";
 
 import ProductModel from "@/modules/product/model";
@@ -20,7 +11,7 @@ async function init() {
     let productNum = 0;
     let previousPercentage = "";
     for (const product of products) {
-        const currentPercentage = Math.round(productNum++ / totalProducts * 100 * 100) / 100 + "%";
+        const currentPercentage = `${ Math.round(productNum++ / totalProducts * 100 * 100) / 100 }%`;
         if (currentPercentage !== previousPercentage) {
             previousPercentage = currentPercentage;
             console.log(currentPercentage);
