@@ -28,10 +28,6 @@ async function init() {
                 return true;
             }
 
-            if (review.content.length < 32) {
-                return true;
-            }
-
             const content = review.content.toLowerCase();
 
             if ((
