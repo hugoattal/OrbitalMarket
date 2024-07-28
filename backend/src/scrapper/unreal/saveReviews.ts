@@ -3,6 +3,7 @@ import { closeDatabase, connectDatabase } from "@/database";
 import * as UnrealAPI from "./api";
 
 import ProductModel from "@/modules/product/model";
+import ReviewModel from "@/modules/review/model";
 
 async function init() {
     await connectDatabase();
@@ -17,7 +18,10 @@ async function init() {
             console.log(`${ currentPercentage } (${ productNum })`);
         }
 
-        if (product.ratings.reduce((a, b) => a + b, 0) === 0) {
+        const expectedReviews = product.ratings.reduce((a, b) => a + b, 0);
+        const existingReviews = await ReviewModel.countDocuments({ "meta.target": product.meta.unrealId }).exec();
+
+        if (expectedReviews === existingReviews) {
             continue;
         }
 

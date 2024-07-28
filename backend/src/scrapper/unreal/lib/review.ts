@@ -17,10 +17,6 @@ type TReviewData = {
 
 export async function processCommentData(data: TReviewData, type: "reviews" | "questions") {
     if (type === "reviews") {
-        if (!data.publisherReply?.content) {
-            return;
-        }
-
         await ReviewModel.deleteMany({
             "meta.unrealId": data.id
         }).exec();
