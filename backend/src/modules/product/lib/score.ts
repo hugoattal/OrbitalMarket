@@ -31,7 +31,7 @@ export async function updateScores() {
     );
 }
 
-export function computeScore(ratings: Array<number>, releaseDate: Date, isFree: boolean, isBoosted: boolean, verificationRatio: number):
+export function computeScore(ratings: Array<number>, releaseDate: Date, isFree: boolean, isBoosted: boolean, verificationRatio?: number):
     { meanRating: number; totalRatings: number; value: number } {
     const totalRatings = _.sum(ratings);
 
