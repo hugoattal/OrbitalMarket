@@ -3,10 +3,10 @@
         <h2>Favlist</h2>
         <div class="actions">
             <UIButton @click="exportToClipboard">
-                Copy to clipboard
+                Export to clipboard
             </UIButton>
             <UIButton @click="importFavlist">
-                Import
+                Import from clipboard
             </UIButton>
             <UIButton @click="clearFavlist">
                 Clear
