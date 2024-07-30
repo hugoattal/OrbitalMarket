@@ -72,8 +72,8 @@ export async function search(params: ISearch): Promise<Array<IProductDocument>> 
 
     if (params.favlist) {
         matchStage.push({
-            "_id": {
-                $in: params.favlist.map((id) => new ObjectId(id))
+            "meta.unrealId": {
+                $in: params.favlist
             }
         });
     }

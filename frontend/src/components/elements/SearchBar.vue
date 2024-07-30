@@ -34,11 +34,17 @@ import ThemeSwitcher from "@/components/theme/Switcher.vue";
 import Button from "@/components/ui/Button.vue";
 import UIInput from "@/components/ui/Input.vue";
 import { useRouteQuery } from "@vueuse/router";
+import { useRouter } from "vue-router";
 
 const searchQuery = useRouteQuery<string | null>("searchText");
 const searchText = ref(searchQuery.value || "");
+const router = useRouter();
 
 function search () {
+    if (router.currentRoute.value.name === "landing") {
+        router.push({ name: "search", query: { searchText: searchText.value } });
+    }
+
     if (!searchText.value) {
         searchQuery.value = null;
         return;
