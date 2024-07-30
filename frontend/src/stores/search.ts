@@ -11,6 +11,7 @@ export const useSearchStore = defineStore("search", () => {
     const priceQuery = useRouteQuery<string | null>("price");
     const timeQuery = useRouteQuery<string | null>("time");
     const categoriesQuery = useRouteQuery<string | null>("categories");
+    const searchText = useRouteQuery<string | null>("searchText");
 
     const favorites = ref(false);
 
@@ -69,6 +70,10 @@ export const useSearchStore = defineStore("search", () => {
 
         if (favorites.value) {
             body["favlist"] = [...configStore.favSet];
+        }
+
+        if (searchText.value) {
+            body["searchText"] = searchText.value;
         }
 
         return body;

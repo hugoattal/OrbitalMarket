@@ -15,11 +15,7 @@ export async function getById(id: string): Promise<IProductDocument | null> {
 }
 
 export async function listByIds(ids: Array<string>) {
-    console.log("start");
-
     const validIds = ids.filter(id => isValidObjectId(id));
-
-    console.log(validIds);
 
     return ProductModel.find({
         $or: [
