@@ -41,6 +41,12 @@ const products = ref<Array<ISearchProduct>>([]);
 
 onMounted(async() => {
     products.value = await SearchService.list(Array.from(configStore.favSet));
+    if (products.value.length) {
+        configStore.favSet.clear();
+        for (const product of products.value) {
+            configStore.favSet.add(product.meta.unrealId);
+        }
+    }
 });
 
 function exportToClipboard() {
@@ -49,16 +55,35 @@ function exportToClipboard() {
 }
 
 async function importFavlist() {
-    const favlist = prompt("Enter favlist");
+    const favlist = (await navigator.clipboard.readText()) || prompt("Enter favlist");
     if (favlist) {
-        const favImport = favlist.split(",");
+        if (favlist.startsWith("Vault")) {
+            importVault(favlist);
+        }
+        else {
+            const favImport = favlist.split(",");
 
-        for (const fav of favImport) {
-            configStore.favSet.add(fav);
+            for (const fav of favImport) {
+                configStore.favSet.add(fav);
+            }
         }
     }
 
     products.value = await SearchService.list(Array.from(configStore.favSet));
+}
+
+function importVault(favlist: string) {
+    console.log(favlist);
+
+    const favImport = favlist
+        .split("\n\n")
+        .map((value) => value.split("\n"))
+        .filter((value) => value.length >= 4 && value.length <= 5)
+        .map((value) => value[1]);
+
+    for (const fav of favImport) {
+        configStore.favSet.add(fav);
+    }
 }
 </script>
 

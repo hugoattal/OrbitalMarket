@@ -15,44 +15,54 @@
     </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
+<script setup lang="ts">
 import UISelect from "@/components/ui/Select.vue";
-import router from "@/router";
+import { useRouteQuery } from "@vueuse/router";
+import { ref, watch } from "vue";
 
-export default defineComponent({
-    name: "SearchOptions",
-    components: { UISelect },
-    data () {
-        return {
-            directionOptions: {
-                asc: "Ascending",
-                desc: "Descending"
-            },
-            sortDirection: this.$route.query.sortDirection || "desc",
-            sortField: this.$route.query.sortField || "popularity",
-            sortOptions: {
-                name: "Name",
-                popularity: "Popularity",
-                price: "Price",
-                releaseDate: "Release Date",
-                reviews: "Reviews"
-            }
-        };
-    },
-    watch: {
-        "$route.query.sortField": {
-            handler () {
-                this.sortField = this.$route.query.sortField || "popularity";
-            }
-        },
-        sortDirection () {
-            router.push({ name: "search", query: { ...this.$route.query, sortDirection: this.sortDirection } });
-        },
-        sortField () {
-            router.push({ name: "search", query: { ...this.$route.query, sortField: this.sortField } });
-        }
+const sortField = ref("popularity");
+const sortDirection = ref("desc");
+
+const fieldQuery = useRouteQuery<string | null>("sortField");
+const directionQuery = useRouteQuery<string | null>("sortDirection");
+
+if (fieldQuery.value) {
+    sortField.value = fieldQuery.value;
+}
+
+if (directionQuery.value) {
+    sortDirection.value = directionQuery.value;
+}
+
+const directionOptions = {
+    asc: "Ascending",
+    desc: "Descending"
+};
+
+const sortOptions = {
+    name: "Name",
+    popularity: "Popularity",
+    price: "Price",
+    releaseDate: "Release Date",
+    reviews: "Reviews"
+};
+
+watch(sortField, () => {
+    if (sortField.value === "popularity") {
+        fieldQuery.value = null;
+        return;
     }
+
+    fieldQuery.value = sortField.value;
+});
+
+watch(sortDirection, () => {
+    if (sortDirection.value === "desc") {
+        directionQuery.value = null;
+        return;
+    }
+
+    directionQuery.value = sortDirection.value;
 });
 </script>
 

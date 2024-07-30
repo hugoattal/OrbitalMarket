@@ -15,6 +15,9 @@ export interface ISearchProduct {
         };
     };
     discount: { value: number };
+    meta: {
+        unrealId: string;
+    };
     owner: string;
     pictures: { thumbnail: Array<string> };
     price: { value: number };

@@ -24,10 +24,10 @@ export async function search(params: ISearch): Promise<Array<IProductDocument>> 
         params.sortField = ESortField.popularity;
     }
 
-    const authors:Array<string> = [];
+    const authors: Array<string> = [];
 
     if (params.searchText) {
-        const { text, author } = getAuthor(params.searchText);
+        const { author, text } = getAuthor(params.searchText);
         params.searchText = text;
 
         if (author) {
@@ -147,14 +147,15 @@ export async function search(params: ISearch): Promise<Array<IProductDocument>> 
 
     const projectStage = {
         title: 1,
-        slug: 1,
+        "category.path": 1,
+        computed: 1,
+        discount: 1,
+        meta: 1,
         owner: 1,
+        "pictures.thumbnail": 1,
         price: 1,
         releaseDate: 1,
-        discount: 1,
-        "category.path": 1,
-        "pictures.thumbnail": 1,
-        computed: 1
+        slug: 1
     } as Record<string, any>;
 
     if (params.searchText) {
@@ -163,7 +164,7 @@ export async function search(params: ISearch): Promise<Array<IProductDocument>> 
                 $add: [
                     { $sqrt: "$computed.score.value" },
                     10,
-                    { $cond: { if: "$computed.isBoosted", then: 5, else: 0 } }
+                    { $cond: { else: 0, if: "$computed.isBoosted", then: 5 } }
                 ]
             }]
         };
@@ -187,10 +188,10 @@ export async function search(params: ISearch): Promise<Array<IProductDocument>> 
 
     aggregationStages.push({
         $lookup: {
-            from: "users",
-            localField: "owner",
+            as: "owner",
             foreignField: "_id",
-            as: "owner"
+            from: "users",
+            localField: "owner"
         }
     });
 

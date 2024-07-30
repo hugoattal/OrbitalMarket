@@ -20,30 +20,14 @@
                 </div>
             </UIRadioElement>
         </UIRadioList>
-        <UIDiscountRange v-model="searchStore.discountRange">
-            <template #label>
-                Discount:
-            </template>
-        </UIDiscountRange>
+        <UIDiscountRange />
         <UIRadioButton v-model="searchStore.favorites">
             Favorites
         </UIRadioButton>
-        <UICategorySelect v-model="searchStore.categories" />
-        <UIPriceRange v-model="searchStore.priceRange">
-            <template #label>
-                Price:
-            </template>
-        </UIPriceRange>
-        <UIEngineRange v-model="searchStore.engineRange">
-            <template #label>
-                Engine:
-            </template>
-        </UIEngineRange>
-        <UITimeRange v-model="searchStore.timeRange">
-            <template #label>
-                Released:
-            </template>
-        </UITimeRange>
+        <UICategorySelect />
+        <UIPriceRange />
+        <UIEngineRange />
+        <UITimeRange />
     </div>
 </template>
 

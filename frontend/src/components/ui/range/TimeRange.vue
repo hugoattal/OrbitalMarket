@@ -1,7 +1,7 @@
 <template>
     <div class="price-range">
         <div class="label">
-            <slot name="label" />
+            Released:
         </div>
         <div class="options">
             <div
@@ -54,10 +54,12 @@
     </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
-import { debounce } from "lodash";
+<script setup lang="ts">
+import { ref, watch } from "vue";
 import UISlider from "@/components/ui/Slider.vue";
+import { useRouteQuery } from "@vueuse/router";
+
+const timeQuery = useRouteQuery<string | null>("time");
 
 const MAX_MONTHS = 24;
 
@@ -68,69 +70,79 @@ enum TimeRange {
     Range
 }
 
-export default defineComponent({
-    name: "UITimeRange",
-    components: { UISlider },
-    emits: ["update:modelValue"],
-    data () {
-        return {
-            debounceUpdate: debounce(this.updateValue, 500),
-            deploySelector: false,
-            max: MAX_MONTHS,
-            MAX_MONTHS,
-            min: 0,
-            timeRange: TimeRange.All as TimeRange,
-            TimeRange
-        };
-    },
-    computed: {
-        value () {
-            switch (this.timeRange) {
-            case TimeRange.Months3:
-                return { max: 3, min: 0 };
-            case TimeRange.Months12:
-                return { max: 12, min: 0 };
-            case TimeRange.Range:
-                return { max: this.max === MAX_MONTHS ? 100 * 12 : this.max, min: 0 };
-            }
-            return { };
-        }
-    },
-    watch: {
-        max () {
-            this.max = this.validateInput(this.max);
-            this.min = Math.min(this.min, this.max);
-            this.debounceUpdate();
-        },
-        min () {
-            this.min = this.validateInput(this.min);
-            this.max = Math.max(this.min, this.max);
-            this.debounceUpdate();
-        },
-        timeRange () {
-            this.updateValue();
-        }
-    },
-    methods: {
-        focusRange () {
-            this.deploySelector = true;
-        },
-        unFocusRange (event: FocusEvent) {
-            if (!this.$refs.range.contains(event.relatedTarget)) {
-                this.deploySelector = false;
-            }
-        },
-        updateValue () {
-            this.$emit("update:modelValue", this.value);
-        },
-        validateInput (time: number) {
-            if (isNaN(time)) {
-                time = 0;
-            }
-            return Math.min(Math.max(time, 0), MAX_MONTHS);
-        }
+const deploySelector = ref(false);
+const max = ref(MAX_MONTHS);
+const min = ref(0);
+const timeRange = ref(TimeRange.All as TimeRange);
+
+if (timeQuery.value) {
+    const [minValue, maxValue] = timeQuery.value.split("-").map(Number);
+    if (minValue === 0 && maxValue === 3) {
+        timeRange.value = TimeRange.Months3;
+    }
+    else if (minValue === 0 && maxValue === 12) {
+        timeRange.value = TimeRange.Months12;
+    }
+    else {
+        timeRange.value = TimeRange.Range;
+        min.value = minValue;
+        max.value = maxValue;
+    }
+}
+
+watch(max, () => {
+    max.value = validateInput(max.value);
+    min.value = Math.min(min.value, max.value);
+});
+
+watch(min, () => {
+    min.value = validateInput(min.value);
+    max.value = Math.max(min.value, max.value);
+});
+
+watch([timeRange, min, max], (newValue, oldValue) => {
+    min.value = validateInput(min.value);
+    max.value = validateInput(max.value);
+
+    if (oldValue[1] !== newValue[1]) {
+        max.value = Math.max(min.value, max.value);
+    }
+
+    if (oldValue[2] !== newValue[2]) {
+        min.value = Math.min(min.value, max.value);
+    }
+
+    switch (timeRange.value) {
+    case TimeRange.Months3:
+        timeQuery.value = "0-3";
+        break;
+    case TimeRange.Months12:
+        timeQuery.value = "0-12";
+        break;
+    case TimeRange.Range:
+        timeQuery.value = `${ min.value }-${ max.value }`;
+        break;
+    default:
+        timeQuery.value = null;
     }
 });
+
+function focusRange() {
+    deploySelector.value = true;
+}
+
+function unFocusRange(event: FocusEvent) {
+    if (!(event.relatedTarget as HTMLElement)?.closest(".range-selector")) {
+        deploySelector.value = false;
+    }
+}
+
+function validateInput(time: number) {
+    if (isNaN(time)) {
+        time = 0;
+    }
+    return Math.min(Math.max(time, 0), MAX_MONTHS);
+}
 </script>
 
 <style scoped lang="scss">

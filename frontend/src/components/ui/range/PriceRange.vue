@@ -1,7 +1,7 @@
 <template>
     <div class="price-range">
         <div class="label">
-            <slot name="label" />
+            Price:
         </div>
         <div class="options">
             <div
@@ -41,19 +41,19 @@
                 >
                     <UISlider
                         v-model="min"
-                        with-input
-                        prepend="$"
                         class="slider"
                         :max="MAX_PRICE"
+                        prepend="$"
+                        with-input
                     >
                         <span class="label">Min:</span>
                     </UISlider>
                     <UISlider
                         v-model="max"
-                        with-input
-                        prepend="$"
                         class="slider"
                         :max="MAX_PRICE"
+                        prepend="$"
+                        with-input
                     >
                         <span class="label">Max:</span>
                     </UISlider>
@@ -63,12 +63,14 @@
     </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
+<script setup lang="ts">
+import { ref, watch } from "vue";
 import UISlider from "@/components/ui/Slider.vue";
-import { debounce } from "lodash";
+import { useRouteQuery } from "@vueuse/router";
 
-const MAX_PRICE = 999;
+const priceQuery = useRouteQuery<string | null>("price");
+
+const MAX_PRICE = 1500;
 
 enum PriceRange {
     All,
@@ -77,69 +79,69 @@ enum PriceRange {
     Range
 }
 
-export default defineComponent({
-    name: "UIPriceRange",
-    components: { UISlider },
-    emits: ["update:modelValue"],
-    data () {
-        return {
-            min: 0,
-            max: MAX_PRICE,
-            priceRange: PriceRange.All as PriceRange,
-            PriceRange,
-            MAX_PRICE,
-            deploySelector: false,
-            debounceUpdate: debounce(this.updateValue, 500)
-        };
-    },
-    computed: {
-        value () {
-            switch (this.priceRange) {
-            case PriceRange.Free:
-                return { min: 0, max: 0 };
-            case PriceRange.Paid:
-                return { min: 1, max: MAX_PRICE * 100 };
-            case PriceRange.Range:
-                return { min: this.min * 100, max: this.max * 100 };
-            }
-            return { };
-        }
-    },
-    watch: {
-        priceRange () {
-            this.updateValue();
-        },
-        min () {
-            this.min = this.validateInput(this.min);
-            this.max = Math.max(this.min, this.max);
-            this.debounceUpdate();
-        },
-        max () {
-            this.max = this.validateInput(this.max);
-            this.min = Math.min(this.min, this.max);
-            this.debounceUpdate();
-        }
-    },
-    methods: {
-        focusRange () {
-            this.deploySelector = true;
-        },
-        unFocusRange (event:FocusEvent) {
-            if (!this.$refs.range.contains(event.relatedTarget)) {
-                this.deploySelector = false;
-            }
-        },
-        validateInput (price) {
-            if (isNaN(price)) {
-                price = 0;
-            }
-            return Math.min(Math.max(price, 0), MAX_PRICE);
-        },
-        updateValue () {
-            this.$emit("update:modelValue", this.value);
-        }
+const deploySelector = ref(false);
+const min = ref(0);
+const max = ref(MAX_PRICE);
+const priceRange = ref<PriceRange>(PriceRange.All);
+
+if (priceQuery.value) {
+    const [minPrice, maxPrice] = priceQuery.value.split("-").map(Number);
+    if (minPrice === 0 && maxPrice === 0) {
+        priceRange.value = PriceRange.Free;
+    }
+    else if (minPrice === 1 && maxPrice === MAX_PRICE) {
+        priceRange.value = PriceRange.Paid;
+    }
+    else {
+        priceRange.value = PriceRange.Range;
+        min.value = minPrice;
+        max.value = maxPrice;
+    }
+}
+
+watch([priceRange, min, max], (newValue, oldValue) => {
+    min.value = validateInput(min.value);
+    max.value = validateInput(max.value);
+
+    if (oldValue[1] !== newValue[1]) {
+        max.value = Math.max(min.value, max.value);
+    }
+
+    if (oldValue[2] !== newValue[2]) {
+        min.value = Math.min(min.value, max.value);
+    }
+
+    switch (priceRange.value) {
+    case PriceRange.Free:
+        priceQuery.value = "0-0";
+        break;
+    case PriceRange.Paid:
+        priceQuery.value = `1-${ MAX_PRICE }`;
+        break;
+    case PriceRange.Range:
+        priceQuery.value = `${ min.value }-${ max.value }`;
+        break;
+    default:
+        priceQuery.value = null;
     }
 });
+
+function focusRange() {
+    deploySelector.value = true;
+}
+
+function unFocusRange(event: FocusEvent) {
+    if (!(event.relatedTarget as HTMLElement)?.closest(".range-selector")) {
+        deploySelector.value = false;
+    }
+}
+
+function validateInput(price: number) {
+    if (isNaN(price)) {
+        price = 0;
+    }
+    return Math.min(Math.max(price, 0), MAX_PRICE);
+}
 </script>
 
 <style scoped lang="scss">

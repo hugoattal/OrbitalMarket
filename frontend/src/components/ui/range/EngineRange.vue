@@ -1,7 +1,7 @@
 <template>
     <div class="engine-range">
         <div class="label">
-            <slot name="label" />
+            Engine:
         </div>
         <div class="options">
             <div
@@ -13,15 +13,15 @@
             </div>
             <div
                 class="option"
-                :class="{selected:(engineRange===EngineRange.V5_3)}"
-                @click="engineRange=EngineRange.V5_3"
+                :class="{selected:(engineRange===EngineRange.VLast)}"
+                @click="engineRange=EngineRange.VLast"
             >
                 5.3
             </div>
             <div
                 class="option"
-                :class="{selected:(engineRange===EngineRange.V5_4)}"
-                @click="engineRange=EngineRange.V5_4"
+                :class="{selected:(engineRange===EngineRange.VCurrent)}"
+                @click="engineRange=EngineRange.VCurrent"
             >
                 5.4
             </div>
@@ -63,93 +63,106 @@
     </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
-import { debounce } from "lodash";
+<script setup lang="ts">
+import { ref, watch } from "vue";
 import UISlider from "@/components/ui/Slider.vue";
+import { useRouteQuery } from "@vueuse/router";
+
+const engineQuery = useRouteQuery<string | null>("engine");
 
 const MAX_ENGINE = 28 + 4; // 5.4
+const CURRENT_ENGINE = MAX_ENGINE;
+const LAST_ENGINE = MAX_ENGINE - 1;
 
 enum EngineRange {
     All,
-    V5_3,
-    V5_4,
+    VLast,
+    VCurrent,
     Range
 }
 
-export default defineComponent({
-    name: "UIEngineRange",
-    components: { UISlider },
-    emits: ["update:modelValue"],
-    data() {
-        return {
-            debounceUpdate: debounce(this.updateValue, 500),
-            deploySelector: false,
-            engineRange: EngineRange.All as EngineRange,
-            EngineRange,
-            max: MAX_ENGINE,
-            MAX_ENGINE,
-            min: 0
-        };
-    },
-    computed: {
-        value() {
-            switch (this.engineRange) {
-            case EngineRange.V5_4:
-                return { max: "5.04", min: "5.04" };
-            case EngineRange.V5_3:
-                return { max: "5.03", min: "5.03" };
-            case EngineRange.Range:
-                return { max: this.getEngineVersion(this.max), min: this.getEngineVersion(this.min) };
-            }
-            return {};
-        }
-    },
-    watch: {
-        engineRange() {
-            this.updateValue();
-        },
-        max() {
-            this.max = this.validateInput(this.max);
-            this.min = Math.min(this.min, this.max);
-            this.debounceUpdate();
-        },
-        min() {
-            this.min = this.validateInput(this.min);
-            this.max = Math.max(this.min, this.max);
-            this.debounceUpdate();
-        }
-    },
-    methods: {
-        displaySemVer(value: number) {
-            return this.getEngineFromValue(value).join(".");
-        },
-        focusRange() {
-            this.deploySelector = true;
-        },
-        getEngineFromValue(value: number) {
-            return value <= 27 ? [4, value] : [5, value - 28];
-        },
-        getEngineVersion(value: number) {
-            const engine = this.getEngineFromValue(value);
-            return `${ engine[0] }.${ engine[1].toString().padStart(2, "0") }`;
-        },
-        unFocusRange(event: FocusEvent) {
-            if (!this.$refs.range.contains(event.relatedTarget)) {
-                this.deploySelector = false;
-            }
-        },
-        updateValue() {
-            this.$emit("update:modelValue", this.value);
-        },
-        validateInput(engineVersion: number) {
-            if (isNaN(engineVersion)) {
-                engineVersion = 0;
-            }
-            return Math.min(Math.max(engineVersion, 0), MAX_ENGINE);
-        }
+const deploySelector = ref(false);
+const engineRange = ref(EngineRange.All as EngineRange);
+const max = ref(MAX_ENGINE);
+const min = ref(0);
+
+if (engineQuery.value) {
+    const engineSplit = engineQuery.value?.split("-");
+    min.value = getEngineValue(engineSplit[0]);
+    max.value = getEngineValue(engineSplit[1]);
+
+    if (min.value === max.value && min.value === CURRENT_ENGINE) {
+        engineRange.value = EngineRange.VCurrent;
+    }
+    else if (min.value === max.value && min.value === LAST_ENGINE) {
+        engineRange.value = EngineRange.VLast;
+    }
+    else {
+        engineRange.value = EngineRange.Range;
+    }
+}
+
+watch([engineRange, min, max], (newValue, oldValue) => {
+    min.value = validateInput(min.value);
+    max.value = validateInput(max.value);
+
+    if (oldValue[1] !== newValue[1]) {
+        max.value = Math.max(min.value, max.value);
+    }
+
+    if (oldValue[2] !== newValue[2]) {
+        min.value = Math.min(min.value, max.value);
+    }
+
+    switch (engineRange.value) {
+    case EngineRange.VCurrent:
+        engineQuery.value = `${ getEngineVersion(CURRENT_ENGINE) }-${ getEngineVersion(CURRENT_ENGINE) }`;
+        break;
+    case EngineRange.VLast:
+        engineQuery.value = `${ getEngineVersion(LAST_ENGINE) }-${ getEngineVersion(LAST_ENGINE) }`;
+        break;
+    case EngineRange.Range:
+        engineQuery.value = `${ getEngineVersion(min.value) }-${ getEngineVersion(max.value) }`;
+        break;
+    default:
+        engineQuery.value = null;
     }
 });
+
+function displaySemVer(value: number) {
+    return getEngineFromValue(value).join(".");
+}
+
+function focusRange() {
+    deploySelector.value = true;
+}
+
+function getEngineValue(engineVersion: string) {
+    const [major, minor] = engineVersion.split(".").map(Number);
+    return major === 5 ? minor + 28 : minor;
+}
+
+function getEngineFromValue(value: number) {
+    return value <= 27 ? [4, value] : [5, value - 28];
+}
+
+function getEngineVersion(value: number) {
+    const engine = getEngineFromValue(value);
+    return `${ engine[0] }.${ engine[1].toString().padStart(2, "0") }`;
+}
+
+function unFocusRange(event: FocusEvent) {
+    if (!(event.relatedTarget as HTMLElement)?.closest(".range-selector")) {
+        deploySelector.value = false;
+    }
+}
+
+function validateInput(engineVersion: number) {
+    if (isNaN(engineVersion)) {
+        engineVersion = 0;
+    }
+    return Math.min(Math.max(engineVersion, 0), MAX_ENGINE);
+}
 </script>
 
 <style scoped lang="scss">

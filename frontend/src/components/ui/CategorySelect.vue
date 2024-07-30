@@ -32,16 +32,12 @@
     </div>
 </template>
 
-<script lang="ts">
-export default {
-    name: "UICategorySelect"
-};
-</script>
-
 <script setup lang="ts">
-import { ref, reactive, watch } from "vue";
+import { reactive, ref, watch } from "vue";
+import { useRouteQuery } from "@vueuse/router";
 
 const deploySelector = ref(false);
+const categoriesQuery = useRouteQuery("categories");
 
 function focusRange() {
     deploySelector.value = true;
@@ -56,10 +52,6 @@ type TCategory = {
     selected: boolean;
 };
 type TCategories = Array<TCategory>;
-
-const emits = defineEmits<{
-    (e: "update:modelValue", categories: Array<string>): void;
-}>();
 
 const categories = reactive([
     { name: "2d", selected: false },
@@ -83,6 +75,14 @@ const categories = reactive([
     { name: "weapons", selected: false }
 ] as TCategories);
 
+if (categoriesQuery.value) {
+    const queryCategories = categoriesQuery.value.split(",");
+
+    for (const category of categories) {
+        category.selected = queryCategories.includes(category.name);
+    }
+}
+
 function toggleAll() {
     const toggleTo = !categories[0].selected;
 
@@ -92,10 +92,20 @@ function toggleAll() {
 }
 
 watch(categories, () => {
-    emits("update:modelValue", categories
+    if (categories.every((category) => category.selected)) {
+        categoriesQuery.value = null;
+        return;
+    }
+
+    if (categories.every((category) => !category.selected)) {
+        categoriesQuery.value = null;
+        return;
+    }
+
+    categoriesQuery.value = categories
         .filter((category) => category.selected)
         .map((category) => category.name)
-    );
+        .join(",");
 }, {
     immediate: true
 });

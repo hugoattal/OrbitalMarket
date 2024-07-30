@@ -1,29 +1,29 @@
 <template>
     <div class="discount-range">
         <div class="label">
-            <slot name="label" />
+            Discount:
         </div>
         <div class="options">
             <div
                 class="option"
-                :class="{selected:(timeRange===DiscountRange.All)}"
-                @click="timeRange=DiscountRange.All"
+                :class="{selected:(discountRange===DiscountRange.All)}"
+                @click="discountRange=DiscountRange.All"
             >
                 All
             </div>
             <div
                 class="option"
-                :class="{selected:(timeRange===DiscountRange.Discounted)}"
-                @click="timeRange=DiscountRange.Discounted"
+                :class="{selected:(discountRange===DiscountRange.Discounted)}"
+                @click="discountRange=DiscountRange.Discounted"
             >
                 Sale
             </div>
             <div
                 ref="range"
                 class="option"
-                :class="{selected:(timeRange===DiscountRange.Range)}"
+                :class="{selected:(discountRange===DiscountRange.Range)}"
                 tabindex="0"
-                @click="timeRange=DiscountRange.Range"
+                @click="discountRange=DiscountRange.Range"
                 @focusin="focusRange"
                 @focusout="unFocusRange"
             >
@@ -47,12 +47,12 @@
     </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
-import { debounce } from "lodash";
+<script setup lang="ts">
+import { ref, watch } from "vue";
 import UISlider from "@/components/ui/Slider.vue";
+import { useRouteQuery } from "@vueuse/router";
 
-const MAX_MONTHS = 24;
+const discountQuery = useRouteQuery<string | null>("discount");
 
 enum DiscountRange {
     All,
@@ -60,67 +60,51 @@ enum DiscountRange {
     Range
 }
 
-export default defineComponent({
-    name: "UIDiscountRange",
-    components: { UISlider },
-    emits: ["update:modelValue"],
-    data () {
-        return {
-            debounceUpdate: debounce(this.updateValue, 500),
-            deploySelector: false,
-            DiscountRange,
-            max: MAX_MONTHS,
-            MAX_MONTHS,
-            min: 0,
-            timeRange: DiscountRange.All as DiscountRange
-        };
-    },
-    computed: {
-        value () {
-            switch (this.timeRange) {
-            case DiscountRange.Discounted:
-                return { max: 100, min: 10 };
-            case DiscountRange.Range:
-                return { max: 100, min: this.min };
-            }
-            return { };
-        }
-    },
-    watch: {
-        max () {
-            this.max = this.validateInput(this.max);
-            this.min = Math.min(this.min, this.max);
-            this.debounceUpdate();
-        },
-        min () {
-            this.min = this.validateInput(this.min);
-            this.max = Math.max(this.min, this.max);
-            this.debounceUpdate();
-        },
-        timeRange () {
-            this.updateValue();
-        }
-    },
-    methods: {
-        focusRange () {
-            this.deploySelector = true;
-        },
-        unFocusRange (event: FocusEvent) {
-            if (!this.$refs.range.contains(event.relatedTarget)) {
-                this.deploySelector = false;
-            }
-        },
-        updateValue () {
-            this.$emit("update:modelValue", this.value);
-        },
-        validateInput (time: number) {
-            if (isNaN(time)) {
-                time = 0;
-            }
-            return Math.min(Math.max(time, 0), 100);
-        }
+const deploySelector = ref(false);
+const min = ref(0);
+const discountRange = ref<DiscountRange>(DiscountRange.All);
+
+if (discountQuery.value) {
+    min.value = parseInt(discountQuery.value?.split("-")[0]);
+    if (min.value === 10) {
+        discountRange.value = DiscountRange.Discounted;
+    }
+    else {
+        discountRange.value = DiscountRange.Range;
+    }
+}
+
+watch([discountRange, min], () => {
+    min.value = validateInput(min.value);
+
+    switch (discountRange.value) {
+    case DiscountRange.Discounted:
+        discountQuery.value = "10-100";
+        break;
+    case DiscountRange.Range:
+        discountQuery.value = `${ min.value }-100`;
+        break;
+    default:
+        discountQuery.value = null;
     }
 });
+
+function focusRange() {
+    deploySelector.value = true;
+}
+
+function unFocusRange(event: FocusEvent) {
+    if (!(event.relatedTarget as HTMLElement)?.closest(".range-selector")) {
+        deploySelector.value = false;
+    }
+}
+
+function validateInput(discount: number) {
+    if (isNaN(discount)) {
+        discount = 0;
+    }
+    return Math.min(Math.max(discount, 0), 100);
+}
 </script>
 
 <style scoped lang="scss">

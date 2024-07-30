@@ -33,7 +33,7 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { ref, computed, watch } from "vue";
+import { computed, ref } from "vue";
 import { useRoute } from "vue-router";
 import SearchService, { ISearchProduct } from "@/services/search.service";
 import ProductCard from "@/components/product/Card.vue";
@@ -42,6 +42,7 @@ import Spinner from "@/components/ui/Spinner.vue";
 import OptionsBar from "@/components/pages/search/OptionsBar.vue";
 import { useConfigStore } from "@/stores/config";
 import { useSearchStore } from "@/stores/search";
+import { watchDebounced } from "@vueuse/core";
 
 const configStore = useConfigStore();
 const searchStore = useSearchStore();
@@ -54,65 +55,25 @@ const isMoreProducts = ref(false);
 const page = ref(0);
 const products = ref<Array<ISearchProduct>>([]);
 
-const options = computed(() => searchStore.options);
-
 const params = computed(() => {
-    const params = { ...route.query } as Record<string, unknown>;
+    const params = { ...searchStore.options } as Record<string, unknown>;
     params.limit = PRODUCT_PER_PAGE;
     params.skip = PRODUCT_PER_PAGE * page.value;
-
-    if (options.value?.priceRange) {
-        params.price = options.value.priceRange;
-    }
-    else {
-        delete params.price;
-    }
-
-    if (options.value?.engineRange) {
-        params.engine = options.value.engineRange;
-    }
-    else {
-        delete params.engine;
-    }
-
-    if (options.value?.timeRange) {
-        params.time = options.value.timeRange;
-    }
-    else {
-        delete params.time;
-    }
-
-    if (options.value?.discountRange) {
-        params.discount = options.value.discountRange;
-    }
-    else {
-        delete params.discount;
-    }
-
-    if (options.value?.categories) {
-        params.categories = options.value.categories;
-    }
-    else {
-        delete params.categories;
-    }
-
-    if (options.value.favorites) {
-        const configStore = useConfigStore();
-        params.favlist = [...configStore.favSet];
-    }
-    else {
-        delete params.favlist;
-    }
-
     return params;
 });
 
-watch([
+watchDebounced ([
     () => route.query,
-    () => options
-], async () => {
+    () => searchStore.options
+],
+async () => {
     await sendQuery();
-}, { deep: true, immediate: true });
+},
+{
+    debounce: 200,
+    deep: true,
+    immediate: true
+});
 
 async function loadNext() {
     if (!isLoading.value) {

@@ -6,7 +6,7 @@
     >
         <article
             class="product"
-            :class="{boost: props.product.computed.isBoosted, favorite: configStore.favSet.has(props.product._id), [configStore.displayType]: true}"
+            :class="{boost: product.computed.isBoosted, favorite: configStore.favSet.has(product.meta.unrealId), [configStore.displayType]: true}"
         >
             <Box3D
                 v-if="configStore.displayType === 'box'"
@@ -33,7 +33,7 @@
                 <div class="right">
                     <ProductCardWish
                         class="wishlist icon"
-                        :product-id="product._id"
+                        :product-id="product.meta.unrealId"
                     />
                     <div
                         v-if="product.computed.isBoosted"
@@ -126,10 +126,10 @@ import Box3D from "@/components/ui/Box3D.vue";
 import UIModal from "@/components/ui/Modal.vue";
 import ProductModal from "@/components/product/Modal.vue";
 import {
+    displayCategory,
     displayDate,
-    displayPrice,
     displayEngineVersion,
-    displayCategory
+    displayPrice
 } from "@/components/product/product";
 import router from "@/router";
 import { useConfigStore } from "@/stores/config";

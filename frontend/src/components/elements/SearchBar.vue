@@ -29,23 +29,23 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { useRoute } from "vue-router";
-import { ref, watch } from "vue";
+import { ref } from "vue";
 import ThemeSwitcher from "@/components/theme/Switcher.vue";
 import Button from "@/components/ui/Button.vue";
-import router from "@/router";
 import UIInput from "@/components/ui/Input.vue";
+import { useRouteQuery } from "@vueuse/router";
 
-const route = useRoute();
-const searchText = ref(route.query.searchText || "");
+const searchQuery = useRouteQuery<string | null>("searchText");
+const searchText = ref(searchQuery.value || "");
 
 function search () {
-    router.push({ name: "search", query: { ...route.query, searchText: searchText.value } });
-}
+    if (!searchText.value) {
+        searchQuery.value = null;
+        return;
+    }
 
-watch(() => route.query.searchText, () => {
-    searchText.value = route.query.searchText || "";
-});
+    searchQuery.value = searchText.value;
+}
 </script>
 
 <style scoped lang="scss">
