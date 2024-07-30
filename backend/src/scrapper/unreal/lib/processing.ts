@@ -23,14 +23,14 @@ export async function processProductData(data: any): Promise<void> {
 
     const product: IProduct = {
         title: data.title,
+        category: {
+            main: "unreal",
+            path: data.categories[0].path.split("/")
+        },
         description: {
             long: data.longDescription,
             short: data.description,
             technical: data.technicalDetails
-        },
-        category: {
-            main: "unreal",
-            path: data.categories[0].path.split("/")
         },
         discount: {
             history: [
@@ -41,8 +41,19 @@ export async function processProductData(data: any): Promise<void> {
             ],
             value: (100 - data.discountPercentage)
         },
-        owner: ownerId,
         lastUpdate: new Date(),
+        meta: {
+            unrealId: data.id
+        },
+        owner: ownerId,
+        pictures: data.keyImages.reduce((object: Record<string, Array<string>>, element: { type: string; url: string }) => {
+            element.type = element.type.toLowerCase();
+            if (!object[element.type]) {
+                object[element.type] = [];
+            }
+            object[element.type].push(element.url);
+            return object;
+        }, {}),
         price: {
             history: [
                 {
@@ -52,18 +63,6 @@ export async function processProductData(data: any): Promise<void> {
             ],
             value: price
         },
-        slug: data.urlSlug || ProductService.utils.makeSlug(data.title),
-        meta: {
-            unrealId: data.id
-        },
-        pictures: data.keyImages.reduce((object: Record<string, Array<string>>, element: { type: string; url: string }) => {
-            element.type = element.type.toLowerCase();
-            if (!object[element.type]) {
-                object[element.type] = [];
-            }
-            object[element.type].push(element.url);
-            return object;
-        }, {}),
         ratings: [
             data.rating?.rating1 || 0,
             data.rating?.rating2 || 0,
@@ -79,6 +78,7 @@ export async function processProductData(data: any): Promise<void> {
                 ...(release.dateAdded && { updateDate: new Date(release.dateAdded) })
             };
         }),
+        slug: data.urlSlug || ProductService.utils.makeSlug(data.title),
         tags: [] //TODO: Tags
     };
 
@@ -108,8 +108,15 @@ function addComputed(product: IProduct, data: any) {
     const engine = {} as any;
 
     if (data.compatibleApps.length > 0) {
-        engine.min = sanitizeEngineVersion(_.first(data.compatibleApps) as string);
-        engine.max = sanitizeEngineVersion(_.last(data.compatibleApps) as string);
+        data.compatibleApps.sort((a: string, b: string) => {
+            const [aMajor, aMinor] = a.split(".").map(Number);
+            const [bMajor, bMinor] = b.split(".").map(Number);
+
+            if (aMajor !== bMajor) return aMajor - bMajor;
+            return aMinor - bMinor;
+        });
+        engine.min = sanitizeEngineVersion(data.compatibleApps.at(0));
+        engine.max = sanitizeEngineVersion(data.compatibleApps.at(-1));
     }
 
     product.computed = {

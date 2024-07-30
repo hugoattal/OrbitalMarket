@@ -1,5 +1,5 @@
 import "module-alias/register";
-import { connectDatabase, closeDatabase } from "@/database";
+import { closeDatabase, connectDatabase } from "@/database";
 import * as UnrealAPI from "./api";
 
 async function init() {
