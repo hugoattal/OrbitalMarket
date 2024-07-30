@@ -2,7 +2,6 @@ import * as Upsert from "@/scrapper/unreal/lib/upsert";
 import { IProduct } from "@/modules/product/model";
 import * as ProductService from "@/modules/product/service";
 import { computeScore } from "@/modules/product/lib/score";
-import _ from "lodash";
 import { getConversionRate } from "@/scrapper/unreal/api";
 
 export let conversionRate = 1.0;
@@ -167,6 +166,13 @@ function addComputed(product: IProduct, data: any) {
 
                 if (url.includes("sketchfab.com/models/")) {
                     const match = url.match(/models\/([a-zA-Z0-9_-]+)/);
+                    if (match) {
+                        return `sketchfab:${ match[1] }`;
+                    }
+                }
+
+                if (url.includes("sketchfab.com/3d-models/")) {
+                    const match = url.match(/3d-models\/[a-zA-Z0-9_-]+-([a-zA-Z0-9]{32})/);
                     if (match) {
                         return `sketchfab:${ match[1] }`;
                     }
