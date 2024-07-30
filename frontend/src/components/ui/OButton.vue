@@ -15,7 +15,6 @@
 import { defineComponent } from "vue";
 
 export default defineComponent({
-    name: "UIButton",
     props: {
         href: {
             type: String,

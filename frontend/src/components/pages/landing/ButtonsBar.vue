@@ -23,20 +23,20 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import Button from "@/components/ui/Button.vue";
+import Button from "@/components/ui/OButton.vue";
 import router from "@/router";
 
 export default defineComponent({
     components: { Button },
     methods: {
         goToLatest () {
-            router.push({ name: "search", query: { sortField: "releaseDate", sortDirection: "desc" } });
+            router.push({ name: "search", query: { sortDirection: "desc", sortField: "releaseDate" } });
+        },
+        goToReviewed () {
+            router.push({ name: "search", query: { sortDirection: "desc", sortField: "reviews" } });
         },
         goToToplist () {
             router.push({ name: "search" });
-        },
-        goToReviewed () {
-            router.push({ name: "search", query: { sortField: "reviews", sortDirection: "desc" } });
         }
     }
 });

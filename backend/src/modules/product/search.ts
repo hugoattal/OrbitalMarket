@@ -90,6 +90,20 @@ export async function search(params: ISearch): Promise<Array<IProductDocument>> 
         });
     }
 
+    if (params.banlist) {
+        const authorIds = await UserModel.find({
+            "meta.unrealId": {
+                $in: params.banlist
+            }
+        });
+
+        matchStage.push({
+            "owner": {
+                $nin: authorIds.map((author) => author._id)
+            }
+        });
+    }
+
     if (params.engine) {
         matchStage.push(
             mongoUtils.isRangeInRange(

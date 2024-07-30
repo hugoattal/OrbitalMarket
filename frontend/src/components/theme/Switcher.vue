@@ -23,7 +23,7 @@ export default {
 </script>
 
 <script setup lang="ts">
-import Button from "@/components/ui/Button.vue";
+import Button from "@/components/ui/OButton.vue";
 import { isDarkMode, toggleDarkMode } from "@/components/theme/theme";
 </script>
 

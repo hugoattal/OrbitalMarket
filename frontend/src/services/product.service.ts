@@ -21,7 +21,15 @@ export interface IProduct {
         technical: string;
     };
     discount: { value: number };
-    owner: string;
+    meta: {
+        unrealId: string;
+    };
+    owner: {
+        name: string;
+        meta: {
+            unrealId: string;
+        };
+    };
     pictures: { screenshot: Array<string>; thumbnail: Array<string> };
     price: { value: number };
     releaseDate: string;

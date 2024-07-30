@@ -72,6 +72,10 @@ export const useSearchStore = defineStore("search", () => {
             body["favlist"] = [...configStore.favSet];
         }
 
+        if (Object.keys(configStore.banList).length > 0) {
+            body["banlist"] = Object.keys(configStore.banList);
+        }
+
         if (searchText.value) {
             body["searchText"] = searchText.value;
         }

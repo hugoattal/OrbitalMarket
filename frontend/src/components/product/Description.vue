@@ -60,6 +60,11 @@
                         >
                             {{ product.owner.name }}
                         </RouterLink>
+                        <i
+                            class="las la-ban ban-icon"
+                            title="Ban this author"
+                            @click="banOwner"
+                        />
                     </p>
                 </div>
                 <div class="links">
@@ -146,7 +151,7 @@ export default {
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted, ref } from "vue";
 import ProductService, { IProduct } from "@/services/product.service";
-import UIButton from "@/components/ui/Button.vue";
+import UIButton from "@/components/ui/OButton.vue";
 import UISlideshow from "@/components/ui/slideshow/Slideshow.vue";
 import UIRating from "@/components/ui/Rating.vue";
 import { displayCategory, displayDate, displayEngineVersion, displayPrice } from "@/components/product/product";
@@ -157,6 +162,7 @@ import ProductReviews from "@/components/product/Reviews.vue";
 import ProductQuestions from "@/components/product/Questions.vue";
 import Spinner from "@/components/ui/Spinner.vue";
 import ProductCardWish from "@/components/product/CardWish.vue";
+import { useConfigStore } from "@/stores/config";
 
 const props = defineProps<{
     productId: string;
@@ -202,6 +208,14 @@ const slides = computed<Array<string>>(() => {
         return product.pictures.screenshot;
     }
 });
+
+function banOwner() {
+    if (!confirm("Are you sure you want to ban this author?")) {
+        return;
+    }
+
+    useConfigStore().banList[product.owner.meta.unrealId] = product.owner.name;
+}
 </script>
 
 <style scoped lang="scss">
@@ -341,6 +355,18 @@ h1 {
 
         .category {
             text-transform: capitalize;
+        }
+
+        .ban-icon {
+            font-size: 1rem;
+            opacity: 0.5;
+            cursor: pointer;
+            margin-left: var(--length-margin-s);
+
+            &:hover {
+                opacity: 1;
+                color: var(--color-primary);
+            }
         }
     }
 

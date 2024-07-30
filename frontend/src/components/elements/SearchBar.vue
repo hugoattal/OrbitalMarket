@@ -29,9 +29,9 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import ThemeSwitcher from "@/components/theme/Switcher.vue";
-import Button from "@/components/ui/Button.vue";
+import Button from "@/components/ui/OButton.vue";
 import UIInput from "@/components/ui/Input.vue";
 import { useRouteQuery } from "@vueuse/router";
 import { useRouter } from "vue-router";
@@ -40,9 +40,9 @@ const searchQuery = useRouteQuery<string | null>("searchText");
 const searchText = ref(searchQuery.value || "");
 const router = useRouter();
 
-function search () {
+async function search () {
     if (router.currentRoute.value.name === "landing") {
-        router.push({ name: "search", query: { searchText: searchText.value } });
+        await router.push({ name: "search", query: { searchText: searchText.value } });
     }
 
     if (!searchText.value) {
@@ -52,6 +52,10 @@ function search () {
 
     searchQuery.value = searchText.value;
 }
+
+watch(searchQuery, (value) => {
+    searchText.value = value || "";
+});
 </script>
 
 <style scoped lang="scss">

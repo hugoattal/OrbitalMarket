@@ -37,7 +37,7 @@ import { onMounted, ref } from "vue";
 import { useConfigStore } from "@/stores/config";
 import SearchService, { ISearchProduct } from "@/services/search.service";
 import ProductCard from "@/components/product/Card.vue";
-import UIButton from "@/components/ui/Button.vue";
+import UIButton from "@/components/ui/OButton.vue";
 
 const configStore = useConfigStore();
 const products = ref<Array<ISearchProduct>>([]);
@@ -47,8 +47,8 @@ onMounted(async() => {
     updateProductIds();
 });
 
-function exportToClipboard() {
-    navigator.clipboard.writeText(Array.from(configStore.favSet).join(","));
+async function exportToClipboard() {
+    await navigator.clipboard.writeText(Array.from(configStore.favSet).join(","));
     alert("Favlist copied to clipboard");
 }
 

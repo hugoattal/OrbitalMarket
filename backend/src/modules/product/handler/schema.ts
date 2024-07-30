@@ -43,9 +43,17 @@ export const PartialProduct = {
             }
         },
         owner: {
+            additionalProperties: false,
             properties: {
                 _id: { type: "string" },
-                name: { type: "string" }
+                name: { type: "string" },
+                meta: {
+                    additionalProperties: false,
+                    properties: {
+                        unrealId: { type: "string" }
+                    },
+                    type: "object"
+                }
             },
             type: "object"
         },
@@ -122,6 +130,7 @@ export enum ESortField {
 }
 
 export interface ISearch {
+    banlist?: Array<string>;
     categories?: Array<string>;
     discount?: {
         max: number;
@@ -151,6 +160,10 @@ export const Search = {
     body: {
         additionalProperties: false,
         properties: {
+            banlist: {
+                items: { type: "string" },
+                type: "array"
+            },
             categories: {
                 items: { type: "string" },
                 type: "array" },

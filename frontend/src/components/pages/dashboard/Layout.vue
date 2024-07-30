@@ -8,6 +8,7 @@
             </RouterLink>
         </div>
         <div class="content">
+            <BanList />
             <FavList />
         </div>
     </div>
@@ -23,6 +24,7 @@ export default {
 
 import SupportBar from "@/components/elements/SupportBar.vue";
 import FavList from "@/components/pages/dashboard/FavList.vue";
+import BanList from "@/components/pages/dashboard/BanList.vue";
 </script>
 
 <style scoped lang="scss">
