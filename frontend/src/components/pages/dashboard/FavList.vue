@@ -8,6 +8,9 @@
             <UIButton @click="importFavlist">
                 Import
             </UIButton>
+            <UIButton @click="clearFavlist">
+                Clear
+            </UIButton>
         </div>
         <ul
             class="results"
@@ -41,17 +44,21 @@ const products = ref<Array<ISearchProduct>>([]);
 
 onMounted(async() => {
     products.value = await SearchService.list(Array.from(configStore.favSet));
-    if (products.value.length) {
-        configStore.favSet.clear();
-        for (const product of products.value) {
-            configStore.favSet.add(product.meta.unrealId);
-        }
-    }
+    updateProductIds();
 });
 
 function exportToClipboard() {
     navigator.clipboard.writeText(Array.from(configStore.favSet).join(","));
     alert("Favlist copied to clipboard");
+}
+
+function clearFavlist() {
+    if (!confirm("Are you sure you want to clear the favlist?")) {
+        return;
+    }
+
+    configStore.favSet.clear();
+    products.value = [];
 }
 
 async function importFavlist() {
@@ -70,6 +77,7 @@ async function importFavlist() {
     }
 
     products.value = await SearchService.list(Array.from(configStore.favSet));
+    updateProductIds();
 }
 
 function importVault(favlist: string) {
@@ -83,6 +91,15 @@ function importVault(favlist: string) {
 
     for (const fav of favImport) {
         configStore.favSet.add(fav);
+    }
+}
+
+function updateProductIds() {
+    if (products.value.length) {
+        configStore.favSet.clear();
+        for (const product of products.value) {
+            configStore.favSet.add(product.meta.unrealId);
+        }
     }
 }
 </script>
