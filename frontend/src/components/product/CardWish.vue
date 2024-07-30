@@ -4,7 +4,7 @@
         @click.stop.prevent="toggleWish"
     >
         <i
-            class="la-star"
+            class="la-heart"
             :class="iconClass"
         />
     </div>
@@ -42,6 +42,8 @@ function toggleWish() {
 
 <style scoped lang="scss">
 .card-wish {
+    cursor: pointer;
+
     &:hover i {
         color: var(--color-primary);
     }

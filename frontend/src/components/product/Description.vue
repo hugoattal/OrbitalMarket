@@ -1,6 +1,10 @@
 <template>
     <div class="product-description">
         <h1>
+            <ProductCardWish
+                class="wishlist icon"
+                :product-id="product.meta.unrealId"
+            />
             {{ product.title }}
         </h1>
         <div class="product-header">
@@ -145,21 +149,20 @@ import ProductService, { IProduct } from "@/services/product.service";
 import UIButton from "@/components/ui/Button.vue";
 import UISlideshow from "@/components/ui/slideshow/Slideshow.vue";
 import UIRating from "@/components/ui/Rating.vue";
-import { displayDate, displayPrice, displayEngineVersion, displayCategory } from "@/components/product/product";
+import { displayCategory, displayDate, displayEngineVersion, displayPrice } from "@/components/product/product";
 import UITabs from "@/components/ui/Tabs.vue";
 import UITab from "@/components/ui/Tab.vue";
 import ProductHistory from "@/components/product/History.vue";
 import ProductReviews from "@/components/product/Reviews.vue";
 import ProductQuestions from "@/components/product/Questions.vue";
 import Spinner from "@/components/ui/Spinner.vue";
+import ProductCardWish from "@/components/product/CardWish.vue";
 
 const props = defineProps<{
     productId: string;
 }>();
 
-const emits = defineEmits<{
-    (e: "close"): void;
-}>();
+const emits = defineEmits<(e: "close") => void>();
 
 const product = await ProductService.getById(props.productId) as IProduct;
 const savedPageTitle = ref("");
@@ -206,6 +209,9 @@ const slides = computed<Array<string>>(() => {
 h1 {
     font-size: 200%;
     margin: 0;
+    display: flex;
+    gap: var(--length-gap-s);
+    align-items: center;
 
     a {
         color: var(--color-primary);
