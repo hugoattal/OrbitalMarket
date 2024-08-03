@@ -12,33 +12,30 @@ async function initBrowser() {
     page = await browser.newPage();
 }
 
-async function isJsonResponse(response) {
-    const contentType = response.headers()["content-type"];
-    return contentType && contentType.includes("application/json");
-}
-
 export async function makeRequest(url: string) {
     if (!page) {
         await initBrowser();
     }
 
-    let response = await page.goto(url);
+    const response = await page.goto(url);
+    let json = "";
 
-    while (!isJsonResponse(response)) {
-        await Promise.race([
-            (async () => {
-                await page.waitForNavigation({ waitUntil: "networkidle0" });
-                response = await page.waitForResponse(isJsonResponse);
-            })(),
-            timeout(30 * 1000)
-        ]);
+    let tryFetch = 5;
+
+    while (tryFetch--) {
+        try {
+            json = JSON.parse(await response.text());
+            tryFetch = 0;
+            break;
+        }
+        catch (error) {
+            console.log(error);
+            await Promise.race([
+                timeout(10 * 1000),
+                page.waitForNavigation({ waitUntil: "networkidle0" })
+            ]);
+        }
     }
 
-    try {
-        return response.json();
-    }
-    catch {
-        console.log(await response.text());
-        throw new Error("Error parsing the response");
-    }
+    return json;
 }
