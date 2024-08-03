@@ -1,6 +1,7 @@
 import { processProductData, updateConversionRate } from "@/scrapper/unreal/lib/processing";
 import { processCommentData } from "@/scrapper/unreal/lib/review";
 import { makeRequest } from "@/scrapper/unreal/browser";
+import { sleep } from "@/utils/lib";
 
 export async function updateProducts(): Promise<void> {
     await updateConversionRate();
@@ -19,6 +20,21 @@ export async function updateProducts(): Promise<void> {
             }
             catch (error) {
                 console.error(`Error fetching the page (try ${ tryFetch })`);
+                if (tryFetch === 4) {
+                    await sleep(1000);
+                }
+                if (tryFetch === 3) {
+                    await sleep(10 * 1000);
+                }
+                if (tryFetch === 2) {
+                    await sleep(60 * 1000);
+                }
+                if (tryFetch === 1) {
+                    await sleep(10 * 60 * 1000);
+                }
+                if (tryFetch === 0) {
+                    await sleep(20 * 60 * 1000);
+                }
             }
         }
 
