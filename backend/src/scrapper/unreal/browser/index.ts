@@ -19,5 +19,11 @@ export async function makeRequest(url: string) {
 
     const response = await page.goto(url);
 
-    return response.json();
+    try {
+        return response.json();
+    }
+    catch {
+        console.log(response.text());
+        throw new Error("Error parsing the response");
+    }
 }
