@@ -20,20 +20,10 @@ export async function updateProducts(): Promise<void> {
             }
             catch (error) {
                 console.error(`Error fetching the page (try ${ tryFetch })`);
-                if (tryFetch === 4) {
-                    await sleep(1000);
-                }
-                if (tryFetch === 3) {
-                    await sleep(10 * 1000);
-                }
-                if (tryFetch === 2) {
-                    await sleep(60 * 1000);
-                }
-                if (tryFetch === 1) {
-                    await sleep(10 * 60 * 1000);
-                }
+                await sleep(1000);
+
                 if (tryFetch === 0) {
-                    await sleep(20 * 60 * 1000);
+                    console.log(error);
                 }
             }
         }
