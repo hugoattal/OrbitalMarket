@@ -24,12 +24,14 @@ export async function makeRequest(url: string) {
 
     while (tryFetch--) {
         try {
-            json = JSON.parse(await response.text());
+            json = await response.text();
+            json = JSON.parse(json);
             tryFetch = 0;
             break;
         }
         catch (error) {
             console.log(error);
+            console.log(json);
             await Promise.race([
                 timeout(10 * 1000),
                 page.waitForNavigation({ waitUntil: "networkidle0" })

@@ -72,9 +72,9 @@ export async function saveComments(productId: string, type: "reviews" | "questio
     }
 }
 
-// https://www.unrealengine.com/marketplace/api/assets?start=0&count=1&sortBy=effectiveDate&sortDir=ASC
+// https://marketplace-website-node-launcher-prod.ol.epicgames.com/ue/marketplace/api/assets?start=0&count=1&sortBy=effectiveDate&sortDir=ASC
 export async function getProductPage(start: number, count: number) {
-    const productUrl = new URL("https://www.unrealengine.com/marketplace/api/assets");
+    const productUrl = new URL("https://marketplace-website-node-launcher-prod.ol.epicgames.com/ue/marketplace/api/assets");
     productUrl.searchParams.append("start", start.toString());
     productUrl.searchParams.append("count", count.toString());
     productUrl.searchParams.append("sortBy", "effectiveDate");
@@ -85,9 +85,9 @@ export async function getProductPage(start: number, count: number) {
     return productPage.data;
 }
 
-// https://www.unrealengine.com/marketplace/api/review/5cb2a394d0c04e73891762be4cbd7216/reviews/list?start=0&count=1&sortBy=CREATEDAT&sortDir=DESC
+// https://marketplace-website-node-launcher-prod.ol.epicgames.com/ue/marketplace/api/review/5cb2a394d0c04e73891762be4cbd7216/reviews/list?start=0&count=1&sortBy=CREATEDAT&sortDir=DESC
 export async function getCommentsPage(start: number, count: number, productId: string, type: "questions" | "reviews") {
-    const commentsUrl = new URL(`https://www.unrealengine.com/marketplace/api/review/${ productId }/${ type }/list`);
+    const commentsUrl = new URL(`https://marketplace-website-node-launcher-prod.ol.epicgames.com/ue/marketplace/api/review/${ productId }/${ type }/list`);
     commentsUrl.searchParams.append("start", start.toString());
     commentsUrl.searchParams.append("count", count.toString());
     commentsUrl.searchParams.append("sortBy", "CREATEDAT");
@@ -99,12 +99,12 @@ export async function getCommentsPage(start: number, count: number, productId: s
 }
 
 export async function getProduct(productId: string) {
-    const product = await makeRequest(`https://www.unrealengine.com/marketplace/api/assets/asset/${ productId }`);
+    const product = await makeRequest(`https://marketplace-website-node-launcher-prod.ol.epicgames.com/ue/marketplace/api/assets/asset/${ productId }`);
     return product.data.data;
 }
 
 export async function getRating(productId: string) {
-    const rating = await makeRequest(`https://www.unrealengine.com/marketplace/api/review/${ productId }/ratings`);
+    const rating = await makeRequest(`https://marketplace-website-node-launcher-prod.ol.epicgames.com/ue/marketplace/api/review/${ productId }/ratings`);
     return rating.data.data;
 }
 

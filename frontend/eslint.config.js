@@ -29,10 +29,8 @@ export default tseslint.config(
         rules: {
             "@typescript-eslint/array-type": ["error", { default: "generic", readonly: "generic" }],
             "@typescript-eslint/consistent-type-definitions": ["off"],
-            "@typescript-eslint/member-delimiter-style": ["error"],
             "@typescript-eslint/no-empty-function": ["off"],
             "@typescript-eslint/no-unused-vars": ["error", { "varsIgnorePattern": "props|emits" }],
-            "@typescript-eslint/type-annotation-spacing": ["error"],
             "array-bracket-spacing": ["error", "never"],
             "arrow-spacing": ["error"],
             "brace-style": ["error", "stroustrup"],
