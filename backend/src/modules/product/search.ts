@@ -115,7 +115,7 @@ export async function search(params: ISearch): Promise<Array<IProductDocument>> 
 
     if (params.price) {
         matchStage.push(
-            mongoUtils.isInRange("price.value", params.price.min, params.price.max)
+            mongoUtils.isInRange("price.value", params.price.min * 100, params.price.max * 100)
         );
     }
 
