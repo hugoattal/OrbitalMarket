@@ -37,9 +37,9 @@ async function init() {
         const productReviews = reviewsByProduct[product.meta.unrealId] || [];
 
         const flaggedReviews = productReviews.map((review) => {
-            const name = review.name.toLowerCase();
+            const title = review.title.toLowerCase();
 
-            if (name.includes("discord") || name.includes("verification") || name.includes("verify")) {
+            if (title.includes("discord") || title.includes("verification") || title.includes("verify")) {
                 return true;
             }
 
@@ -55,7 +55,7 @@ async function init() {
                 return true;
             }
 
-            if (content.trim().split(" ").length <= 1) {
+            if (content.split(" ").length <= 1) {
                 return true;
             }
 
