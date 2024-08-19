@@ -55,7 +55,7 @@ async function init() {
                 return true;
             }
 
-            if (content.split(" ").length < 3) {
+            if (content.trim().split(" ").length <= 1) {
                 return true;
             }
 
