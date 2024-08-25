@@ -2,6 +2,7 @@ import { processProductData, updateConversionRate } from "@/scrapper/unreal/lib/
 import { processCommentData } from "@/scrapper/unreal/lib/review";
 import { makeRequest } from "@/scrapper/unreal/browser";
 import { sleep } from "@/utils/lib";
+import { getSavedState, setSavedState } from "@/scrapper/unreal/lib/state";
 
 export async function updateProducts(): Promise<void> {
     await updateConversionRate();
@@ -9,7 +10,9 @@ export async function updateProducts(): Promise<void> {
     const productsCount = await getProductsCount();
     const step = 100;
 
-    for (let startProduct = 0; startProduct < productsCount; startProduct += step) {
+    const savedState = await getSavedState();
+
+    for (let startProduct = savedState; startProduct < productsCount; startProduct += step) {
         console.log(`${ startProduct } / ${ productsCount }`);
         let tryFetch = 5;
         let productPage;
@@ -24,8 +27,13 @@ export async function updateProducts(): Promise<void> {
 
                 if (tryFetch === 0) {
                     console.log(error);
+                    break;
                 }
             }
+        }
+
+        if (!productPage) {
+            throw new Error("Stopping the process");
         }
 
         for (const element of productPage.elements) {
@@ -34,7 +42,11 @@ export async function updateProducts(): Promise<void> {
             }
             await processProductData(element);
         }
+
+        await setSavedState(startProduct);
     }
+
+    await setSavedState(0);
 }
 
 export async function saveComments(productId: string, type: "reviews" | "questions") {
