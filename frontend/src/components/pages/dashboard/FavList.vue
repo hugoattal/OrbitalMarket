@@ -12,6 +12,12 @@
                 Clear
             </UIButton>
         </div>
+        <div class="note">
+            You can also import directly from <a
+                href="https://www.unrealengine.com/marketplace/en-US/vault"
+                target="_blank"
+            >your vault</a> by copying the whole page (Ctrl+A/Ctrl+C), and clicking the "Import from clipboard" button.
+        </div>
         <ul
             class="results"
             :class="configStore.displayType"
@@ -121,6 +127,21 @@ function updateProductIds() {
         margin: 0;
         padding: 0;
         font-size: 2rem;
+    }
+
+    .note {
+        background: var(--color-content-background);
+        padding: var(--length-padding-s) var(--length-padding-base);
+        border-radius: var(--length-radius-base);
+        color: var(--color-content-30);
+
+        a {
+            color: var(--color-primary);
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
     }
 
     .actions {
