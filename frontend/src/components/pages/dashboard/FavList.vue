@@ -62,9 +62,9 @@ function clearFavlist() {
 }
 
 async function importFavlist() {
-    const favlist = (await navigator.clipboard.readText()) || prompt("Enter favlist");
+    const favlist = ((await navigator.clipboard.readText()) || prompt("Enter favlist"))?.trim();
     if (favlist) {
-        if (favlist.startsWith("Vault")) {
+        if (favlist.startsWith("Vault") || favlist.startsWith("Unreal Engine Logo")) {
             importVault(favlist);
         }
         else {
@@ -81,13 +81,20 @@ async function importFavlist() {
 }
 
 function importVault(favlist: string) {
-    console.log(favlist);
+    favlist = favlist.split("SaleVaultHelp")[1];
+    favlist = favlist.split("Recommended For You")[0];
 
     const favImport = favlist
+        .split("\n")
+        .map((value) => value.trim())
+        .join("\n")
         .split("\n\n")
-        .map((value) => value.split("\n"))
-        .filter((value) => value.length >= 4 && value.length <= 5)
-        .map((value) => value[1]);
+        .map((value) => value
+            .split("\n")
+            .filter((value) => isNaN(value))
+        )
+        .filter((value) => value.length >= 3)
+        .flat();
 
     for (const fav of favImport) {
         configStore.favSet.add(fav);
