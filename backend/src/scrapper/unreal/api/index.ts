@@ -10,15 +10,15 @@ export async function updateProducts(): Promise<void> {
     const productsCount = await getProductsCount();
     const step = 100;
 
-    const savedState = await getSavedState();
+    const savedState = await getSavedState("product");
 
-    for (let startProduct = savedState; startProduct < productsCount; startProduct += step) {
-        console.log(`${ startProduct } / ${ productsCount }`);
+    for (let productIndex = savedState; productIndex < productsCount; productIndex += step) {
+        console.log(`${ productIndex } / ${ productsCount }`);
         let tryFetch = 5;
         let productPage;
         while (tryFetch--) {
             try {
-                productPage = await getProductPage(startProduct, step);
+                productPage = await getProductPage(productIndex, step);
                 tryFetch = 0;
             }
             catch (error) {
@@ -43,10 +43,10 @@ export async function updateProducts(): Promise<void> {
             await processProductData(element);
         }
 
-        await setSavedState(startProduct);
+        await setSavedState("product", productIndex);
     }
 
-    await setSavedState(0);
+    await setSavedState("product", 0);
 }
 
 export async function saveComments(productId: string, type: "reviews" | "questions") {

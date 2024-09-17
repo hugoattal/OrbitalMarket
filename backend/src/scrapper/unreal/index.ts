@@ -8,4 +8,4 @@ async function init() {
     await closeDatabase();
 }
 
-init().then();
+init().then(console.log).catch(console.error);
