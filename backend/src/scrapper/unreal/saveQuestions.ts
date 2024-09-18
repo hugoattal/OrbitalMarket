@@ -10,10 +10,9 @@ async function init() {
     const products = await ProductModel.find({}).select("meta.unrealId").exec();
     const totalProducts = products.length;
     const savedState = await getSavedState("question");
-    let productNum = 0;
     let previousPercentage = "";
     for (let productIndex = savedState; productIndex < totalProducts; productIndex++) {
-        const currentPercentage = `${ Math.round(productNum++ / totalProducts * 100 * 100) / 100 }%`;
+        const currentPercentage = `${ Math.round(productIndex / totalProducts * 100 * 100) / 100 }%`;
         if (currentPercentage !== previousPercentage) {
             previousPercentage = currentPercentage;
             console.log(currentPercentage);
