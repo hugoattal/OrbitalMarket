@@ -7,5 +7,5 @@ async function makeUpdate(): Promise<void> {
 }
 
 export function register(): void {
-    Cron.schedule("0 2 * * *", makeUpdate);
+    //Cron.schedule("0 2 * * *", makeUpdate); // For now until I get it working with Fab
 }
