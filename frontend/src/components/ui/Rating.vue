@@ -32,11 +32,11 @@ export default defineComponent({
         return {
             stars: this.hasRatings
                 ? [
-                    this.clamp(this.rating * 5, 0, 1),
-                    this.clamp(this.rating * 5 - 1, 0, 1),
-                    this.clamp(this.rating * 5 - 2, 0, 1),
-                    this.clamp(this.rating * 5 - 3, 0, 1),
-                    this.clamp(this.rating * 5 - 4, 0, 1)
+                    this.clamp(this.rating, 0, 1),
+                    this.clamp(this.rating - 1, 0, 1),
+                    this.clamp(this.rating - 2, 0, 1),
+                    this.clamp(this.rating - 3, 0, 1),
+                    this.clamp(this.rating - 4, 0, 1)
                 ]
                 : [0, 0, 0, 0, 0]
         };
@@ -47,7 +47,7 @@ export default defineComponent({
         },
         styleWidth (width: number) {
             return {
-                width: `${width * 100}%`
+                width: `${ width * 100 }%`
             };
         }
     }

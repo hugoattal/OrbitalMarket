@@ -4,14 +4,14 @@
             <template #label>
                 Display:
             </template>
-            <UIRadioElement key="box">
-                <div title="3D Box">
-                    <i class="las la-cube" />
-                </div>
-            </UIRadioElement>
             <UIRadioElement key="square">
                 <div title="2D Square">
                     <i class="las la-stop" />
+                </div>
+            </UIRadioElement>
+            <UIRadioElement key="box">
+                <div title="3D Box">
+                    <i class="las la-cube" />
                 </div>
             </UIRadioElement>
             <UIRadioElement key="list">

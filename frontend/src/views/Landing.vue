@@ -17,5 +17,6 @@ export default defineComponent({
 .landing {
     --color-background: var(--color-landing-background);
     --color-content: var(--color-landing-content);
+    --color-content-background: var(--color-landing-content-background);
 }
 </style>

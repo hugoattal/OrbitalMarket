@@ -1,4 +1,4 @@
-import ProductModel from "../model";
+import ProductModel from "../old-model";
 import _ from "lodash";
 import { differenceInDays } from "date-fns";
 

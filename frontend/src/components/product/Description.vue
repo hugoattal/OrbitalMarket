@@ -3,7 +3,7 @@
         <h1>
             <ProductCardWish
                 class="wishlist icon"
-                :product-id="product.meta.unrealId"
+                :product-id="product.meta.fabId"
             />
             {{ product.title }}
         </h1>
@@ -18,11 +18,11 @@
                 <div class="rating-wrapper">
                     <UIRating
                         class="stars"
-                        :has-ratings="!!product.computed.score.totalRatings"
-                        :rating="parseFloat(product.computed.score.meanRating)"
+                        :has-ratings="!!product.review.count"
+                        :rating="product.review.rating"
                     />
                     <div class="total">
-                        ({{ product.computed.score.totalRatings || 0 }})
+                        ({{ product.review.count || 0 }})
                     </div>
                 </div>
                 <div
@@ -30,10 +30,10 @@
                     class="price"
                 >
                     <span class="old">{{ displayPrice(product.price.value) }}</span>
-                    {{ displayPrice(product.price.value * (1 - product.discount.value / 100)) }}
+                    {{ displayPrice(product.price.value * (1 - product.discount / 100)) }}
 
                     <div class="discount">
-                        -{{ product.discount.value }}%
+                        -{{ product.discount }}%
                     </div>
                 </div>
                 <div
@@ -46,12 +46,14 @@
                     {{ product.description.short }}
                 </p>
                 <div class="info">
-                    <p><span class="type">Released:</span> {{ displayDate(product.releaseDate) }}</p>
-                    <p>
-                        <span class="type">Engine Version:</span> {{ displayEngineVersion(product.computed.engine) }}
-                    </p>
                     <p>
                         <span class="type">Category:</span> <span class="category">{{ category }}</span>
+                    </p>
+                    <p>
+                        <span class="type">Released:</span> {{ displayDate(product.releaseDate) }}
+                    </p>
+                    <p>
+                        <span class="type">Engine Version:</span> {{ displayEngineVersion(product.engine) }}
                     </p>
                     <p>
                         <span class="type">Author:</span> <RouterLink
@@ -73,7 +75,7 @@
                         :href="marketplaceLink"
                         target="_blank"
                     >
-                        <span>Unreal Marketplace <i class="las la-external-link-alt" /></span>
+                        <span>FAB Marketplace <i class="las la-external-link-alt" /></span>
                     </UIButton>
                     <UIButton
                         class="link"
@@ -183,13 +185,13 @@ onUnmounted(() => {
 });
 
 const category = computed(() => {
-    const categoryPath = product.category?.path[1];
+    const categoryPath = product.category;
     return displayCategory(categoryPath || "Unknown");
 });
 
-const isDiscounted = computed(() => product.discount.value > 0 && product.price.value > 0);
+const isDiscounted = computed(() => product.discount > 0 && product.price.value > 0);
 const launcherLink = computed(() => `com.epicgames.launcher://ue/marketplace/product/${ product.slug }`);
-const marketplaceLink = computed(() => `https://www.unrealengine.com/marketplace/product/${ product.slug }`);
+const marketplaceLink = computed(() => `https://www.fab.com/listings/${ product.meta.fabId }`);
 const authorLink = computed(() => {
     const urlSearchParams = new URLSearchParams();
 
@@ -202,10 +204,10 @@ const authorLink = computed(() => {
 
 const slides = computed<Array<string>>(() => {
     if (product.computed.embeddedContent) {
-        return [...product.computed.embeddedContent, ...product.pictures.screenshot];
+        return [...product.computed.embeddedContent, ...product.media.images];
     }
     else {
-        return product.pictures.screenshot;
+        return product.media.images;
     }
 });
 
@@ -214,7 +216,7 @@ function banOwner() {
         return;
     }
 
-    useConfigStore().banList[product.owner.meta.unrealId] = product.owner.name;
+    useConfigStore().banList[product.owner.meta.fabId] = product.owner.name;
 }
 </script>
 

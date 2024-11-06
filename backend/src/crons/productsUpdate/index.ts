@@ -1,11 +1,11 @@
 import Cron from "node-cron";
-import * as UnrealAPI from "@/scrapper/unreal/api";
+import { updateFabProducts } from "@/scrapper/fab/lib/update";
 
 
 async function makeUpdate(): Promise<void> {
-    await UnrealAPI.updateProducts();
+    await updateFabProducts();
 }
 
 export function register(): void {
-    //Cron.schedule("0 2 * * *", makeUpdate); // For now until I get it working with Fab
+    Cron.schedule("0 2 * * *", makeUpdate);
 }

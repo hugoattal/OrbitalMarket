@@ -1,13 +1,12 @@
 import { ESortDirection, ESortField, ISearch } from "@/modules/product/handler/schema";
-import ProductModel, { IProductDocument } from "@/modules/product/model";
 import UserModel from "@/modules/user/model";
 import { has } from "lodash";
 import * as mongoUtils from "@/utils/mongo";
 import { PipelineStage } from "mongoose";
 import { getAuthor } from "@/modules/product/utils";
-import { ObjectId } from "mongodb";
+import { ProductModel } from "@/modules/product/model";
 
-export async function search(params: ISearch): Promise<Array<IProductDocument>> {
+export async function search(params: ISearch) {
     if (!has(params, "skip")) {
         params.skip = 0;
     }
@@ -50,14 +49,14 @@ export async function search(params: ISearch): Promise<Array<IProductDocument>> 
             sortArgument["score"] = sortDirection;
         }
         else {
-            sortArgument["computed.score.value"] = sortDirection;
+            sortArgument["computed.score"] = sortDirection;
         }
         break;
     case ESortField.releaseDate:
         sortArgument["releaseDate"] = sortDirection;
         break;
     case ESortField.reviews:
-        sortArgument["computed.score.totalRatings"] = sortDirection;
+        sortArgument["computed.review.count"] = sortDirection;
         sortArgument["releaseDate"] = sortDirection;
         break;
     }
@@ -68,7 +67,11 @@ export async function search(params: ISearch): Promise<Array<IProductDocument>> 
 
     const aggregationStages: Array<PipelineStage> = [];
 
-    const matchStage = [];
+    const matchStage = [
+        {
+            "isAI": { $ne: true }
+        }
+    ];
 
     if (params.favlist) {
         matchStage.push({
@@ -92,7 +95,7 @@ export async function search(params: ISearch): Promise<Array<IProductDocument>> 
 
     if (params.banlist) {
         const authorIds = await UserModel.find({
-            "meta.unrealId": {
+            "meta.fabId": {
                 $in: params.banlist
             }
         });
@@ -139,7 +142,7 @@ export async function search(params: ISearch): Promise<Array<IProductDocument>> 
 
     if (params.categories && params.categories.length > 0) {
         matchStage.push({
-            "category.path.1": { $in: params.categories }
+            "category": { $in: params.categories }
         });
     }
 
@@ -161,14 +164,15 @@ export async function search(params: ISearch): Promise<Array<IProductDocument>> 
 
     const projectStage = {
         title: 1,
-        "category.path": 1,
+        category: 1,
         computed: 1,
-        discount: 1,
+        engine: 1,
+        "media.thumbnail": 1,
         meta: 1,
         owner: 1,
-        "pictures.thumbnail": 1,
         price: 1,
         releaseDate: 1,
+        review: 1,
         slug: 1
     } as Record<string, any>;
 
@@ -176,7 +180,7 @@ export async function search(params: ISearch): Promise<Array<IProductDocument>> 
         projectStage.score = {
             $multiply: [{ $meta: "textScore" }, {
                 $add: [
-                    { $sqrt: "$computed.score.value" },
+                    { $sqrt: "$computed.score" },
                     10,
                     { $cond: { else: 0, if: "$computed.isBoosted", then: 5 } }
                 ]

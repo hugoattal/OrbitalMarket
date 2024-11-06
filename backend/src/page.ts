@@ -3,10 +3,10 @@ import * as path from "path";
 import * as fs from "fs";
 import * as ProductService from "@/modules/product/service";
 import * as UserService from "@/modules/user/service";
-import { NotFound, InternalServerError } from "http-errors";
+import { InternalServerError, NotFound } from "http-errors";
 import _ from "lodash";
 import escapeHTML from "escape-html";
-import { IProductDocument } from "@/modules/product/model";
+import { IProductDocument } from "@/modules/product/old-model";
 import { IUser } from "@/modules/user/model";
 
 const pageTemplate = fs.readFileSync(path.join(__dirname, "../../frontend/dist/index.html")).toString();
@@ -63,27 +63,27 @@ async function generateSSRPage(template: string, url: string): Promise<string> {
             .replace("{ssr-title}", escapeHTML(product.title));
 
         let SSRHead = `
-    <meta name="description" content="${escapeHTML(product.description.short)}">
-    <meta property="og:title" content="${escapeHTML(product.title)}"/>
+    <meta name="description" content="${ escapeHTML(product.description.short) }">
+    <meta property="og:title" content="${ escapeHTML(product.title) }"/>
     <meta property="og:site_name" content="Orbital Market"/>
     <meta property="og:url" content="https://orbital-market.com/"/>
-    <meta property="og:description" content="${escapeHTML(product.description.short)}"/>
+    <meta property="og:description" content="${ escapeHTML(product.description.short) }"/>
     <meta property="og:type" content="article"/>
-    <meta property="article:published_time" content="${product.releaseDate.toISOString()}"/>
-    <meta property="article:author" content="${escapeHTML(owner?.name || "unknown")}"/>
-    <meta property="og:image" content="${escapeHTML(product.pictures.thumbnail[0])}"/>
+    <meta property="article:published_time" content="${ product.releaseDate.toISOString() }"/>
+    <meta property="article:author" content="${ escapeHTML(owner?.name || "unknown") }"/>
+    <meta property="og:image" content="${ escapeHTML(product.media.thumbnail) }"/>
     <meta property="og:image:width" content="284"/>
     <meta property="og:image:height" content="284"/>
     <meta name="twitter:card" content="summary">`;
 
         if (owner?.networks?.twitter) {
-            const twitterUserName = "@" + _.last(owner.networks.twitter.split("/"));
+            const twitterUserName = `@${ _.last(owner.networks.twitter.split("/")) }`;
             SSRHead += `
-    <meta name="twitter:creator" content="${escapeHTML(twitterUserName)}">`;
+    <meta name="twitter:creator" content="${ escapeHTML(twitterUserName) }">`;
         }
 
         SSRHead += `
-    <script type="application/ld+json">${generateJSONLD(product, owner)}</script>`;
+    <script type="application/ld+json">${ generateJSONLD(product, owner) }</script>`;
 
         template = template.replace("<!--{ssr-head}-->", SSRHead);
 
@@ -92,39 +92,39 @@ async function generateSSRPage(template: string, url: string): Promise<string> {
 
     function generateJSONLD(product: IProductDocument, owner: IUser): string {
         const schemaData = {
+            "name": escapeHTML(product.title),
             "@context": "https://schema.org/",
             "@type": "Product",
-            "name": escapeHTML(product.title),
-            "sku": product._id,
-            "description": escapeHTML(product.description.short),
-            "image": escapeHTML(product.pictures.thumbnail[0]),
-            "url": "https://orbital-market.com/product/" + escapeHTML(product.slug),
-            "category": "Unreal Engine Asset",
-            "releaseDate": product.releaseDate.toISOString(),
             "brand": {
-                "@type": "Brand",
-                "name": owner.name
+                "name": owner.name,
+                "@type": "Brand"
             },
+            "category": "Unreal Engine Asset",
+            "description": escapeHTML(product.description.short),
+            "image": escapeHTML(product.media.thumbnail),
             "offers": {
                 "@type": "Offer",
                 "availability": "https://schema.org/InStock",
-                "url": "https://orbital-market.com/product/" + escapeHTML(product.slug),
-                "priceCurrency": "USD",
                 "price": product.price.value / 100,
+                "priceCurrency": "USD",
                 "seller": {
-                    "@type": "Person",
-                    "name": owner.name
-                }
-            }
+                    "name": owner.name,
+                    "@type": "Person"
+                },
+                "url": `https://orbital-market.com/product/${ escapeHTML(product.slug) }`
+            },
+            "releaseDate": product.releaseDate.toISOString(),
+            "sku": product._id,
+            "url": `https://orbital-market.com/product/${ escapeHTML(product.slug) }`
         } as Record<string, any>;
 
         if (product.computed?.score?.totalRatings || 0 > 0) {
             schemaData.aggregateRating = {
                 "@type": "AggregateRating",
-                "ratingValue": (product.computed?.score?.meanRating || 0) * 5,
                 "bestRating": 5,
-                "worstRating": 1,
-                "ratingCount": product.computed?.score?.totalRatings
+                "ratingCount": product.computed?.score?.totalRatings,
+                "ratingValue": (product.computed?.score?.meanRating || 0) * 5,
+                "worstRating": 1
             };
         }
 

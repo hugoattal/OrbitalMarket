@@ -10,9 +10,7 @@
             v-for="product in products"
             :key="product._id"
         >
-            <ProductCard
-                :product="product"
-            />
+            <ProductCard :product="product" />
         </li>
         <li v-if="isMoreProducts">
             <Observer @intersect="loadNext" />

@@ -15,7 +15,7 @@ export default defineComponent({});
 
 <style scoped lang="scss">
 .background {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     right: 0;

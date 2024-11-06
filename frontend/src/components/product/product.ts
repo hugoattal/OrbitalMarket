@@ -27,45 +27,105 @@ export function makeSemVer(version: string) {
         .join(".");
 }
 
+export function displayCategoryEmoji (category: string) {
+    if (!category) {
+        return "❓";
+    }
+
+    if (category.startsWith("audio")) {
+        return "🎵";
+    }
+
+    if (category.startsWith("tool-and-plugin")) {
+        return "⚙️";
+    }
+
+    if (category.startsWith("ui")) {
+        return "🖼️";
+    }
+
+    if (category.startsWith("3d-model")) {
+        return "🚗";
+    }
+
+    if (category.startsWith("2d-asset")) {
+        return "🎨";
+    }
+
+    if (category.startsWith("environment")) {
+        return "🏝️";
+    }
+
+    if (category.startsWith("material") || category.startsWith("texture")) {
+        return "🎨";
+    }
+
+    if (category.startsWith("game-system") || category.startsWith("game-template")) {
+        return "🕹️";
+    }
+
+    if (category.startsWith("fx") || category.startsWith("vfx")) {
+        return "✨";
+    }
+
+    if (category.startsWith("animation")) {
+        return "🏃";
+    }
+
+    if (category.startsWith("smart-asset")) {
+        return "🕺";
+    }
+
+    return "❓";
+}
+
 export function displayCategory (category: string) {
 
     if (!category) {
         return "unknown";
     }
 
-    if (category.startsWith("music")) {
+    if (category.startsWith("audio")) {
         return `🎵 ${ category }`;
     }
 
-    if (category.startsWith("codeplugins")) {
+    if (category.startsWith("tool-and-plugin")) {
         return `⚙️ ${ category }`;
     }
 
-    if (category.startsWith("blueprints")) {
-        return `📘 ${ category }`;
+    if (category.startsWith("ui")) {
+        return `👓 ${ category }`;
     }
 
-    if (category.startsWith("props")) {
+    if (category.startsWith("3d-model")) {
         return `🚗 ${ category }`;
+    }
+
+    if (category.startsWith("2d-asset")) {
+        return `🖼️ ${ category }`;
     }
 
     if (category.startsWith("environment")) {
         return `🏝️ ${ category }`;
     }
 
-    if (category.startsWith("materials") || category.startsWith("textures")) {
+    if (category.startsWith("material") || category.startsWith("texture")) {
         return `🎨 ${ category }`;
     }
 
-    if (category.startsWith("fx")) {
+    if (category.startsWith("game-system") || category.startsWith("game-template")) {
+        return `🕹️ ${ category }`;
+    }
+
+    if (category.startsWith("fx") || category.startsWith("vfx")) {
         return `✨ ${ category }`;
     }
 
-    if (category.startsWith("animations")) {
+    if (category.startsWith("animation")) {
         return `🏃 ${ category }`;
     }
 
-    if (category.startsWith("characters")) {
+    if (category.startsWith("smart-asset")) {
         return `🕺 ${ category }`;
     }
 

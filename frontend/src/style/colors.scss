@@ -4,6 +4,7 @@
 
 @mixin light-theme {
     --color-landing-background: white;
+    --color-landing-content-background: hsl(0, 0%, 97%);
     --color-landing-content: black;
 
     --color-background: hsl(210, 10%, 98%);
@@ -25,6 +26,7 @@
 
 @mixin dark-theme {
     --color-landing-background: black;
+    --color-landing-content-background: hsl(0, 0%, 3%);
     --color-landing-content: white;
 
     --color-background: hsl(210, 30%, 10%);

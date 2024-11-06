@@ -6,6 +6,7 @@
     >
         <div class="viewer">
             <UISlideshowContent
+                v-if="slides.length"
                 :key="currentIndex"
                 class="content"
                 :url="slides[currentIndex]"
@@ -34,7 +35,8 @@
     <div
         ref="previewElement"
         class="slides"
-        @wheel.prevent="scrollPreviews">
+        @wheel.prevent="scrollPreviews"
+    >
         <UISlideshowPreview
             v-for="(slide, key) of slides"
             :key="key"
@@ -47,7 +49,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from "vue";
+import { computed, defineComponent, ref } from "vue";
 import UISlideshowContent from "@/components/ui/slideshow/SlideshowContent.vue";
 import UISlideshowPreview from "@/components/ui/slideshow/SlideshowPreview.vue";
 
@@ -87,10 +89,10 @@ const imageSlides = computed(() => {
 </script>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+
 
 export default defineComponent({
-    name: "UISlideshow",
+    name: "UISlideshow"
 });
 </script>
 

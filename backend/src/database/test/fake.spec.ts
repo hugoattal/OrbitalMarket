@@ -1,6 +1,6 @@
 import "@/database/test";
 import * as Fake from "@/database/test/fake";
-import ProductModel from "@/modules/product/model";
+import ProductModel from "@/modules/product/old-model";
 
 describe("database/test/fake", () => {
     test("it should generate a fake product", async () => {

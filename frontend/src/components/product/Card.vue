@@ -6,18 +6,18 @@
     >
         <article
             class="product"
-            :class="{boost: product.computed.isBoosted, favorite: configStore.favSet.has(product.meta.unrealId), [configStore.displayType]: true}"
+            :class="{boost: product.computed.isBoosted, favorite: configStore.favSet.has(product.meta.fabId), [configStore.displayType]: true}"
         >
             <Box3D
                 v-if="configStore.displayType === 'box'"
-                :background="product.pictures.thumbnail[0]"
+                :background="product.media.thumbnail"
                 class="box"
             />
             <img
                 v-else
                 alt="thumbnail"
                 class="thumbnail"
-                :src="product.pictures.thumbnail[0]"
+                :src="product.media.thumbnail"
             >
             <div class="icons">
                 <div class="left">
@@ -33,7 +33,7 @@
                 <div class="right">
                     <ProductCardWish
                         class="wishlist icon"
-                        :product-id="product.meta.unrealId"
+                        :product-id="product.meta.fabId"
                     />
                     <div
                         v-if="product.computed.isBoosted"
@@ -52,16 +52,16 @@
                     class="title"
                     :title="product.title"
                 >
-                    {{ product.title }}
+                    {{ categoryEmoji }} {{ product.title }}
                 </div>
                 <div class="rating-wrapper">
                     <UIRating
                         class="stars"
-                        :has-ratings="!!product.computed.score.totalRatings"
-                        :rating="parseFloat(product.computed.score.meanRating)"
+                        :has-ratings="!!product.review.count"
+                        :rating="product.review.rating"
                     />
                     <div class="total">
-                        ({{ product.computed.score.totalRatings || 0 }})
+                        ({{ product.review.count || 0 }})
                     </div>
                 </div>
                 <div
@@ -69,10 +69,10 @@
                     class="price"
                 >
                     <span class="old">{{ displayPrice(product.price.value) }}</span>
-                    {{ displayPrice(product.price.value * (1 - product.discount.value / 100)) }}
+                    {{ displayPrice(product.price.value * (1 - product.discount / 100)) }}
 
                     <div class="discount">
-                        -{{ product.discount.value }}%
+                        -{{ product.discount }}%
                     </div>
                 </div>
                 <div
@@ -85,13 +85,10 @@
                     <p>
                         <span class="type">Released:</span> {{ displayDate(product.releaseDate) }}</p>
                     <p>
-                        <span class="type">Engine version:</span> {{ displayEngineVersion(product.computed.engine) }}
+                        <span class="type">Engine version:</span> {{ displayEngineVersion(product.engine) }}
                     </p>
                     <p>
-                        <span class="type">Category:</span> <span class="category">{{ category }}</span>
-                    </p>
-                    <p>
-                        <span class="type">Author:</span> <RouterLink
+                        <span class="type">by </span> <RouterLink
                             :to="authorLink"
                             @click.stop
                         >
@@ -126,7 +123,7 @@ import Box3D from "@/components/ui/Box3D.vue";
 import UIModal from "@/components/ui/Modal.vue";
 import ProductModal from "@/components/product/Modal.vue";
 import {
-    displayCategory,
+    displayCategoryEmoji,
     displayDate,
     displayEngineVersion,
     displayPrice
@@ -143,13 +140,13 @@ const configStore = useConfigStore();
 
 const showModal = ref(false);
 
-const category = computed(() => {
-    const categoryPath = props.product.category?.path[1];
-    return displayCategory(categoryPath || "Unknown");
+const categoryEmoji = computed(() => {
+    const categoryPath = props.product.category;
+    return displayCategoryEmoji(categoryPath || "Unknown");
 });
 
 const isDiscounted = computed(() => {
-    return props.product.discount.value > 0 && props.product.price.value > 0;
+    return props.product.discount && props.product.discount > 0 && props.product.price.value > 0;
 });
 
 const authorLink = computed(() => {
@@ -160,10 +157,6 @@ const authorLink = computed(() => {
     urlSearchParams.set("searchText", `author:${ author }`);
 
     return `/search?${ urlSearchParams.toString() }`;
-});
-
-const marketplaceLink = computed(() => {
-    return `https://www.unrealengine.com/marketplace/product/${ props.product.slug }`;
 });
 
 function goToProductPage() {
@@ -197,6 +190,7 @@ function goToProductPage() {
             border-bottom: 1px solid var(--color-content-light);
             width: 100%;
             margin-bottom: var(--length-margin-xs);
+            aspect-ratio: 16 / 9;
         }
 
         .icons {

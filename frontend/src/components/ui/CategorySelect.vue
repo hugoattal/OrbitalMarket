@@ -54,25 +54,20 @@ type TCategory = {
 type TCategories = Array<TCategory>;
 
 const categories = reactive([
-    { name: "2d", selected: false },
-    { name: "animations", selected: false },
-    { name: "archvis", selected: false },
-    { name: "blueprints", selected: false },
-    { name: "characters", selected: false },
-    { name: "codeplugins", selected: false },
-    { name: "environments", selected: false },
-    { name: "features", selected: false },
-    { name: "fx", selected: false },
-    { name: "games", selected: false },
-    { name: "materials", selected: false },
-    { name: "megascans", selected: false },
-    { name: "music", selected: false },
-    { name: "onlinelearning", selected: false },
-    { name: "props", selected: false },
-    { name: "showcasedemos", selected: false },
-    { name: "soundfx", selected: false },
-    { name: "textures", selected: false },
-    { name: "weapons", selected: false }
+    { name: "2d-asset", selected: false },
+    { name: "3d-model", selected: false },
+    { name: "animation", selected: false },
+    { name: "audio", selected: false },
+    { name: "education-tutorial", selected: false },
+    { name: "environment", selected: false },
+    { name: "game-system", selected: false },
+    { name: "game-template", selected: false },
+    { name: "hdri", selected: false },
+    { name: "material", selected: false },
+    { name: "smart-asset", selected: false },
+    { name: "tool-and-plugin", selected: false },
+    { name: "ui", selected: false },
+    { name: "vfx", selected: false }
 ] as TCategories);
 
 if (categoriesQuery.value) {
@@ -167,6 +162,7 @@ watch(categories, () => {
             display: flex;
             align-items: baseline;
             gap: var(--length-gap-s);
+            white-space: nowrap;
 
 
             &:hover {

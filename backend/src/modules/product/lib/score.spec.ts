@@ -1,6 +1,6 @@
 import "@/database/test";
 import * as Fake from "@/database/test/fake";
-import ProductModel from "@/modules/product/model";
+import ProductModel from "@/modules/product/old-model";
 import * as Score from "./score";
 import { addDays } from "date-fns";
 
@@ -24,13 +24,13 @@ describe("product/lib/score", () => {
     });
     test("it should generate a better score when the product is more recent", async () => {
         let recentProduct = await Fake.generate(ProductModel, {
-            ratings: [0, 0, 2, 5, 12],
             price: { value: 10 },
+            ratings: [0, 0, 2, 5, 12],
             releaseDate: new Date()
         });
         let oldProduct = await Fake.generate(ProductModel, {
-            ratings: [0, 0, 2, 5, 12],
             price: { value: 10 },
+            ratings: [0, 0, 2, 5, 12],
             releaseDate: addDays(new Date(), -20)
         });
 

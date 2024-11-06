@@ -1,6 +1,6 @@
 import "@/database/test";
 import * as Fake from "@/database/test/fake";
-import ProductModel from "@/modules/product/model";
+import ProductModel from "@/modules/product/old-model";
 
 import { search } from "./search";
 import { ESortDirection, ESortField } from "@/modules/product/handler/schema";
@@ -30,7 +30,7 @@ describe("product/search", () => {
         const productA = await Fake.generate(ProductModel, { title: "A" });
         const productB = await Fake.generate(ProductModel, { title: "B" });
 
-        const results = await search({ sortField: ESortField.name, sortDirection: ESortDirection.asc });
+        const results = await search({ sortDirection: ESortDirection.asc, sortField: ESortField.name });
 
         expect(results).toHaveLength(2);
         expect(results[0]._id).toStrictEqual(productA._id);
@@ -41,7 +41,7 @@ describe("product/search", () => {
         const productB = await Fake.generate(ProductModel, { title: "B", computed: { score: { value: 10 } } });
         const productC = await Fake.generate(ProductModel, { title: "C", computed: { score: { value: 10 } } });
 
-        const results = await search({ skip: 1, limit: 1 });
+        const results = await search({ limit: 1, skip: 1 });
 
         expect(results).toHaveLength(1);
         expect(results[0]._id).not.toStrictEqual(productA._id);
@@ -51,29 +51,29 @@ describe("product/search", () => {
     test("it should find the products with the right engine version", async () => {
         const productA = await Fake.generate(ProductModel, {
             title: "A",
-            computed: { engine: { min: "4.10", max: "4.20" } }
+            computed: { engine: { max: "4.20", min: "4.10" } }
         });
         const productB = await Fake.generate(ProductModel, {
             title: "B",
-            computed: { engine: { min: "4.10", max: "4.15" } }
+            computed: { engine: { max: "4.15", min: "4.10" } }
         });
         await Fake.generate(ProductModel, {
             title: "C",
-            computed: { engine: { min: "4.10", max: "4.14" } }
+            computed: { engine: { max: "4.14", min: "4.10" } }
         });
         const productD = await Fake.generate(ProductModel, {
             title: "D",
-            computed: { engine: { min: "4.10", max: "4.25" } }
+            computed: { engine: { max: "4.25", min: "4.10" } }
         });
         const productE = await Fake.generate(ProductModel, {
             title: "E",
-            computed: { engine: { min: "4.17", max: "4.19" } }
+            computed: { engine: { max: "4.19", min: "4.17" } }
         });
 
         const results = await search({
-            sortField: ESortField.name,
+            engine: { max: "4.20", min: "4.15" },
             sortDirection: ESortDirection.asc,
-            engine: { min: "4.15", max: "4.20" }
+            sortField: ESortField.name
         });
 
         expect(results).toHaveLength(4);
@@ -85,21 +85,21 @@ describe("product/search", () => {
     test("it should find the products with the exact engine version", async () => {
         const productA = await Fake.generate(ProductModel, {
             title: "A",
-            computed: { engine: { min: "4.20", max: "4.25" } }
+            computed: { engine: { max: "4.25", min: "4.20" } }
         });
         const productB = await Fake.generate(ProductModel, {
             title: "B",
-            computed: { engine: { min: "4.25", max: "4.30" } }
+            computed: { engine: { max: "4.30", min: "4.25" } }
         });
         const productC = await Fake.generate(ProductModel, {
             title: "C",
-            computed: { engine: { min: "4.25", max: "4.25" } }
+            computed: { engine: { max: "4.25", min: "4.25" } }
         });
 
         const results = await search({
-            sortField: ESortField.name,
+            engine: { max: "4.25", min: "4.25" },
             sortDirection: ESortDirection.asc,
-            engine: { min: "4.25", max: "4.25" }
+            sortField: ESortField.name
         });
 
         expect(results).toHaveLength(3);
@@ -113,9 +113,9 @@ describe("product/search", () => {
         const productC = await Fake.generate(ProductModel, { title: "C", price: { value: 2000 } });
 
         const results = await search({
-            sortField: ESortField.name,
+            price: { max: 1000, min: 500 },
             sortDirection: ESortDirection.asc,
-            price: { min: 500, max: 1000 }
+            sortField: ESortField.name
         });
 
         expect(results).toHaveLength(1);
@@ -137,7 +137,7 @@ describe("product/search", () => {
             description: { short: "Voxel plugin with powerful tools" }
         });
 
-        const results = await search({ sortField: ESortField.popularity, searchText: "Electronic Nodes" });
+        const results = await search({ searchText: "Electronic Nodes", sortField: ESortField.popularity });
 
         expect(results).toHaveLength(2);
         expect(results[0]._id).toStrictEqual(productB._id);
@@ -145,16 +145,16 @@ describe("product/search", () => {
     });
     test("it should select only discounted product", async () => {
         await Fake.generate(ProductModel, {
-            price: { value: 1000 },
-            discount: { value: 0 }
+            discount: { value: 0 },
+            price: { value: 1000 }
         });
         const discountedProduct = await Fake.generate(ProductModel, {
-            price: { value: 2000 },
-            discount: { value: 50 }
+            discount: { value: 50 },
+            price: { value: 2000 }
         });
         await Fake.generate(ProductModel, {
-            price: { value: 0 },
-            discount: { value: 0 }
+            discount: { value: 0 },
+            price: { value: 0 }
         });
 
         const results = await search({ discounted: true });

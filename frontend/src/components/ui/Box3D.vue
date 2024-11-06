@@ -33,7 +33,7 @@ export default defineComponent({
     computed: {
         frontBackground () {
             return {
-                backgroundImage: `url(${this.background})`
+                backgroundImage: `url(${ this.background })`
             };
         }
     }
@@ -43,7 +43,7 @@ export default defineComponent({
 <style scoped lang="scss">
 .scene {
     width: 150px;
-    height: 150px;
+    height: 120px;
     perspective: 300px;
 
     .box {
@@ -55,8 +55,8 @@ export default defineComponent({
 
         .front {
             position: absolute;
-            width: 80px;
-            height: 100px;
+            width: 100px;
+            height: 80px;
             background-color: var(--color-background);
             background-size: contain;
             background-position: center center;
@@ -73,7 +73,7 @@ export default defineComponent({
             background-color: black;
             position: absolute;
             width: 40px;
-            height: 100px;
+            height: 80px;
             transform: translate3d(20px, 0px, -20px) rotate3d(0, 1, 0, -90deg);
             box-shadow: 0 0 5px var(--color-shadow-dark);
         }

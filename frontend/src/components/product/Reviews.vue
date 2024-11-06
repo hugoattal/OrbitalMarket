@@ -11,7 +11,7 @@
             <div class="header">
                 <UIRating
                     has-ratings
-                    :rating="review.rating / 5"
+                    :rating="review.rating"
                 />
                 <span class="title">{{ review.title }}</span>
             </div>

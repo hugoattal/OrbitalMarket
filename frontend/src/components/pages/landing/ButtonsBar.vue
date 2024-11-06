@@ -44,7 +44,6 @@ export default defineComponent({
 
 <style scoped lang="scss">
 .buttons-bar {
-    margin-top: var(--length-margin-base);
     display: flex;
 
     @media screen and (max-width: 500px) {

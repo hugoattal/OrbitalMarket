@@ -1,6 +1,6 @@
 import Mongo from "@/database";
 import UserModel from "@/modules/user/model";
-import ProductModel, { IProduct } from "@/modules/product/model";
+import ProductModel, { IProduct } from "@/modules/product/old-model";
 import { computeScore } from "@/modules/product/lib/score";
 
 export async function owner(data: any): Promise<Mongo.Types.ObjectId> {

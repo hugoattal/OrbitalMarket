@@ -1,5 +1,5 @@
 import * as Upsert from "@/scrapper/unreal/lib/upsert";
-import { IProduct } from "@/modules/product/model";
+import { IProduct } from "@/modules/product/old-model";
 import * as ProductService from "@/modules/product/service";
 import { computeScore } from "@/modules/product/lib/score";
 import { getConversionRate } from "@/scrapper/unreal/api";

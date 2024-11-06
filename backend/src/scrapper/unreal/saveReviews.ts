@@ -2,7 +2,7 @@ import "module-alias/register";
 import { closeDatabase, connectDatabase } from "@/database";
 import * as UnrealAPI from "./api";
 
-import ProductModel from "@/modules/product/model";
+import ProductModel from "@/modules/product/old-model";
 import ReviewModel from "@/modules/review/model";
 import { getSavedState, setSavedState } from "@/scrapper/unreal/lib/state";
 

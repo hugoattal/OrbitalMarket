@@ -6,24 +6,12 @@ export const PartialProduct = {
         _id: { type: "string" },
         title: { type: "string" },
         category: {
-            properties: {
-                path: {
-                    items: {
-                        type: "string"
-                    },
-                    type: "array"
-                }
-            },
-            type: "object"
+            type: "string"
         },
         computed: {
             additionalProperties: false,
             properties: {
                 embeddedContent: { items: { type: "string" }, type: "array" },
-                engine: {
-                    max: { items: { type: "number" }, type: "array" },
-                    min: { items: { type: "number" }, type: "array" }
-                },
                 isBoosted: { type: "boolean" },
                 score: {}
             },
@@ -36,9 +24,23 @@ export const PartialProduct = {
             },
             type: "object"
         },
+        engine: {
+            max: { items: { type: "number" }, type: "array" },
+            min: { items: { type: "number" }, type: "array" }
+        },
+        media: {
+            additionalProperties: false,
+            properties: {
+                thumbnail: {
+                    type: "string"
+                }
+            },
+            type: "object"
+        },
         meta: {
             additionalProperties: false,
             properties: {
+                fabId: { type: "string" },
                 unrealId: { type: "string" }
             }
         },
@@ -50,21 +52,10 @@ export const PartialProduct = {
                 meta: {
                     additionalProperties: false,
                     properties: {
+                        fabId: { type: "string" },
                         unrealId: { type: "string" }
                     },
                     type: "object"
-                }
-            },
-            type: "object"
-        },
-        pictures: {
-            additionalProperties: false,
-            properties: {
-                thumbnail: {
-                    items: {
-                        type: "string"
-                    },
-                    type: "array"
                 }
             },
             type: "object"
@@ -87,6 +78,13 @@ export const PartialProduct = {
             type: "object"
         },
         releaseDate: { format: "date-time", type: "string" },
+        review: {
+            additionalProperties: false,
+            properties: {
+                count: { type: "number" },
+                rating: { type: "number" }
+            }
+        },
         slug: { type: "string" }
     },
     type: "object"
@@ -97,13 +95,12 @@ export const FullProduct = merge(PartialProduct, {
         description: {
             properties: {
                 long: { type: "string" },
-                short: { type: "string" },
                 technical: { type: "string" }
             }
         },
-        pictures: {
+        media: {
             properties: {
-                screenshot: {
+                images: {
                     items: {
                         type: "string"
                     },

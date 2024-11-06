@@ -111,7 +111,7 @@ function updateProductIds() {
     if (products.value.length) {
         configStore.favSet.clear();
         for (const product of products.value) {
-            configStore.favSet.add(product.meta.unrealId);
+            configStore.favSet.add(product.meta.fabId);
         }
     }
 }

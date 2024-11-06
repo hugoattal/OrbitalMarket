@@ -11,7 +11,7 @@ async function initBrowser() {
     page = await browser.newPage();
 }
 
-export async function makeRequest(url: string) {
+export async function makeRequest(url: string): Promise<unknown> {
     if (!page) {
         await initBrowser();
     }
@@ -23,4 +23,14 @@ export async function makeRequest(url: string) {
     json = JSON.parse(json);
 
     return json;
+}
+
+export async function getRedirect(url: string): Promise<string> {
+    if (!page) {
+        await initBrowser();
+    }
+
+    await page.goto(url);
+
+    return page.url();
 }

@@ -19,8 +19,8 @@ import SVGLogoSatelliteURL from "@/assets/satellite.svg";
 export default defineComponent({
     data () {
         return {
-            SVGLogoTextURL: `${SVGLogoTextURL}#Logo`,
-            SVGLogoSatelliteURL: `${SVGLogoSatelliteURL}#Logo`
+            SVGLogoSatelliteURL: `${ SVGLogoSatelliteURL }#Logo`,
+            SVGLogoTextURL: `${ SVGLogoTextURL }#Logo`
         };
     }
 });
@@ -32,19 +32,19 @@ export default defineComponent({
     justify-content: center;
     align-items: center;
     position: relative;
-    margin: 2vw 0;
 
     max-width: calc(100vw - var(--length-margin-l));
 
     .svg-text {
-        width: 50vw;
+        width: 600px;
+        max-width: (100vw - var(--length-margin-l));
     }
 
     .svg-satellite {
-        width: 8vw;
-        height: 8vw;
-        left: calc(50% - 4vw);
-        top: calc(50% - 4vw);
+        width: 100px;
+        height: 100px;
+        left: calc(50% - 50px);
+        top: calc(50% - 50px);
         position: absolute;
 
         animation: shake 8s infinite;

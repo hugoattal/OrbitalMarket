@@ -1,5 +1,5 @@
 import "@/database/test";
-import ProductModel from "@/modules/product/model";
+import ProductModel from "@/modules/product/old-model";
 import { processProductData } from "../lib/processing";
 import { rawProduct } from "@/scrapper/unreal/test/product";
 import { db } from "@/database";
@@ -14,7 +14,7 @@ describe("scrapper/unreal", () => {
 
         const product = await ProductModel.findOne();
 
-        expect(product?.computed?.engine).toEqual({ min: "4.20", max: "4.26" });
+        expect(product?.computed?.engine).toEqual({ max: "4.26", min: "4.20" });
     });
     test("it should compute that it's a boosted product", async () => {
         await processProductData(rawProduct);

@@ -1,181 +1,119 @@
+import { HydratedDocumentFromSchema } from "mongoose";
 import Mongo from "@/database";
 
-export interface IProduct {
-    title: string;
-    category: {
-        main: string;
-        path: Array<string>;
-    };
-    computed?: {
-        embeddedContent?: Array<string>;
-        engine: Record<string, any>;
-        isBoosted?: boolean;
-        score?: {
-            meanRating: number;
-            totalRatings: number;
-            value: number;
-        };
-    };
-    description: {
-        long: string;
-        short: string;
-        technical: string;
-    };
-    discount: {
-        history?: Array<{
-            date: Date;
-            value: number;
-        }>;
-        value: number;
-    };
-    lastUpdate: Date;
-    meta: Record<string, any>;
-    owner: Mongo.Types.ObjectId;
-    pictures: Record<string, Array<string>>;
-    price: {
-        history?: Array<{
-            date: Date;
-            value: number;
-        }>;
-        value: number;
-    };
-    ratings: Array<number>;
-    releaseDate: Date;
-    releases: Array<{
-        apps: Array<string>;
-        platforms: Array<string>;
-        updateDate: Date;
-    }>;
-    slug: string;
-    tags: Array<Mongo.Types.ObjectId>;
-}
-
-export interface IProductDocument extends IProduct, Mongo.Document {
-}
-
-const productSchema: Mongo.Schema = new Mongo.Schema({
+const schema = new Mongo.Schema({
     title: {
-        faker: "commerce.productName",
         required: true,
         type: String
     },
     category: {
-        main: {
-            default: "default",
-            enum: ["default", "unreal"],
-            required: true,
-            type: String
-        },
-        path: [String]
+        type: String
     },
     computed: {
-        embeddedContent: [String],
-        engine: {
-            max: {
-                faker: "5.00",
-                type: String
-            },
-            min: {
-                faker: "4.20",
-                type: String
-            }
-        },
-        isBoosted: Boolean,
-        score: {
-            meanRating: {
-                faker: { "datatype.number": [{ max: 5, min: 0 }] },
-                type: Number
-            },
-            totalRatings: {
-                faker: { "datatype.number": [{ max: 200, min: 0 }] },
-                type: Number
-            },
-            value: {
-                faker: { "datatype.number": [{ max: 1000, min: 0 }] },
-                type: Number
-            }
+        type: {
+            embeddedContent: [String],
+            isBoosted: Boolean,
+            score: Number
+        }
+    },
+    dates: {
+        type: {
+            lastPrecise: Date,
+            lastTouched: Date
         }
     },
     description: {
         long: {
-            faker: "commerce.productDescription",
             required: true,
             type: String
         },
-        short: String,
-        technical: String
-    },
-    discount: {
-        history: [
-            {
-                date: Date,
-                value: Number
-            }
-        ],
-        value: {
-            faker: { "datatype.number": [{ max: 50, min: 0 }] },
-            required: true,
-            type: Number
+        technical: {
+            type: String
         }
     },
-    meta: Object,
+    engine: {
+        type: {
+            max: {
+                type: String
+            },
+            min: {
+                type: String
+            }
+        }
+    },
+    isAI: {
+        type: Boolean
+    },
+    media: {
+        type: {
+            images: [String],
+            thumbnail: String
+        }
+    },
+    meta: {
+        type: {
+            fabId: {
+                type: String
+            },
+            unrealId: {
+                type: String
+            }
+        }
+    },
     owner: {
         ref: "user",
         required: true,
         type: Mongo.Schema.Types.ObjectId
     },
-    pictures: Object,
     price: {
         history: [
             {
-                date: Date,
-                value: Number
+                type: {
+                    date: Date,
+                    value: Number
+                }
             }
         ],
-        value: {
-            faker: "commerce.price",
-            required: true,
-            type: Number
-        }
+        value: Number
     },
-    ratings: [Number],
     releaseDate: {
         default: Date.now,
-        faker: { "date.recent": 500 },
         required: true,
         type: Date
     },
-    releases: [{
-        apps: [String],
-        platforms: [String],
-        updateDate: Date
-    }],
+    review: {
+        type: {
+            count: Number,
+            rating: Number
+        }
+    },
     slug: {
-        faker: "internet.domainWord",
         required: true,
         type: String
     },
     tags: [{
-        ref: "tag",
-        type: Mongo.Schema.Types.ObjectId
+        type: String
     }]
+}, {
+    minimize: false,
+    timestamps: true
 });
 
-productSchema.index(
+schema.index(
     {
         title: "text",
         "description.long": "text",
-        "description.short": "text",
         "description.technical": "text"
     },
     {
         "weights": {
-            title: 4,
-            "description.long": 1,
-            "description.short": 2,
+            title: 12,
+            "description.long": 4,
             "description.technical": 1
         }
     }
 );
 
-export default Mongo.model<IProductDocument>("product", productSchema);
+
+export type TProductModel = HydratedDocumentFromSchema<typeof schema>;
+export const ProductModel = Mongo.model("product", schema);

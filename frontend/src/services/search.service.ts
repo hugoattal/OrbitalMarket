@@ -8,20 +8,24 @@ export interface ISearchProduct {
     };
     computed: {
         isBoosted: boolean;
-        score: {
-            meanRating: number;
-            totalRatings: number;
-            value: number;
-        };
+        score: number;
     };
     discount: { value: number };
-    meta: {
-        unrealId: string;
+    engine: {
+        max: string;
+        min: string;
     };
+    media: { thumbnail: string };
+    meta: {
+        fabId: string;
+    },
     owner: string;
-    pictures: { thumbnail: Array<string> };
     price: { value: number };
     releaseDate: string;
+    review: {
+        count: number;
+        rating: number;
+    };
     slug: string;
 }
 
