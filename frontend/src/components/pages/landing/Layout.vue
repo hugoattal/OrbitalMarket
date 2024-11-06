@@ -97,6 +97,7 @@ onMounted(async () => {
         flex-direction: column;
         gap: var(--length-gap-xl);
         margin-top: var(--length-margin-l);
+        max-width: 100%;
 
         section {
             z-index: 1;
@@ -104,9 +105,9 @@ onMounted(async () => {
             display: flex;
             flex-direction: column;
             gap: var(--length-gap-l);
-
+            max-width: 100%;
             h2 {
-                padding: 0;
+                padding: 0 var(--length-padding-base);
                 margin: 0;
 
                 .more {
@@ -124,11 +125,15 @@ onMounted(async () => {
     .results {
         display: flex;
         margin: 0;
-        padding: 0;
+        padding: var(--length-padding-base);
         gap: var(--length-margin-l);
+        max-width: 100%;
+
+        overflow: auto;
 
         li {
             width: 200px;
+            flex-shrink: 0;
             list-style-type: none;
         }
     }
