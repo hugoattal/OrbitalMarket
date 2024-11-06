@@ -56,7 +56,7 @@ export async function search(params: ISearch) {
         sortArgument["releaseDate"] = sortDirection;
         break;
     case ESortField.reviews:
-        sortArgument["computed.review.count"] = sortDirection;
+        sortArgument["review.count"] = sortDirection;
         sortArgument["releaseDate"] = sortDirection;
         break;
     }
