@@ -8,6 +8,7 @@ import _ from "lodash";
 import escapeHTML from "escape-html";
 import { IProductDocument } from "@/modules/product/old-model";
 import { IUser } from "@/modules/user/model";
+import { TProductModel } from "@/modules/product/model";
 
 const pageTemplate = fs.readFileSync(path.join(__dirname, "../../frontend/dist/index.html")).toString();
 
@@ -63,11 +64,11 @@ async function generateSSRPage(template: string, url: string): Promise<string> {
             .replace("{ssr-title}", escapeHTML(product.title));
 
         let SSRHead = `
-    <meta name="description" content="${ escapeHTML(product.description.short) }">
+    <meta name="description" content="${ escapeHTML(product.description.long) }">
     <meta property="og:title" content="${ escapeHTML(product.title) }"/>
     <meta property="og:site_name" content="Orbital Market"/>
     <meta property="og:url" content="https://orbital-market.com/"/>
-    <meta property="og:description" content="${ escapeHTML(product.description.short) }"/>
+    <meta property="og:description" content="${ escapeHTML(product.description.long) }"/>
     <meta property="og:type" content="article"/>
     <meta property="article:published_time" content="${ product.releaseDate.toISOString() }"/>
     <meta property="article:author" content="${ escapeHTML(owner?.name || "unknown") }"/>
@@ -90,7 +91,7 @@ async function generateSSRPage(template: string, url: string): Promise<string> {
 
     }
 
-    function generateJSONLD(product: IProductDocument, owner: IUser): string {
+    function generateJSONLD(product: TProductModel, owner: IUser): string {
         const schemaData = {
             "name": escapeHTML(product.title),
             "@context": "https://schema.org/",
@@ -100,7 +101,7 @@ async function generateSSRPage(template: string, url: string): Promise<string> {
                 "@type": "Brand"
             },
             "category": "Unreal Engine Asset",
-            "description": escapeHTML(product.description.short),
+            "description": escapeHTML(product.description.long),
             "image": escapeHTML(product.media.thumbnail),
             "offers": {
                 "@type": "Offer",
@@ -118,12 +119,12 @@ async function generateSSRPage(template: string, url: string): Promise<string> {
             "url": `https://orbital-market.com/product/${ escapeHTML(product.slug) }`
         } as Record<string, any>;
 
-        if (product.computed?.score?.totalRatings || 0 > 0) {
+        if (product.review.count || 0 > 0) {
             schemaData.aggregateRating = {
                 "@type": "AggregateRating",
                 "bestRating": 5,
-                "ratingCount": product.computed?.score?.totalRatings,
-                "ratingValue": (product.computed?.score?.meanRating || 0) * 5,
+                "ratingCount": product.review.count,
+                "ratingValue": (product.review.rating || 0) * 5,
                 "worstRating": 1
             };
         }
