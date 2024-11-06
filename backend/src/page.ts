@@ -124,7 +124,7 @@ async function generateSSRPage(template: string, url: string): Promise<string> {
                 "@type": "AggregateRating",
                 "bestRating": 5,
                 "ratingCount": product.review.count,
-                "ratingValue": (product.review.rating || 0) * 5,
+                "ratingValue": (product.review.rating || 0),
                 "worstRating": 1
             };
         }
