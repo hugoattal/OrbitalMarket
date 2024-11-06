@@ -20,6 +20,6 @@ export function computeScore(meanRating: number, countRating: number, releaseDat
 }
 
 export function getIsBoosted(description: string) {
-    const orbitalString = "<a href=\"https://orbital-market.com/";
+    const orbitalString = "<a target=\"_blank\" href=\"https://orbital-market.com/";
     return description.indexOf(orbitalString) >= 0;
 }
