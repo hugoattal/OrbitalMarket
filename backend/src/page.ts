@@ -6,7 +6,6 @@ import * as UserService from "@/modules/user/service";
 import { InternalServerError, NotFound } from "http-errors";
 import _ from "lodash";
 import escapeHTML from "escape-html";
-import { IProductDocument } from "@/modules/product/old-model";
 import { IUser } from "@/modules/user/model";
 import { TProductModel } from "@/modules/product/model";
 
@@ -63,12 +62,12 @@ async function generateSSRPage(template: string, url: string): Promise<string> {
             .replace("{ssr-og}", "og: https://ogp.me/ns/article#")
             .replace("{ssr-title}", escapeHTML(product.title));
 
-        let SSRHead = `
-    <meta name="description" content="${ escapeHTML(product.description.long) }">
+        let SSRHead = `z
+    <meta name="description" content="${ escapeHTML(product.description.short) }">
     <meta property="og:title" content="${ escapeHTML(product.title) }"/>
     <meta property="og:site_name" content="Orbital Market"/>
     <meta property="og:url" content="https://orbital-market.com/"/>
-    <meta property="og:description" content="${ escapeHTML(product.description.long) }"/>
+    <meta property="og:description" content="${ escapeHTML(product.description.short) }"/>
     <meta property="og:type" content="article"/>
     <meta property="article:published_time" content="${ product.releaseDate.toISOString() }"/>
     <meta property="article:author" content="${ escapeHTML(owner?.name || "unknown") }"/>
@@ -101,7 +100,7 @@ async function generateSSRPage(template: string, url: string): Promise<string> {
                 "@type": "Brand"
             },
             "category": "Unreal Engine Asset",
-            "description": escapeHTML(product.description.long),
+            "description": escapeHTML(product.description.short),
             "image": escapeHTML(product.media.thumbnail),
             "offers": {
                 "@type": "Offer",

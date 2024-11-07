@@ -1,5 +1,4 @@
 import "module-alias/register";
-import { closeDatabase, connectDatabase } from "@/database";
 import { makeRequest } from "@/scrapper/unreal/browser";
 import * as ProductService from "@/modules/product/service";
 import { ProductModel, TProductModel } from "@/modules/product/model";
@@ -7,10 +6,9 @@ import { computeScore, getIsBoosted } from "@/scrapper/fab/lib/score";
 import { getEmbeddedContent } from "@/scrapper/fab/lib/embed";
 import UserModel from "@/modules/user/model";
 import { updateFabPreciseProduct } from "@/scrapper/fab/lib/precise";
+import * as cheerio from "cheerio";
 
 export async function updateFabProducts() {
-    await connectDatabase();
-
     let apiUrl = "https://www.fab.com/i/listings/search?channels=unreal-engine&currency=USD&sort_by=createdAt";
     let data = await makeRequest(apiUrl);
 
@@ -81,8 +79,6 @@ export async function updateFabProducts() {
     }
 
     console.log("Finished");
-
-    await closeDatabase();
 }
 
 function getProduct(product: Record<string, unknown>): TProductModel {
@@ -97,6 +93,7 @@ function getProduct(product: Record<string, unknown>): TProductModel {
         },
         description: {
             long: product.description,
+            short: cheerio.load(product.description).text(),
             technical: product.assetFormats[0]?.technicalSpecs.technicalDetails
         },
         engine: getEngine(product),

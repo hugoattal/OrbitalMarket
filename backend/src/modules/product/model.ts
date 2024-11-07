@@ -27,6 +27,9 @@ const schema = new Mongo.Schema({
             required: true,
             type: String
         },
+        short: {
+            type: String
+        },
         technical: {
             type: String
         }
