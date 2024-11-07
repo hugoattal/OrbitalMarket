@@ -62,7 +62,7 @@ async function generateSSRPage(template: string, url: string): Promise<string> {
             .replace("{ssr-og}", "og: https://ogp.me/ns/article#")
             .replace("{ssr-title}", escapeHTML(product.title));
 
-        let SSRHead = `z
+        let SSRHead = `
     <meta name="description" content="${ escapeHTML(product.description.short) }">
     <meta property="og:title" content="${ escapeHTML(product.title) }"/>
     <meta property="og:site_name" content="Orbital Market"/>
