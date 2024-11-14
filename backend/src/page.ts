@@ -72,9 +72,9 @@ async function generateSSRPage(template: string, url: string): Promise<string> {
     <meta property="article:published_time" content="${ product.releaseDate.toISOString() }"/>
     <meta property="article:author" content="${ escapeHTML(owner?.name || "unknown") }"/>
     <meta property="og:image" content="${ escapeHTML(product.media.thumbnail) }"/>
-    <meta property="og:image:width" content="284"/>
-    <meta property="og:image:height" content="284"/>
-    <meta name="twitter:card" content="summary">`;
+    <meta property="og:image:width" content="894"/>
+    <meta property="og:image:height" content="488"/>
+    <meta name="twitter:card" content="summary_large_image">`;
 
         if (owner?.networks?.twitter) {
             const twitterUserName = `@${ _.last(owner.networks.twitter.split("/")) }`;

@@ -1,7 +1,7 @@
 import "module-alias/register";
 import { closeDatabase, connectDatabase } from "@/database";
-import OldProductModel, { IProductDocument } from "@/modules/product/old-model";
-import { ProductModel, TProductModel } from "@/modules/product/model";
+import OldProductModel from "@/modules/product/old-model";
+import { ProductModel } from "@/modules/product/model";
 
 async function init() {
     await connectDatabase();
