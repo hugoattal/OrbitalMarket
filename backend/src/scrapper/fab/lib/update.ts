@@ -84,6 +84,8 @@ export async function updateFabProducts() {
 function getProduct(product: Record<string, unknown>): TProductModel {
     const price = Math.round(product.startingPrice.price * 100);
 
+    const discount = product.startingPrice.discountSettings?.discountPercentage;
+
     return {
         title: product.title,
         category: product.listingType,

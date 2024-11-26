@@ -34,6 +34,9 @@ const schema = new Mongo.Schema({
             type: String
         }
     },
+    discount: {
+        type: Number
+    },
     engine: {
         type: {
             max: {
