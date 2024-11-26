@@ -166,6 +166,7 @@ export async function search(params: ISearch) {
         title: 1,
         category: 1,
         computed: 1,
+        discount: 1,
         engine: 1,
         "media.thumbnail": 1,
         meta: 1,
