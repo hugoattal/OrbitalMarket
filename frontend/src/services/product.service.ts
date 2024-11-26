@@ -16,7 +16,7 @@ export interface IProduct {
         short: string;
         technical: string;
     },
-    discount: { value: number };
+    discount: number;
     media: { images: Array<string>; thumbnail: string };
     meta: {
         fabId: string;

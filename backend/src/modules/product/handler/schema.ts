@@ -18,11 +18,7 @@ export const PartialProduct = {
             type: "object"
         },
         discount: {
-            additionalProperties: false,
-            properties: {
-                value: { type: "number" }
-            },
-            type: "object"
+            type: "number"
         },
         engine: {
             max: { items: { type: "number" }, type: "array" },

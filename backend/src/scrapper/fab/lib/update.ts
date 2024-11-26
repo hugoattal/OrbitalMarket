@@ -84,8 +84,6 @@ export async function updateFabProducts() {
 function getProduct(product: Record<string, unknown>): TProductModel {
     const price = Math.round(product.startingPrice.price * 100);
 
-    const discount = product.startingPrice.discountSettings?.discountPercentage;
-
     return {
         title: product.title,
         category: product.listingType,
@@ -98,7 +96,7 @@ function getProduct(product: Record<string, unknown>): TProductModel {
             short: cheerio.load(product.description).text(),
             technical: product.assetFormats[0]?.technicalSpecs.technicalDetails
         },
-        discount: discount,
+        discount: product.startingPrice.discountSettings?.discountPercentage,
         engine: getEngine(product),
         media: {
             images: [],
