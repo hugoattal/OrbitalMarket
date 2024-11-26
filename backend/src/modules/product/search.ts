@@ -132,7 +132,7 @@ export async function search(params: ISearch) {
 
     if (params.discount) {
         matchStage.push(
-            mongoUtils.isInRange("discount.value", params.discount.min, params.discount.max)
+            mongoUtils.isInRange("discount", params.discount.min, params.discount.max)
         );
 
         matchStage.push(

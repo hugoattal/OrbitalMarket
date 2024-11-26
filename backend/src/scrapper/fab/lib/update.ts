@@ -98,6 +98,7 @@ function getProduct(product: Record<string, unknown>): TProductModel {
             short: cheerio.load(product.description).text(),
             technical: product.assetFormats[0]?.technicalSpecs.technicalDetails
         },
+        discount: discount,
         engine: getEngine(product),
         media: {
             images: [],
@@ -188,6 +189,7 @@ function mergeProduct(oldProduct: TProductModel, newProduct: TProductModel) {
             lastTouched: newProduct.dates.lastTouched
         },
         description: newProduct.description,
+        discount: newProduct.discount,
         engine: newProduct.engine,
         media: {
             ...oldProduct.media,

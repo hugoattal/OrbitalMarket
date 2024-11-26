@@ -10,7 +10,7 @@ export interface ISearchProduct {
         isBoosted: boolean;
         score: number;
     };
-    discount: { value: number };
+    discount: number;
     engine: {
         max: string;
         min: string;
