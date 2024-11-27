@@ -16,14 +16,14 @@
                 :class="{selected:(engineRange===EngineRange.VLast)}"
                 @click="engineRange=EngineRange.VLast"
             >
-                5.3
+                5.4
             </div>
             <div
                 class="option"
                 :class="{selected:(engineRange===EngineRange.VCurrent)}"
                 @click="engineRange=EngineRange.VCurrent"
             >
-                5.4
+                5.5
             </div>
             <div
                 ref="range"
@@ -70,7 +70,7 @@ import { useRouteQuery } from "@vueuse/router";
 
 const engineQuery = useRouteQuery<string | null>("engine");
 
-const MAX_ENGINE = 28 + 4; // 5.4
+const MAX_ENGINE = 28 + 5; // 5.5
 const CURRENT_ENGINE = MAX_ENGINE;
 const LAST_ENGINE = MAX_ENGINE - 1;
 
