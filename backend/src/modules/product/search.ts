@@ -110,7 +110,7 @@ export async function search(params: ISearch) {
     if (params.engine) {
         matchStage.push(
             mongoUtils.isRangeInRange(
-                "computed.engine.min", "computed.engine.max",
+                "engine.min", "engine.max",
                 params.engine.min, params.engine.max
             )
         );
