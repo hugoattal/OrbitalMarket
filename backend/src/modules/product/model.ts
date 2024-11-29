@@ -108,13 +108,13 @@ const schema = new Mongo.Schema({
 schema.index(
     {
         title: "text",
-        "description.long": "text",
+        "description.short": "text",
         "description.technical": "text"
     },
     {
         "weights": {
             title: 12,
-            "description.long": 4,
+            "description.short": 4,
             "description.technical": 1
         }
     }
