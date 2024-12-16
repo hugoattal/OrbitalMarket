@@ -19,12 +19,11 @@ export async function updateFabPreciseProduct(product: TProductModel) {
         product.isAI = data.isAiGenerated;
         product.dates.lastPrecise = new Date();
 
-        product.description = {
-            long: data.description,
-            short: cheerio.load(data.description).text()
-        };
+        product.description.long = data.description;
+        product.description.short = cheerio.load(data.description).text();
 
         product.markModified("media");
+        product.markModified("description");
         product.markModified("dates");
 
         await product.save();
