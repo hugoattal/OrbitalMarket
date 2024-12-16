@@ -6,7 +6,6 @@ import { computeScore, getIsBoosted } from "@/scrapper/fab/lib/score";
 import { getEmbeddedContent } from "@/scrapper/fab/lib/embed";
 import UserModel from "@/modules/user/model";
 import { updateFabPreciseProduct } from "@/scrapper/fab/lib/precise";
-import * as cheerio from "cheerio";
 
 export async function updateFabProducts() {
     let apiUrl = "https://www.fab.com/i/listings/search?channels=unreal-engine&currency=USD&sort_by=createdAt";
@@ -92,8 +91,6 @@ function getProduct(product: Record<string, unknown>): TProductModel {
             lastTouched: new Date()
         },
         description: {
-            long: product.description,
-            short: cheerio.load(product.description).text(),
             technical: product.assetFormats[0]?.technicalSpecs.technicalDetails
         },
         discount: product.startingPrice.discountSettings?.discountPercentage,
