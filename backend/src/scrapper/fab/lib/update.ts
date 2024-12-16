@@ -183,7 +183,10 @@ function mergeProduct(oldProduct: TProductModel, newProduct: TProductModel) {
             ...oldProduct.dates,
             lastTouched: newProduct.dates.lastTouched
         },
-        description: newProduct.description,
+        description: {
+            ...oldProduct.description,
+            technical: newProduct.description.technical
+        },
         discount: newProduct.discount,
         engine: newProduct.engine,
         media: {
