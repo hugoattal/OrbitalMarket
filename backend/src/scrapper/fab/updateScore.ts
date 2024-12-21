@@ -1,13 +1,7 @@
 import "module-alias/register";
 import { closeDatabase, connectDatabase } from "@/database";
-import OldProductModel, { IProductDocument } from "@/modules/product/old-model";
-import { makeRequest } from "@/scrapper/unreal/browser";
-import * as ProductService from "@/modules/product/service";
-import { ProductModel, TProductModel } from "@/modules/product/model";
-import { computeScore, getIsBoosted } from "@/scrapper/fab/lib/score";
-import { getEmbeddedContent } from "@/scrapper/fab/lib/embed";
-import UserModel from "@/modules/user/model";
-
+import { ProductModel } from "@/modules/product/model";
+import { computeScore } from "@/scrapper/fab/lib/score";
 async function init() {
     await connectDatabase();
 
