@@ -19,7 +19,7 @@ export function computeScore(meanRating: number, countRating: number, releaseDat
     return value;
 }
 
-export function getIsBoosted(description: string) {
+export function getIsBoosted(description?: string) {
     if (!description) {
         return false;
     }

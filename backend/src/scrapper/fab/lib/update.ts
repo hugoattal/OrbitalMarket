@@ -57,7 +57,8 @@ export async function updateFabProducts() {
                 const newProduct = getProduct(product);
                 newProduct.owner = owner._id;
 
-                const outProduct = await ProductModel.create(addComputed(newProduct));
+                let outProduct = await ProductModel.create(newProduct);
+                outProduct = addComputed(newProduct);
                 await updateFabPreciseProduct(outProduct);
 
                 console.log(`_Created`);
@@ -152,14 +153,13 @@ function addComputed(product: TProductModel) {
     const isBoosted = getIsBoosted(product.description.long);
     const score = computeScore(product.review.rating, product.review.count, new Date(product.releaseDate), product.price.value === 0, isBoosted);
 
-    return {
-        ...product,
-        computed: {
-            embeddedContent: getEmbeddedContent(product.description.long),
-            isBoosted,
-            score
-        }
+    product.computed = {
+        embeddedContent: getEmbeddedContent(product.description.long),
+        isBoosted,
+        score
     };
+
+    return product;
 }
 
 function mergeProduct(oldProduct: TProductModel, newProduct: TProductModel) {

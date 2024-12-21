@@ -1,4 +1,8 @@
-export function getEmbeddedContent(description: string) {
+export function getEmbeddedContent(description?: string) {
+    if (!description) {
+        return [];
+    }
+
     const matches = description.matchAll(/href="(.+?)"/g);
     return [...matches]
         .map((match) => {
