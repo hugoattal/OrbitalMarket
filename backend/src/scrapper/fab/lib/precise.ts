@@ -20,6 +20,8 @@ export async function updateFabPreciseProduct(product: TProductModel) {
         product.dates.lastPrecise = new Date();
 
         product.description.long = data.description;
+        product.description.long = product.description.long.replaceAll(`<a href="`, `<a target="_blank" href="`);
+
         product.description.short = cheerio.load(data.description).text();
 
         product.markModified("media");
