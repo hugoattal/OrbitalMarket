@@ -185,7 +185,7 @@ function mergeProduct(oldProduct: TProductModel, newProduct: TProductModel) {
             ...oldProduct.description,
             technical: newProduct.description.technical
         },
-        discount: newProduct.discount,
+        discount: newProduct.discount ?? 0,
         engine: newProduct.engine,
         media: {
             ...oldProduct.media,
