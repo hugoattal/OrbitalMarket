@@ -58,7 +58,7 @@ export async function updateFabProducts() {
                 newProduct.owner = owner._id;
 
                 let outProduct = await ProductModel.create(newProduct);
-                outProduct = addComputed(newProduct);
+                outProduct = addComputed(outProduct);
                 await updateFabPreciseProduct(outProduct);
 
                 console.log(`_Created`);
