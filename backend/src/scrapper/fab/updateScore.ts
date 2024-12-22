@@ -19,7 +19,7 @@ async function init() {
 
         const product = doc.toObject();
 
-        const score = computeScore(product.review.rating, product.review.count, new Date(product.releaseDate), product.price.value === 0, product.computed.isBoosted);
+        const score = computeScore(product.review.rating, product.review.count, new Date(product.releaseDate), product.price.value === 0, product.computed?.isBoosted);
 
         await ProductModel.updateOne({ _id: product._id }, {
             "computed.score": score
