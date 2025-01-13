@@ -94,7 +94,7 @@ function getProduct(product: Record<string, unknown>): TProductModel {
         description: {
             technical: product.assetFormats[0]?.technicalSpecs.technicalDetails
         },
-        discount: product.startingPrice.discountSettings?.discountPercentage,
+        discount: product.startingPrice.discountSettings?.discountPercentage || 0,
         engine: getEngine(product),
         media: {
             images: [],

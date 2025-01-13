@@ -1,6 +1,6 @@
 import "module-alias/register";
 import { makeRequest } from "@/scrapper/unreal/browser";
-import { TProductModel } from "@/modules/product/model";
+import { ProductModel, TProductModel } from "@/modules/product/model";
 import * as cheerio from "cheerio";
 
 export async function updateFabPreciseProduct(product: TProductModel) {
@@ -33,5 +33,14 @@ export async function updateFabPreciseProduct(product: TProductModel) {
     catch (error) {
         console.error(error);
     }
+}
 
+export async function updateFabPreciseProducts() {
+    const products = await ProductModel.find({
+        "media.images": { $size: 0 }
+    });
+
+    for (const product of products) {
+        await updateFabPreciseProduct(product);
+    }
 }
