@@ -41,6 +41,7 @@ export async function updateFabPreciseProduct(product: TProductModel) {
         await product.save();
     }
     catch (error) {
+        console.log(`Error updating (precise) product ${ product.meta.fabId } (https://www.fab.com/i/listings/${ product.meta.fabId })`);
         console.error(error);
     }
 }
