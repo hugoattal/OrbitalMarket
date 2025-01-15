@@ -95,6 +95,9 @@ const schema = new Mongo.Schema({
             rating: Number
         }
     },
+    skip: {
+        type: Boolean
+    },
     slug: {
         required: true,
         type: String

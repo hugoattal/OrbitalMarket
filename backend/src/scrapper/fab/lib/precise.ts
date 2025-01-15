@@ -12,8 +12,14 @@ export async function updateFabPreciseProduct(product: TProductModel) {
 
         product.dates.lastPrecise = new Date();
 
-        if (data?.detail && data.detail.startsWith("Mature")) {
-            product.isMature = true;
+        if (data?.detail) {
+            if (data.detail.startsWith("Mature")) {
+                product.isMature = true;
+                await product.save();
+                return;
+            }
+
+            product.skip = true;
             await product.save();
             return;
         }
@@ -49,7 +55,8 @@ export async function updateFabPreciseProduct(product: TProductModel) {
 export async function updateFabPreciseProducts() {
     const products = await ProductModel.find({
         "isMature": { $ne: true },
-        "media.images": { $size: 0 }
+        "media.images": { $size: 0 },
+        "skip": { $ne: true }
     });
 
     console.log(`Found ${ products.length } products without images`);
