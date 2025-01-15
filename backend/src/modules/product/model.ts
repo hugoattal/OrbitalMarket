@@ -49,6 +49,9 @@ const schema = new Mongo.Schema({
     isAI: {
         type: Boolean
     },
+    isMature: {
+        type: Boolean
+    },
     media: {
         type: {
             images: [String],
