@@ -13,5 +13,5 @@ async function makePreciseUpdate(): Promise<void> {
 
 export function register(): void {
     Cron.schedule("0 2 * * *", makeUpdate);
-    Cron.schedule("0 4 * * *", makePreciseUpdate);
+    Cron.schedule("0 5 * * *", makePreciseUpdate);
 }
