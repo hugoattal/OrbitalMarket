@@ -61,7 +61,7 @@ onMounted(async () => {
     lastMonthProducts.value = await SearchService.query({
         limit: 6,
         sortDirection: "desc",
-        time: { max: 1, min: 0 }
+        time: { max: 3, min: 0 }
     });
 
     allTimeProducts.value = await SearchService.query({
