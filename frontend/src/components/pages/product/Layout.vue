@@ -48,6 +48,7 @@ export default defineComponent({
         justify-content: center;
         align-items: center;
         flex-direction: column;
+        gap: var(--length-gap-m);
 
         background-color: var(--color-content-background);
         border-bottom: 1px solid var(--color-content-light);

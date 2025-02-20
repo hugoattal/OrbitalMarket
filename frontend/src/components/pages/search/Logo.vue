@@ -1,12 +1,12 @@
 <template>
-    <div
+    <a
         class="logo"
         @click="goToHome"
     >
         <svg class="svg-logo">
             <use :href="SVGLogoURL" />
         </svg>
-    </div>
+    </a>
 </template>
 
 <script lang="ts">
@@ -17,7 +17,7 @@ import router from "@/router";
 export default defineComponent({
     data () {
         return {
-            SVGLogoURL: `${SVGLogoURL}#Logo`
+            SVGLogoURL: `${ SVGLogoURL }#Logo`
         };
     },
     methods: {

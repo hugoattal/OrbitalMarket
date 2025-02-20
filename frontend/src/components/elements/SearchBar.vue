@@ -41,7 +41,7 @@ const searchText = ref(searchQuery.value || "");
 const router = useRouter();
 
 async function search () {
-    if (router.currentRoute.value.name === "landing") {
+    if (router.currentRoute.value.name !== "search") {
         await router.push({ name: "search", query: { searchText: searchText.value } });
     }
 
