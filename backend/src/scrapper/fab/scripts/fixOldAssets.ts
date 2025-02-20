@@ -30,22 +30,25 @@ async function init() {
             continue;
         }
 
-        const oldProducts2 = await OldProductModel.find({
-            "computed.embeddedContent": product.computed.embeddedContent
-        });
+        if (product.computed.embeddedContent.length) {
 
-        if (oldProducts2.length === 1){
-            console.log("Fixing", product.title);
+            const oldProducts2 = await OldProductModel.find({
+                "computed.embeddedContent": product.computed.embeddedContent
+            });
 
-            const oldProduct2 = oldProducts2[0];
+            if (oldProducts2.length === 1) {
+                console.log("Fixing", product.title);
 
-            product.meta.unrealId = oldProduct2.meta.unrealId;
-            product.releaseDate = oldProduct2.releaseDate;
+                const oldProduct2 = oldProducts2[0];
 
-            product.markModified("meta");
+                product.meta.unrealId = oldProduct2.meta.unrealId;
+                product.releaseDate = oldProduct2.releaseDate;
 
-            await product.save();
-            continue;
+                product.markModified("meta");
+
+                await product.save();
+                continue;
+            }
         }
     }
 
