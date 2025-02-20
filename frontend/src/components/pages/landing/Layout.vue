@@ -10,8 +10,8 @@
         <div class="sections">
             <section>
                 <h2>
-                    <RouterLink to="/search?time=0-1">
-                        Most popular from last month
+                    <RouterLink to="/search?time=0-3">
+                        Most popular from last 3 months
                     </RouterLink>
                 </h2>
                 <ul class="results">
