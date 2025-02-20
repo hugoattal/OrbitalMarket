@@ -14,7 +14,7 @@ async function init() {
     const progress = 0;
 
     for (const product of products) {
-        console.log(`Progress: ${ progress } / ${ products.length }`);
+        console.log(`Progress: ${ progress++ } / ${ products.length }`);
 
         const oldProduct = await OldProductModel.findOne({ title: product.title, owner: product.owner });
 
