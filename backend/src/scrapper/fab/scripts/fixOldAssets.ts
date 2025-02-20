@@ -11,7 +11,7 @@ async function init() {
         releaseDate: { $gt: new Date("2024-10-01") }
     });
 
-    const progress = 0;
+    let progress = 0;
 
     for (const product of products) {
         console.log(`Progress: ${ progress++ } / ${ products.length }`);
