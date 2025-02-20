@@ -1,7 +1,7 @@
 <template>
     <a
         class="card-link"
-        :href="`/product/${product.slug}`"
+        :href="`/product/${product.meta.fabId}`"
         @click.prevent="showModal = true"
     >
         <article
@@ -23,7 +23,7 @@
                 <div class="left">
                     <a
                         class="expand-link icon"
-                        :href="`/product/${product.slug}`"
+                        :href="`/product/${product.meta.fabId}`"
                         target="_blank"
                         @click.stop.prevent="goToProductPage"
                     >
@@ -160,7 +160,7 @@ const authorLink = computed(() => {
 });
 
 function goToProductPage() {
-    router.push({ name: "product", params: { slug: props.product.slug } });
+    router.push({ name: "product", params: { slug: props.product.meta.fabId } });
 }
 </script>
 
