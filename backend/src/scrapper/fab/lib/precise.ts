@@ -52,7 +52,7 @@ export async function updateFabPreciseProduct(product: TProductModel) {
     }
 }
 
-export async function updateFabPreciseProducts() {
+export async function updateFabMissingProducts() {
     const products = await ProductModel.find({
         "isMature": { $ne: true },
         "media.images": { $size: 0 },
@@ -62,6 +62,25 @@ export async function updateFabPreciseProducts() {
     console.log(`Found ${ products.length } products without images`);
 
     for (const product of products) {
+        await updateFabPreciseProduct(product);
+    }
+}
+
+export async function updateFabPreciseProducts() {
+    const products = await ProductModel.find({
+        "dates.lastPrecise": { $exists: true },
+        "review.count": { $gt: 0 }
+    }).sort({
+        "dates.lastPrecise": 1
+    });
+
+    const limit = Math.ceil(products.length * 0.05);
+    const productsToFix = products.slice(0, limit);
+    let progress = 0;
+
+    for (const product of productsToFix) {
+        console.log(`Progress: ${ progress++ } / ${ productsToFix.length }`);
+
         await updateFabPreciseProduct(product);
     }
 }
