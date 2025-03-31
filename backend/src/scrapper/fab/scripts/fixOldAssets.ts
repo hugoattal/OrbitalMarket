@@ -8,7 +8,7 @@ async function init() {
 
     const products = await ProductModel.find({
         "meta.unrealId": { $exists: 0 },
-        releaseDate: { $gt: new Date("2024-10-01") }
+        releaseDate: { $gt: new Date("2025-02-01") }
     });
 
     let progress = 0;
@@ -30,7 +30,7 @@ async function init() {
             continue;
         }
 
-        if (product.computed.embeddedContent.length) {
+        if (product.computed?.embeddedContent?.length) {
 
             const oldProducts2 = await OldProductModel.find({
                 "computed.embeddedContent": product.computed.embeddedContent
