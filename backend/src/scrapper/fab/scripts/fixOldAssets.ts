@@ -8,7 +8,7 @@ async function init() {
 
     const products = await ProductModel.find({
         "meta.unrealId": { $exists: 0 },
-        releaseDate: { $gt: new Date("2025-02-01") }
+        releaseDate: { $gt: new Date("2025-01-01") }
     });
 
     let progress = 0;
