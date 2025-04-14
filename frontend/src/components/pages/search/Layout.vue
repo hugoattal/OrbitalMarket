@@ -77,7 +77,7 @@ export default defineComponent({
 
         @media screen and (max-width: 800px) {
             padding-top: 48px;
-            padding-bottom: 48px
+            padding-bottom: 64px
         }
 
         .dashboard, .networks {
