@@ -1,3 +1,7 @@
 packages:
-  - "backend"
-  - "frontend"
+  - backend
+  - frontend
+
+onlyBuiltDependencies:
+  - esbuild
+  - puppeteer
