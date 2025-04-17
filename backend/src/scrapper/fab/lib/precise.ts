@@ -74,7 +74,7 @@ export async function updateFabPreciseProducts() {
         "dates.lastPrecise": 1
     });
 
-    const limit = Math.ceil(products.length * 0.05);
+    const limit = Math.ceil(products.length * 0.1);
     const productsToFix = products.slice(0, limit);
     let progress = 0;
 

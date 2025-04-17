@@ -14,7 +14,7 @@ export async function updateFabProducts() {
     let count = 0;
     let previousCount = 0;
 
-    while (data.results.length) {
+    while (data.results?.length) {
         count += data.results.length;
 
         if (Math.floor(count / 250) > Math.floor(previousCount / 250)) {
@@ -61,7 +61,7 @@ export async function updateFabProducts() {
                 outProduct = addComputed(outProduct);
                 await updateFabPreciseProduct(outProduct);
 
-                console.log(`_Created`);
+                console.log(`_Created ${ outProduct.title }`);
             }
             catch (e) {
                 console.log(`Product error: ${ product.title } (${ product.uid })`);

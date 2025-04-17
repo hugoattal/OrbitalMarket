@@ -46,6 +46,10 @@ export async function processProductData(data: any): Promise<void> {
         },
         owner: ownerId,
         pictures: data.keyImages.reduce((object: Record<string, Array<string>>, element: { type: string; url: string }) => {
+            if (!element.type) {
+                return object;
+            }
+
             element.type = element.type.toLowerCase();
             if (!object[element.type]) {
                 object[element.type] = [];
