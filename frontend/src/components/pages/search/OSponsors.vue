@@ -2,7 +2,7 @@
     <div class="sponsors">
         Sponsored by
         <a
-            href="https://unrealsolutions.com/"
+            href="https://luna-park.app/"
             target="_blank"
         >
             <img
@@ -22,11 +22,11 @@ export default {
 
 <script setup lang="ts">
 import { computed } from "vue";
-import SponsorLogo from "@/assets/brands/usltd.svg";
-import SponsorLogoLight from "@/assets/brands/usltd-light.svg";
+import SponsorLogo from "@/assets/brands/lunapark.svg";
+import SponsorLogoLight from "@/assets/brands/lunapark-light.svg";
 import { isDarkMode } from "@/components/theme/theme";
 
-const logoUrl = computed(() => isDarkMode.value ? SponsorLogo : SponsorLogoLight);
+const logoUrl = computed(() => isDarkMode.value ? SponsorLogoLight : SponsorLogo);
 </script>
 
 <style scoped lang="scss">
@@ -39,7 +39,7 @@ const logoUrl = computed(() => isDarkMode.value ? SponsorLogo : SponsorLogoLight
 
     .logo {
         color: var(--color-content);
-        width: 200px;
+        width: 240px;
         opacity: 0.75;
         cursor: pointer;
         transition: filter var(--duration-fast), opacity var(--duration-fast);
