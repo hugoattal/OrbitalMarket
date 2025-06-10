@@ -69,6 +69,7 @@ export async function updateFabMissingProducts() {
 export async function updateFabPreciseProducts() {
     const products = await ProductModel.find({
         "dates.lastPrecise": { $exists: true },
+        "dates.lastTouched": { $gt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000) },
         "review.count": { $gt: 0 }
     }).sort({
         "dates.lastPrecise": 1

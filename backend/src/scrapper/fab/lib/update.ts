@@ -8,7 +8,8 @@ import UserModel from "@/modules/user/model";
 import { updateFabPreciseProduct } from "@/scrapper/fab/lib/precise";
 
 export async function updateFabProducts() {
-    let apiUrl = "https://www.fab.com/i/listings/search?channels=unreal-engine&currency=USD&sort_by=-createdAt";
+    //let apiUrl = "https://www.fab.com/i/listings/search?channels=unreal-engine&currency=USD&sort_by=-firstPublishedAt";
+    let apiUrl = "https://www.fab.com/i/listings/search?channels=unreal-engine&q=electronic&sort_by=-relevance";
     let data = await makeRequest(apiUrl);
 
     let count = 0;
@@ -82,7 +83,7 @@ export async function updateFabProducts() {
 }
 
 function getProduct(product: Record<string, unknown>): TProductModel {
-    const price = Math.round(product.startingPrice.price * 100);
+    const price = Math.round(product.startingPrice.price / (1 + (product.startingPrice.vatPercentage || 0) / 100) * 100);
 
     return {
         title: product.title,

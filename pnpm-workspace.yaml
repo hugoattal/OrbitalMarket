@@ -4,4 +4,4 @@ packages:
 
 onlyBuiltDependencies:
   - esbuild
-  - puppeteer
+  - playwright
