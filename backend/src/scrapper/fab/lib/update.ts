@@ -8,8 +8,7 @@ import UserModel from "@/modules/user/model";
 import { updateFabPreciseProduct } from "@/scrapper/fab/lib/precise";
 
 export async function updateFabProducts() {
-    //let apiUrl = "https://www.fab.com/i/listings/search?channels=unreal-engine&currency=USD&sort_by=-firstPublishedAt";
-    let apiUrl = "https://www.fab.com/i/listings/search?channels=unreal-engine&q=electronic&sort_by=-relevance";
+    let apiUrl = "https://www.fab.com/i/listings/search?channels=unreal-engine&currency=USD&sort_by=-firstPublishedAt";
     let data = await makeRequest(apiUrl);
 
     let count = 0;
