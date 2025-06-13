@@ -16,14 +16,14 @@
                 :class="{selected:(engineRange===EngineRange.VLast)}"
                 @click="engineRange=EngineRange.VLast"
             >
-                5.4
+                5.5
             </div>
             <div
                 class="option"
                 :class="{selected:(engineRange===EngineRange.VCurrent)}"
                 @click="engineRange=EngineRange.VCurrent"
             >
-                5.5
+                5.6
             </div>
             <div
                 ref="range"
