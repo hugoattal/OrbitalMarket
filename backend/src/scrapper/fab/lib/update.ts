@@ -71,6 +71,18 @@ export async function updateFabProducts() {
         }));
 
         if (!data.next) {
+            const lastPublishing = data.results.at(-1).firstPublishedAt.split("T")[0];
+            const previousDay = new Date(lastPublishing).setDate(new Date(lastPublishing).getDate() - 1);
+            const filterString = new Date(previousDay).toISOString().split("T")[0];
+
+            apiUrl = `https://www.fab.com/i/listings/search?channels=unreal-engine&currency=USD&sort_by=-firstPublishedAt&published_since=${ filterString }`;
+            data = await makeRequest(apiUrl);
+
+            if (data.next) {
+                console.log(`Next batch (${ filterString })`);
+                continue;
+            }
+
             break;
         }
 
