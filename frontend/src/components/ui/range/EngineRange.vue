@@ -70,7 +70,7 @@ import { useRouteQuery } from "@vueuse/router";
 
 const engineQuery = useRouteQuery<string | null>("engine");
 
-const MAX_ENGINE = 28 + 5; // 5.5
+const MAX_ENGINE = 28 + 6; // 5.6
 const CURRENT_ENGINE = MAX_ENGINE;
 const LAST_ENGINE = MAX_ENGINE - 1;
 
