@@ -72,8 +72,6 @@ export async function updateFabProducts() {
 
         }));
 
-        delete data.next;
-
         if (!data.next) {
             if (!maxBatches--) {
                 console.log("Stop batches");
