@@ -6,11 +6,15 @@ import { computeScore, getIsBoosted } from "@/scrapper/fab/lib/score";
 import { getEmbeddedContent } from "@/scrapper/fab/lib/embed";
 import UserModel from "@/modules/user/model";
 import { updateFabPreciseProduct } from "@/scrapper/fab/lib/precise";
-
-let maxBatches = 32;
+import { getSavedState, setSavedState } from "@/scrapper/unreal/lib/state";
 
 export async function updateFabProducts() {
-    let apiUrl = "https://www.fab.com/i/listings/search?channels=unreal-engine&currency=USD&sort_by=firstPublishedAt";
+    let maxBatches = 256;
+
+    const startingDate = await getSavedState("product-date", new Date(0));
+    const filterString = new Date(startingDate).toISOString().split("T")[0];
+
+    let apiUrl = `https://www.fab.com/i/listings/search?channels=unreal-engine&currency=USD&sort_by=firstPublishedAt&published_since=${ filterString }`;
     let data = await makeRequest(apiUrl);
 
     let count = 0;
@@ -73,13 +77,14 @@ export async function updateFabProducts() {
         }));
 
         if (!data.next) {
-            if (!maxBatches--) {
-                console.log("Stop batches");
+            const lastPublishing = data.results.at(-1).publishedAt.split("T")[0];
+
+            if (new Date().getTime() - new Date(lastPublishing).getTime() < 7 * 24 * 60 * 60 * 1000) {
+                await setSavedState("product-date", new Date(0));
+                console.log("End of updates");
                 break;
             }
 
-
-            const lastPublishing = data.results.at(-1).publishedAt.split("T")[0];
             const previousDay = new Date(lastPublishing).setDate(new Date(lastPublishing).getDate() - 1); //remove 1 day
             const filterString = new Date(previousDay).toISOString().split("T")[0];
 
@@ -87,12 +92,19 @@ export async function updateFabProducts() {
 
             data = await makeRequest(apiUrl);
 
-            if (data.next) {
-                console.log(`Next batch (${ filterString })`);
-                continue;
+            if (!data.next) {
+                await setSavedState("product-date", new Date(0));
+                break;
             }
 
-            break;
+            await setSavedState("product-date", new Date(previousDay));
+
+            if (!maxBatches--) {
+                console.log("Stop batches");
+                break;
+            }
+
+            continue;
         }
 
         apiUrl = data.next;
