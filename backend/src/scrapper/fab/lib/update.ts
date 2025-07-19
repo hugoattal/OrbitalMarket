@@ -9,7 +9,7 @@ import { updateFabPreciseProduct } from "@/scrapper/fab/lib/precise";
 import { getSavedState, setSavedState } from "@/scrapper/unreal/lib/state";
 
 export async function updateFabProducts() {
-    let maxBatches = 256;
+    let maxBatches = 8;
 
     const startingDate = await getSavedState("product-date", new Date(0));
     const filterString = new Date(startingDate).toISOString().split("T")[0];
