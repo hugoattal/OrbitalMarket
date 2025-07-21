@@ -8,7 +8,7 @@ async function init() {
     const ids = process.argv.slice(2);
 
     for (const id of ids) {
-        const product = await ProductModel.findOne({ meta: { fabId: id } }).exec();
+        const product = await ProductModel.findOne({ "meta.fabId": id }).exec();
         if (product) {
             console.log(`Updating ${ product.title }`);
             await updateFabPreciseProduct(product);
