@@ -178,4 +178,13 @@ productSchema.index(
     }
 );
 
+productSchema.index({ updatedAt: -1 });
+productSchema.index({ "price.value": 1 });
+productSchema.index({ releaseDate: -1 });
+productSchema.index({ "meta.fabId": 1 });
+productSchema.index({ "computed.score": -1 });
+
+productSchema.index({ "description.short": 1, isAI: 1, updatedAt: -1 });
+productSchema.index({ "computed.score": -1, "price.value": 1 });
+
 export default Mongo.model<IProductDocument>("old-product", productSchema);
