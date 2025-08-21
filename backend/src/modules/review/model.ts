@@ -14,7 +14,7 @@ export interface IReview {
 export interface IReviewDocument extends IReview, Mongo.Document {
 }
 
-const userSchema: Mongo.Schema = new Mongo.Schema({
+const schema: Mongo.Schema = new Mongo.Schema({
     name: {
         required: true,
         type: String
@@ -44,4 +44,6 @@ const userSchema: Mongo.Schema = new Mongo.Schema({
     }
 });
 
-export default Mongo.model<IReviewDocument>("review", userSchema);
+schema.index({ date: -1, "meta.target": 1 });
+
+export default Mongo.model<IReviewDocument>("review", schema);
