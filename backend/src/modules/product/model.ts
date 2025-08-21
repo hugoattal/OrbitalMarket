@@ -130,6 +130,7 @@ schema.index({ "computed.score": -1 });
 
 schema.index({ computed: 1, "description.short": 1, isAI: 1, updatedAt: -1 });
 schema.index({ computed: 1, "computed.score": -1, "description.short": 1, isAI: 1, "price.value": 1 });
+schema.index({ _id: -1, computed: 1, "computed.score": -1, "description.short": 1, isAI: 1, updatedAt: -1 });
 
 export type TProductModel = HydratedDocumentFromSchema<typeof schema>;
 export const ProductModel = Mongo.model("product", schema);
