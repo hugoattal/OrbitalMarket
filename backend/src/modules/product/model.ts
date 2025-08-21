@@ -125,14 +125,11 @@ schema.index(
     }
 );
 
-schema.index({ updatedAt: -1 });
-schema.index({ "price.value": 1 });
-schema.index({ releaseDate: -1 });
 schema.index({ "meta.fabId": 1 });
 schema.index({ "computed.score": -1 });
 
-schema.index({ "description.short": 1, isAI: 1, updatedAt: -1 });
-schema.index({ "computed.score": -1, "price.value": 1 });
+schema.index({ computed: 1, "description.short": 1, isAI: 1, updatedAt: -1 });
+schema.index({ computed: 1, "computed.score": -1, "description.short": 1, isAI: 1, "price.value": 1 });
 
 export type TProductModel = HydratedDocumentFromSchema<typeof schema>;
 export const ProductModel = Mongo.model("product", schema);
