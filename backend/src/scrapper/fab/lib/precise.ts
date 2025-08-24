@@ -2,6 +2,7 @@ import "module-alias/register";
 import { makeRequest } from "@/scrapper/unreal/browser";
 import { ProductModel, TProductModel } from "@/modules/product/model";
 import * as cheerio from "cheerio";
+import { addComputed } from "@/scrapper/fab/lib/update";
 
 export async function updateFabPreciseProduct(product: TProductModel) {
     try {
@@ -40,9 +41,12 @@ export async function updateFabPreciseProduct(product: TProductModel) {
 
         product.description.short = cheerio.load(data.description).text();
 
+        addComputed(product);
+
         product.markModified("media");
         product.markModified("description");
         product.markModified("dates");
+        product.markModified("computed");
 
         await product.save();
     }
