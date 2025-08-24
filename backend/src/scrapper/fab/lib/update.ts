@@ -93,6 +93,8 @@ export async function updateFabProducts() {
             data = await makeRequest(apiUrl);
 
             if (!data.next) {
+                console.log(data);
+                console.log("No next", apiUrl);
                 await setSavedState("product-date", new Date(0));
                 break;
             }
