@@ -19,6 +19,7 @@ export async function updateFabProducts() {
 
     let count = 0;
     let previousCount = 0;
+    let previousDay = new Date(0);
 
     while (data.results?.length) {
         count += data.results.length;
@@ -76,7 +77,10 @@ export async function updateFabProducts() {
 
         }));
 
-        if (!data.next) {
+        const lastPublishing = data.results.at(-1).publishedAt.split("T")[0];
+        previousDay = new Date(lastPublishing).setDate(new Date(lastPublishing).getDate() - 1); //remove 1 day
+
+        if (data.results && !data.next) {
             const lastPublishing = data.results.at(-1).publishedAt.split("T")[0];
 
             if (new Date().getTime() - new Date(lastPublishing).getTime() < 7 * 24 * 60 * 60 * 1000) {
@@ -85,7 +89,6 @@ export async function updateFabProducts() {
                 break;
             }
 
-            const previousDay = new Date(lastPublishing).setDate(new Date(lastPublishing).getDate() - 1); //remove 1 day
             const filterString = new Date(previousDay).toISOString().split("T")[0];
 
             apiUrl = `https://www.fab.com/i/listings/search?channels=unreal-engine&currency=USD&sort_by=firstPublishedAt&published_since=${ filterString }`;
@@ -111,6 +114,12 @@ export async function updateFabProducts() {
 
         apiUrl = data.next;
         data = await makeRequest(apiUrl);
+
+        if (data.detail && data.detail.toLowerCase().includes("too many requests")) {
+            console.log(`Too many requests, saving state (${ previousDay })`);
+            await setSavedState("product-date", new Date(previousDay));
+            break;
+        }
     }
 
     console.log("Finished");
