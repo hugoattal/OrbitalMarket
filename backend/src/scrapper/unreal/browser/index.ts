@@ -1,8 +1,8 @@
 import { Browser, chromium, Page } from "playwright";
 import { Mutex } from "async-mutex";
 
-let page: Page;
-let browser: Browser;
+let page: Page | null = null;
+let browser: Browser | null = null;
 export const navigationMutex = new Mutex();
 
 async function initBrowser() {
@@ -15,7 +15,7 @@ async function initBrowser() {
     page = await context.newPage();
 }
 
-export async function makeRequest(url: string): Promise<unknown> {
+export async function makeRequest(url: string, retry = 5): Promise<unknown> {
     const mutexRelease = await navigationMutex.acquire();
 
     try {
@@ -39,7 +39,13 @@ export async function makeRequest(url: string): Promise<unknown> {
         await browser?.close();
         page = null;
         browser = null;
-        throw error;
+
+        if (retry > 0) {
+            return await makeRequest(url, retry - 1);
+        }
+        else {
+            throw error;
+        }
     }
     finally {
         mutexRelease();
@@ -78,8 +84,10 @@ export async function getRedirect(url: string): Promise<string> {
 export async function resetBrowser() {
     if (page) {
         await page.close();
+        page = null;
     }
     if (browser) {
         await browser.close();
+        browser = null;
     }
 }

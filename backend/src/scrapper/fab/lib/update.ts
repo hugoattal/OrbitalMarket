@@ -8,6 +8,8 @@ import UserModel from "@/modules/user/model";
 import { updateFabPreciseProduct } from "@/scrapper/fab/lib/precise";
 import { getSavedState, setSavedState } from "@/scrapper/unreal/lib/state";
 
+const STEP = 250;
+
 export async function updateFabProducts() {
     let maxBatches = 8;
 
@@ -18,13 +20,13 @@ export async function updateFabProducts() {
     let data = await makeRequest(apiUrl);
 
     let count = 0;
-    let previousCount = 0;
+    let previousCount = -STEP;
     let previousDay = new Date(0);
 
     while (data.results?.length) {
         count += data.results.length;
 
-        if (Math.floor(count / 250) > Math.floor(previousCount / 250)) {
+        if (Math.floor(count / STEP) > Math.floor(previousCount / STEP)) {
             previousCount = count;
             console.log(`Count: ${ count } (url: ${ apiUrl })`);
         }
@@ -118,6 +120,12 @@ export async function updateFabProducts() {
         if (data.detail && data.detail.toLowerCase().includes("too many requests")) {
             console.log(`Too many requests, saving state (${ previousDay })`);
             await setSavedState("product-date", new Date(previousDay));
+            break;
+        }
+
+        if (!data.results?.length) {
+            console.log("No more results", apiUrl);
+            await setSavedState("product-date", new Date(0));
             break;
         }
     }
