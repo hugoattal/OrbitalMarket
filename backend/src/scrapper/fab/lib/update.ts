@@ -81,6 +81,7 @@ export async function updateFabProducts() {
 
         const lastPublishing = data.results.at(-1).publishedAt.split("T")[0];
         previousDay = new Date(lastPublishing).setDate(new Date(lastPublishing).getDate() - 1); //remove 1 day
+        await setSavedState("product-date", new Date(previousDay));
 
         if (data.results && !data.next) {
             const lastPublishing = data.results.at(-1).publishedAt.split("T")[0];
@@ -103,8 +104,6 @@ export async function updateFabProducts() {
                 await setSavedState("product-date", new Date(0));
                 break;
             }
-
-            await setSavedState("product-date", new Date(previousDay));
 
             if (!maxBatches--) {
                 console.log("Stop batches");
