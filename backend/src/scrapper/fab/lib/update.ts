@@ -16,7 +16,7 @@ export async function updateFabProducts() {
     const startingDate = await getSavedState("product-date", new Date(0));
     const filterString = new Date(startingDate).toISOString().split("T")[0];
 
-    let apiUrl = `https://www.fab.com/i/listings/search?channels=unreal-engine&currency=USD&sort_by=firstPublishedAt&published_since=${ filterString }`;
+    let apiUrl = `https://www.fab.com/i/listings/search?channels=unreal-engine&currency=USD&sort_by=publishedAt&published_since=${ filterString }`;
     let data = await makeRequest(apiUrl);
 
     let count = 0;
@@ -94,7 +94,7 @@ export async function updateFabProducts() {
 
             const filterString = new Date(previousDay).toISOString().split("T")[0];
 
-            apiUrl = `https://www.fab.com/i/listings/search?channels=unreal-engine&currency=USD&sort_by=firstPublishedAt&published_since=${ filterString }`;
+            apiUrl = `https://www.fab.com/i/listings/search?channels=unreal-engine&currency=USD&sort_by=publishedAt&published_since=${ filterString }`;
 
             data = await makeRequest(apiUrl);
 
