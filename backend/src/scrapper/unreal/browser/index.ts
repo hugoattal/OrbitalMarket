@@ -74,3 +74,12 @@ export async function getRedirect(url: string): Promise<string> {
         mutexRelease();
     }
 }
+
+export async function resetBrowser() {
+    if (page) {
+        await page.close();
+    }
+    if (browser) {
+        await browser.close();
+    }
+}
