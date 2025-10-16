@@ -71,8 +71,8 @@ export async function search(params: ISearch) {
         {
             "computed": { $exists: true },
             "description.short": { $exists: true },
-            "isAI": { $ne: true },
-            "updatedAt": { $gte: new Date(new Date().getTime() - 30 * 24 * 60 * 60 * 1000) }
+            "isAI": { $ne: true }
+            //"updatedAt": { $gte: new Date(new Date().getTime() - 30 * 24 * 60 * 60 * 1000) }
         }
     ];
 
