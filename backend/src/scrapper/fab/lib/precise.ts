@@ -41,6 +41,11 @@ export async function updateFabPreciseProduct(product: TProductModel) {
 
         product.description.short = cheerio.load(data.description).text();
 
+        product.review = {
+            count: data.ratings.total,
+            rating: data.ratings.averageRating
+        };
+
         addComputed(product);
 
         product.markModified("media");
