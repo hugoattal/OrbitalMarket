@@ -166,8 +166,8 @@ function getProduct(product: Record<string, unknown>): TProductModel {
         },
         releaseDate: new Date(product.publishedAt),
         review: {
-            count: product.reviewCount,
-            rating: product.averageRating
+            count: product.ratings.total,
+            rating: product.ratings.averageRating
         },
         slug: ProductService.utils.makeSlug(product.title),
         tags: product.tags.map((tag) => tag.slug)
