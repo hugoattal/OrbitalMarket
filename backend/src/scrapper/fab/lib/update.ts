@@ -244,6 +244,10 @@ function mergeProduct(oldProduct: TProductModel, newProduct: TProductModel) {
             ...oldProduct.media,
             thumbnail: newProduct.media.thumbnail
         },
+        meta: {
+            ...oldProduct.meta,
+            ...newProduct.meta
+        },
         price,
         review: newProduct.review,
         tags: newProduct.tags
