@@ -204,7 +204,7 @@ function getEngine(product: Record<string, unknown>) {
 export function addComputed(product: TProductModel) {
     product.description.long = product.description.long?.replaceAll(`<a href="`, `<a target="_blank" href="`) || "";
     const isBoosted = getIsBoosted(product.description.long);
-    const score = computeScore(product.review.rating, product.review.count, new Date(product.releaseDate), product.price.value === 0, isBoosted);
+    const score = computeScore(product.review.rating, product.review.count, new Date(product.releaseDate), product.price.value === 0, isBoosted, product.meta?.verificationRatio);
 
     product.computed = {
         embeddedContent: getEmbeddedContent(product.description.long),
