@@ -65,6 +65,10 @@ const schema = new Mongo.Schema({
             },
             unrealId: {
                 type: String
+            },
+            verificationRatio: {
+                optional: true,
+                type: Number
             }
         }
     },
