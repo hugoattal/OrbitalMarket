@@ -1,4 +1,3 @@
-import "module-alias/register";
 import { closeDatabase, connectDatabase } from "@/database";
 import OldProductModel, { IProductDocument } from "@/modules/product/old-model";
 import { makeRequest } from "@/scrapper/unreal/browser";

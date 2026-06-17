@@ -1,9 +1,16 @@
+import path from "node:path";
+import url from "node:url";
+
 import fs from "fs";
+
 import * as ConfigService from "@/modules/config/service";
 import { getConfigData } from "@/modules/config/service";
 
+const __filename = url.fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 export function getMigrationFiles() {
-    let files = fs.readdirSync(__dirname + "/..");
+    let files = fs.readdirSync(`${ __dirname }/..`);
     files = files.filter((fileName) => fileName.endsWith(".ts"));
     return files;
 }
@@ -16,13 +23,13 @@ export function getMigrationFile(id: number) {
 }
 
 export async function applyMigration(id: number) {
-    const migrationFileName = "../" + getMigrationFile(id);
+    const migrationFileName = `../${ getMigrationFile(id) }`;
     const Migration = await import(migrationFileName);
     await Migration.up();
 }
 
 export function getLatestMigrationId(): number {
-    let files = fs.readdirSync(__dirname + "/..");
+    let files = fs.readdirSync(`${ __dirname }/..`);
     files = files.filter((fileName) => fileName.endsWith(".ts"));
     return parseInt(files.pop() as string);
 }
@@ -38,8 +45,8 @@ export async function getCurrentMigrationId(): Promise<number> {
 }
 
 export async function migrateToLatest() {
-    let migrationStartId = await getCurrentMigrationId() + 1;
-    let migrationEndId = getLatestMigrationId();
+    const migrationStartId = await getCurrentMigrationId() + 1;
+    const migrationEndId = getLatestMigrationId();
 
     for (let migrationId = migrationStartId; migrationId < migrationEndId; migrationId++) {
         await applyMigration(migrationId);

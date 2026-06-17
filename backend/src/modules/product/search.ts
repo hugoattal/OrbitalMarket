@@ -1,6 +1,6 @@
 import { ESortDirection, ESortField, ISearch } from "@/modules/product/handler/schema";
 import UserModel from "@/modules/user/model";
-import { has } from "lodash";
+import { has } from "es-toolkit/compat";
 import * as mongoUtils from "@/utils/mongo";
 import { PipelineStage } from "mongoose";
 import { getAuthor } from "@/modules/product/utils";

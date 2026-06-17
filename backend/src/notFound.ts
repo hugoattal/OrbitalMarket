@@ -1,11 +1,16 @@
-import * as Fastify from "fastify";
+import url from "node:url";
+
+import type * as Fastify from "fastify";
 import fs from "fs";
 import path from "path";
+
+const __filename = url.fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const pageTemplate = fs.readFileSync(path.join(__dirname, "../../frontend/dist/index.html")).toString();
 
 export default async function (server: Fastify.FastifyInstance): Promise<void> {
-    server.setNotFoundHandler(( _request, reply) => {
+    server.setNotFoundHandler((_request, reply) => {
         reply.code(404).type("text/html").send(generateSSRPage(pageTemplate));
     });
 }

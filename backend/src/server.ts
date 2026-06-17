@@ -1,4 +1,3 @@
-import "module-alias/register";
 import { connectDatabase } from "@/database";
 import * as Fastify from "fastify";
 import cors from "cors";
@@ -24,8 +23,8 @@ async function init() {
     await server.register(fastifyMiddie);
 
     server.use(cors({
-        origin: process.env.CORS_ORIGIN,
-        credentials: true
+        credentials: true,
+        origin: process.env.CORS_ORIGIN
     }));
 
     await server.register(APIHandler, { prefix: "/api" });

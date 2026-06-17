@@ -1,5 +1,5 @@
 import ProductModel from "../old-model";
-import _ from "lodash";
+import _ from "es-toolkit/compat";
 import { differenceInDays } from "date-fns";
 
 export async function updateScores() {

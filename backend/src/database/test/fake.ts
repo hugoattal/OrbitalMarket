@@ -1,4 +1,4 @@
-import _ from "lodash";
+import _ from "es-toolkit/compat";
 import jsf from "json-schema-faker";
 import { faker } from "@faker-js/faker/locale/fr";
 import { PartialDeep } from "type-fest";
@@ -42,10 +42,10 @@ function makeJsonSchema(model: Mongo.Schema): any {
             value = { type: "number" };
             break;
         case "SchemaDate":
-            value = { type: "string", format: "date-time" };
+            value = { format: "date-time", type: "string" };
             break;
         case "ObjectId":
-            value = { type: "string", format: "objectId" };
+            value = { format: "objectId", type: "string" };
             break;
         }
 
@@ -55,7 +55,7 @@ function makeJsonSchema(model: Mongo.Schema): any {
     });
 
     return {
-        type: "object",
-        properties
+        properties,
+        type: "object"
     };
 }

@@ -1,13 +1,19 @@
-import * as Fastify from "fastify";
-import * as path from "path";
-import * as fs from "fs";
-import * as ProductService from "@/modules/product/service";
-import * as UserService from "@/modules/user/service";
-import { InternalServerError, NotFound } from "http-errors";
-import _ from "lodash";
+import url from "node:url";
+
+import { httpError } from "@luna-park/http-errors";
+import _ from "es-toolkit/compat";
 import escapeHTML from "escape-html";
-import { IUser } from "@/modules/user/model";
-import { TProductModel } from "@/modules/product/model";
+import type * as Fastify from "fastify";
+import * as fs from "fs";
+import * as path from "path";
+
+import type { TProductModel } from "@/modules/product/model";
+import * as ProductService from "@/modules/product/service";
+import type { IUser } from "@/modules/user/model";
+import * as UserService from "@/modules/user/service";
+
+const __filename = url.fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const pageTemplate = fs.readFileSync(path.join(__dirname, "../../frontend/dist/index.html")).toString();
 
@@ -51,11 +57,11 @@ async function generateSSRPage(template: string, url: string): Promise<string> {
         const slug = path[2];
         const product = await ProductService.getById(slug);
         if (!product) {
-            throw new NotFound();
+            throw httpError.NotFound();
         }
         const owner = await UserService.getById(product.owner);
         if (!owner) {
-            throw new InternalServerError();
+            throw httpError.InternalServerError();
         }
 
         template = template
@@ -86,8 +92,6 @@ async function generateSSRPage(template: string, url: string): Promise<string> {
     <script type="application/ld+json">${ generateJSONLD(product, owner) }</script>`;
 
         template = template.replace("<!--{ssr-head}-->", SSRHead);
-
-
     }
 
     function generateJSONLD(product: TProductModel, owner: IUser): string {

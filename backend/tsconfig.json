@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-        "baseUrl": ".",
+        "rootDir": "./src",
         "paths": {
             "@/*": [
                 "src/*"
@@ -9,17 +9,28 @@
                 "src/"
             ]
         },
-        "esModuleInterop": true,
-        "module": "commonjs",
-        "moduleResolution": "node",
+        "types": [
+            "vitest/globals"
+        ],
+        "module": "NodeNext",
         "noFallthroughCasesInSwitch": true,
         "noImplicitReturns": true,
         "noUnusedLocals": true,
         "noUnusedParameters": true,
         "pretty": true,
-        "target": "esnext",
+        "target": "ESNext",
         "sourceMap": true,
-        "strict": true
+        "moduleResolution": "NodeNext",
+        "customConditions": ["source"],
+        "esModuleInterop": true,
+        "strict": true,
+        "strictNullChecks": true,
+        "resolveJsonModule": true,
+        "skipDefaultLibCheck": true,
+        "skipLibCheck": true,
+        "declaration": true,
+        "inlineSourceMap": true,
+        "allowJs": true
     },
     "exclude": [
         "node_modules"

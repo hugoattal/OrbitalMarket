@@ -1,5 +1,4 @@
-import "module-alias/register";
-import { connectDatabase, closeDatabase } from "@/database";
+import { closeDatabase, connectDatabase } from "@/database";
 import * as ProductScore from "@/modules/product/lib/score";
 
 async function init() {

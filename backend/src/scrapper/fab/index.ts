@@ -1,4 +1,3 @@
-import "module-alias/register";
 import { updateFabProducts } from "@/scrapper/fab/lib/update";
 import { closeDatabase, connectDatabase } from "@/database";
 

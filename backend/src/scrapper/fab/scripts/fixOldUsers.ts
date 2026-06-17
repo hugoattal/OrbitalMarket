@@ -1,4 +1,3 @@
-import "module-alias/register";
 import { closeDatabase, connectDatabase } from "@/database";
 import UserModel from "@/modules/user/model";
 import { ProductModel } from "@/modules/product/model";

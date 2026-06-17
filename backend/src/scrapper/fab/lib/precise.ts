@@ -1,4 +1,3 @@
-import "module-alias/register";
 import { makeRequest } from "@/scrapper/unreal/browser";
 import { ProductModel, TProductModel } from "@/modules/product/model";
 import * as cheerio from "cheerio";

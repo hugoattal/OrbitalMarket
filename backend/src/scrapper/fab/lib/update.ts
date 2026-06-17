@@ -1,4 +1,3 @@
-import "module-alias/register";
 import { makeRequest } from "@/scrapper/unreal/browser";
 import * as ProductService from "@/modules/product/service";
 import { ProductModel, TProductModel } from "@/modules/product/model";

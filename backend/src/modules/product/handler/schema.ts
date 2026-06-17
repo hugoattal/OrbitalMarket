@@ -1,4 +1,4 @@
-import { merge } from "lodash";
+import { merge } from "es-toolkit/compat";
 
 export const PartialProduct = {
     additionalProperties: false,
